@@ -26,8 +26,21 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install dependencies
-        run: uv sync
+      - name: Install dependencies (including dev)
+        # Try to install dev dependencies via uv. If the local uv setup does not support
+        # a `--dev` flag, fall back to plain `uv sync` which will install declared groups.
+        run: |
+          set -e
+          if uv --version >/dev/null 2>&1; then
+            # prefer explicit dev install if available
+            uv sync --dev || uv sync || python -m pip install -r ci-dev-requirements.txt || true
+          else
+            python -m pip install -r ci-dev-requirements.txt || true
+          fi
+
+      - name: Export MYPYPATH for local stubs
+        # Ensure mypy can find local stub packages in `stubs/`
+        run: echo "MYPYPATH=${{ github.workspace }}/stubs" >> $GITHUB_ENV
 
       - name: Ruff lint
         run: uv run ruff check app tests
@@ -35,11 +48,13 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check app tests
 
-      - name: Mypy type check
-        run: uv run mypy app
+      - name: Mypy type check (full)
+        env:
+          MYPYPATH: ${{ github.workspace }}/stubs
+        run: uv run mypy --config-file pyproject.toml app tests
 
-      - name: Bandit security scan
-        run: uv run bandit -r app/
+      - name: Bandit security scan (exclude tests)
+        run: uv run bandit -r app -x tests
 
       - name: Detect secrets baseline scan
         run: |
