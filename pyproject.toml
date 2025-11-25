@@ -1,0 +1,19 @@
+[project]
+name = "training-ci-cd-semantic-release"
+version = "0.1.0"
+description = "CRUD API with PostgreSQL for managing items"
+requires-python = ">=3.13"
+
+# ============================================================================
+# DEPENDENCIES
+# ============================================================================
+dependencies = [
+    "fastapi[standard]>=0.121.0",
+    "psycopg2-binary>=2.9.11",
+    "sqlmodel>=0.0.27",
+]
+
+[dependency-groups]
+dev = [
+    "diagrams>=0.24.4",
+]
