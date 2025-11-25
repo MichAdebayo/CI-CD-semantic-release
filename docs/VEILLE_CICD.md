@@ -350,6 +350,57 @@ exclude_commit_patterns = [
 
 ---
 
+## 10) Annexes : MkDocs, déploiement GitHub Pages et mkdocstrings
+
+### Comment MkDocs génère de la documentation ?
+
+MkDocs prend des fichiers Markdown (par défaut dans le dossier `docs/`) et un fichier de configuration `mkdocs.yml`. La génération se fait principalement en deux étapes :
+
+- En local / développement : `mkdocs serve` lance un serveur qui construit le site et fournit un rechargement automatique à chaque sauvegarde (dev-server).
+- En production / build : `mkdocs build` lit les fichiers Markdown et la configuration (`mkdocs.yml`), convertit chaque page en HTML statique, applique le thème (par ex. `material`), copie les ressources (CSS/JS/images) et écrit la sortie dans le répertoire `site/`. MkDocs génère aussi des fichiers annexes utiles (par ex. `search_index.json`, `sitemap.xml`).
+
+La navigation et l'ordre des pages sont définis via la clé `nav` dans `mkdocs.yml`. Des extensions Markdown et des plugins (ex. pour la recherche, l'autodoc, l'optimisation) peuvent être activés depuis la configuration pour enrichir le rendu.
+
+### Comment déployer sur GitHub Pages ?
+
+Plusieurs méthodes sont utilisées couramment :
+
+- Méthode rapide (commande intégrée) : utiliser `mkdocs gh-deploy`. Cette commande construit le site puis publie automatiquement les fichiers générés dans une branche (généralement `gh-pages`) et pousse les modifications vers le dépôt distant.
+
+	Exemple :
+	```bash
+	mkdocs gh-deploy
+	```
+
+- Méthode manuelle : construire puis pousser le contenu du dossier `site/` sur la branche choisie pour GitHub Pages (par ex. `gh-pages` ou `main`/`docs`). Exemple basique :
+	```bash
+	mkdocs build
+	# puis copier/committer les fichiers de site/ dans la branche configurée pour Pages
+	```
+
+- Utiliser GitHub Pages (paramètres) : via `Settings → Pages → Build and deployment` vous pouvez choisir la source de publication (branche `gh-pages`, ou `main`/`docs`). Pour un site utilisateur, créez un dépôt nommé `username.github.io` et poussez la source.
+
+- Déploiement CI/CD : automatiser la construction et le déploiement avec une action GitHub Actions (par exemple `peaceiris/actions-gh-pages` ou un job qui exécute `mkdocs build` puis déploie). Cette méthode est recommandée pour inclure tests/contrôles avant publication.
+
+Note : quand vous utilisez des thèmes/plugins (ex. Material for MkDocs), pensez à définir `site_url` dans `mkdocs.yml` car certains plugins et le thème s'appuient sur cette URL pour générer des liens corrects (important pour GitHub Pages si le site n'est pas à la racine d'un domaine personnalisé).
+
+### Qu'est-ce que mkdocstrings ?
+
+`mkdocstrings` est un plugin MkDocs qui génère automatiquement la documentation API à partir des docstrings du code source. Plutôt que d'écrire manuellement toutes les pages d'API, vous insérez des directives dans vos fichiers Markdown (par exemple `::: package.module.Class`) et `mkdocstrings` extrait les signatures, les docstrings et les membres pour produire une documentation structurée et navigable.
+
+Principaux points :
+- Support multi-langage via des handlers (Python, JavaScript, etc.).
+- Intégration naturelle avec les thèmes comme Material for MkDocs pour obtenir une présentation claire des API.
+- Usage courant (exemple) :
+	```markdown
+	## API
+
+	::: mypackage.module.MyClass
+	```
+
+mkdocstrings facilite la maintenance de la doc API (elle suit le code) et s'intègre dans le flux MkDocs (build, serve, plugins), ce qui permet d'avoir une documentation utilisateur + API cohérente et générée automatiquement.
+
+
 ## 7) Qu'est-ce que le versionnage sémantique (SemVer) ? 🔢
 
 SemVer est une convention permettant de donner un sens clair aux numéros de version, permettant aux utilisateurs et outils de comprendre l'impact d'une release.
