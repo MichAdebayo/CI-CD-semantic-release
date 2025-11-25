@@ -5,6 +5,7 @@ opérations CRUD (Create, Read, Update, Delete) sur les articles.
 """
 
 from sqlmodel import Session, select
+from typing import cast
 from app.models.item import Item
 from app.schemas.item import ItemCreate, ItemUpdate
 
@@ -16,6 +17,7 @@ class ItemService:
     toutes les opérations CRUD sur les articles, en séparant
     la logique métier des routes API.
     """
+
     @staticmethod
     def get_all(db: Session, skip: int = 0, limit: int = 100) -> list[Item]:
         """Récupère une liste paginée d'articles.
@@ -33,7 +35,9 @@ class ItemService:
             >>> len(items)  # Maximum 10 articles
         """
         statement = select(Item).offset(skip).limit(limit)
-        return list(db.exec(statement).all())
+        result = db.exec(statement)
+        # Return value is Any; cast to the concrete type for mypy
+        return cast(list[Item], result.all())
 
     @staticmethod
     def get_by_id(db: Session, item_id: int) -> Item | None:
