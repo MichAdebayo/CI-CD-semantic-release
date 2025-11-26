@@ -20,9 +20,9 @@ COPY pyproject.toml uv.lock ./
 # Install build/runtime dependencies (uv will read pyproject/uv.lock)
 RUN uv sync --dev || true
 
-# Install the package into the builder image
-COPY . .
-RUN uv pip install -e .
+    # Install the package into the builder image
+    COPY . .
+    RUN uv pip install .
 
 FROM python:3.13-slim
 
