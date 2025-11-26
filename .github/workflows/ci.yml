@@ -61,8 +61,8 @@ jobs:
           uv run detect-secrets scan --update-baseline .secrets.baseline
           uv run detect-secrets audit --baseline .secrets.baseline || true
 
-      - name: Run unit and integration tests
-        run: uv run pytest -q
+      - name: Run unit and integration tests (with coverage)
+        run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
       - name: Run pre-commit (safety check)
         run: |

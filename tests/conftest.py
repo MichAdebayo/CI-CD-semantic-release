@@ -1,4 +1,5 @@
 from typing import Generator
+from contextlib import suppress
 
 import pytest
 from fastapi.testclient import TestClient
@@ -20,6 +21,11 @@ def engine() -> Generator:
     yield engine
     # teardown: drop tables
     SQLModel.metadata.drop_all(engine)
+    # Dispose the engine to close any open DB connections and free resources
+    # best-effort: some engines may raise on dispose in certain test runners;
+    # suppress any exception during teardown so it doesn't hide test failures.
+    with suppress(Exception):
+        engine.dispose()
 
 
 @pytest.fixture()

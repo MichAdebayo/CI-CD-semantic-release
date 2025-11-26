@@ -18,6 +18,11 @@ def test_engine():
     SQLModel.metadata.create_all(engine)
     yield engine
     SQLModel.metadata.drop_all(engine)
+    # Dispose engine to ensure underlying sqlite connections are closed
+    from contextlib import suppress
+
+    with suppress(Exception):
+        engine.dispose()
 
 
 @pytest.fixture
