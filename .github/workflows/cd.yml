@@ -1,10 +1,25 @@
 name: CD - Build & Push Docker Image
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  workflow_call:
+    inputs:
+      head_branch:
+        required: true
+        type: string
+      base_ref:
+        required: false
+        type: string
+      repo:
+        required: true
+        type: string
+      sha:
+        required: true
+        type: string
+    secrets:
+      ACR_USERNAME:
+        required: false
+      ACR_PASSWORD:
+        required: false
 
 env:
   REGISTRY: madebayocicd.azurecr.io
@@ -13,9 +28,10 @@ env:
 jobs:
   dummy:
     runs-on: ubuntu-latest
+    if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
     steps:
       - name: No-op
-        run: echo "Workflow disabled"
+        run: echo "Workflow is called as a stub by release pipeline"
 
   # build-and-push:
   #   runs-on: ubuntu-latest

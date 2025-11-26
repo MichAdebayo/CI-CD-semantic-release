@@ -67,3 +67,16 @@ jobs:
         run: |
           # Run the semantic release publish command via uv
           uv run semantic-release publish
+
+  call-cd:
+    name: Call CD workflow
+    needs: release
+    uses: ./.github/workflows/cd.yml
+    with:
+      head_branch: ${{ inputs.head_branch }}
+      base_ref: ${{ inputs.base_ref }}
+      repo: ${{ inputs.repo }}
+      sha: ${{ inputs.sha }}
+    secrets:
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
