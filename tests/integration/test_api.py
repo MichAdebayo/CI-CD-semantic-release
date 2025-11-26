@@ -13,7 +13,7 @@ def test_health_and_crud(app_client: TestClient) -> None:
     r = app_client.post("/items", json=payload)
     assert (
         r.status_code == 201
-    ), f"POST /items failed: {r.status_code} {r.text} {r.json() if r.headers.get('content-type','').startswith('application/json') else ''}"
+    ), f"POST /items failed: {r.status_code} {r.text} {r.json() if r.headers.get('content-type', '').startswith('application/json') else ''}"
     created = r.json()
     assert created["nom"] == "IntegrationKeyboard"
     assert created["prix"] == 99.99
@@ -36,7 +36,7 @@ def test_health_and_crud(app_client: TestClient) -> None:
     r = app_client.put(f"/items/{item_id}", json=update_payload)
     assert (
         r.status_code == 200
-    ), f"PUT /items/{item_id} failed: {r.status_code} {r.text} {r.json() if r.headers.get('content-type','').startswith('application/json') else ''}"
+    ), f"PUT /items/{item_id} failed: {r.status_code} {r.text} {r.json() if r.headers.get('content-type', '').startswith('application/json') else ''}"
     updated = r.json()
     assert updated["prix"] == 79.99
 
