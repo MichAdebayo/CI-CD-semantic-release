@@ -89,6 +89,20 @@ jobs:
           fetch-depth: 0
           ref: ${{ inputs.head_branch }}
 
+      - name: Ensure branch is checked out for version computation
+        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
+        run: |
+          echo "[release] Ensuring branch '${{ inputs.head_branch }}' is checked out for version computation"
+          # Fetch all remote branches to ensure refs are available
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
+          # Force checkout the branch at the provided SHA
+          git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}" || git checkout "${{ inputs.head_branch }}" || true
+          echo "Current branch: $(git branch --show-current)"
+          echo "Recent commits:"
+          git log --oneline -n 5
+          echo "Tags:"
+          git tag --list | tail -10
+
       - name: Compute release version
         id: compute_version
         run: |
