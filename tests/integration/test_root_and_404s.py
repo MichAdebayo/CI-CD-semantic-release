@@ -1,11 +1,14 @@
-def test_root_and_lifespan(app_client):
+from fastapi.testclient import TestClient
+
+
+def test_root_and_lifespan(app_client: TestClient) -> None:
     # This will exercise the app lifespan startup and the root handler
     r = app_client.get("/")
     assert r.status_code == 200
     assert r.json() == {"message": "Items CRUD API"}
 
 
-def test_update_and_delete_missing_returns_404(app_client):
+def test_update_and_delete_missing_returns_404(app_client: TestClient) -> None:
     # Use an ID that does not exist and ensure routes return 404
     missing_id = 999999
 
@@ -18,7 +21,7 @@ def test_update_and_delete_missing_returns_404(app_client):
     assert r.status_code == 404
 
 
-def test_lifespan_executes(engine):
+def test_lifespan_executes(engine: object) -> None:
     """Directly execute the async lifespan context to ensure startup runs.
 
     Running the async context ensures `SQLModel.metadata.create_all(engine)`
@@ -28,7 +31,7 @@ def test_lifespan_executes(engine):
     from app.main import lifespan, app
     from sqlmodel import SQLModel
 
-    async def _run():
+    async def _run() -> None:
         # Ensure clean state so create_all in lifespan does work
         SQLModel.metadata.drop_all(engine)
         async with lifespan(app):

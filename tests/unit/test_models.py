@@ -4,7 +4,7 @@ from app.schemas.item import ItemCreate, ItemResponse
 
 
 def test_item_model_fields() -> None:
-    item = Item(nom="Keyboard", prix=49.99)
+    item = Item(nom="Keyboard", prix=49.99)  # type: ignore[call-arg]
     assert item.nom == "Keyboard"
     assert item.prix == 49.99
 
@@ -16,7 +16,7 @@ def test_item_schema_create_and_response() -> None:
     assert item_create.prix == 9.99
 
     # Create a model instance and ensure ItemResponse validates it
-    item = Item(id=1, **data)
-    item_response = ItemResponse.model_validate(item)
+    item = Item(id=1, **data)  # type: ignore[call-arg]
+    item_response = ItemResponse.model_validate(item)  # type: ignore[attr-defined]
     assert item_response.id == 1
     assert item_response.nom == "Mouse"

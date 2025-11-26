@@ -1,3 +1,4 @@
+from typing import Generator, Any
 from sqlalchemy.pool import StaticPool
 from sqlmodel import SQLModel, Session, create_engine
 import pytest
@@ -5,16 +6,14 @@ import pytest
 from app.services.item_service import ItemService
 from app.schemas.item import ItemCreate, ItemUpdate
 
-# app.models.item.Item imported via schemas and services; explicit import removed
-
 
 @pytest.fixture
-def test_engine():
+def test_engine() -> Generator:
     engine = create_engine(
         "sqlite:///:memory:",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
-    )
+    )  # type: ignore[call-arg]
     SQLModel.metadata.create_all(engine)
     yield engine
     SQLModel.metadata.drop_all(engine)
@@ -26,13 +25,13 @@ def test_engine():
 
 
 @pytest.fixture
-def db_session(test_engine):
+def db_session(test_engine: Any) -> Generator:
     with Session(test_engine) as session:
         yield session
 
 
 def test_create_and_get_item(db_session: Session) -> None:
-    data = ItemCreate(nom="Keyboard", prix=59.99)
+    data = ItemCreate(nom="Keyboard", prix=59.99)  # type: ignore[call-arg]
     created = ItemService.create(db_session, data)
     assert created.id is not None
     assert created.nom == "Keyboard"
@@ -44,19 +43,19 @@ def test_create_and_get_item(db_session: Session) -> None:
 
 
 def test_update_item(db_session: Session) -> None:
-    data = ItemCreate(nom="Screen", prix=199.99)
+    data = ItemCreate(nom="Screen", prix=199.99)  # type: ignore[call-arg]
     created = ItemService.create(db_session, data)
     assert created.id is not None
     item_id = created.id
 
-    update_data = ItemUpdate(nom="Remote Control", prix=149.99)
+    update_data = ItemUpdate(nom="Remote Control", prix=149.99)  # type: ignore[call-arg]
     updated = ItemService.update(db_session, item_id, update_data)
     assert updated is not None
     assert updated.prix == 149.99
 
 
 def test_delete_item(db_session: Session) -> None:
-    data = ItemCreate(nom="SSD", prix=79.99)
+    data = ItemCreate(nom="SSD", prix=79.99)  # type: ignore[call-arg]
     created = ItemService.create(db_session, data)
     assert created.id is not None
     assert ItemService.delete(db_session, created.id) is True
@@ -74,7 +73,7 @@ def test_get_by_id_not_found(db_session: Session) -> None:
 
 
 def test_update_nonexistent_returns_none(db_session: Session) -> None:
-    update_data = ItemUpdate(nom=None, prix=10.0)
+    update_data = ItemUpdate(nom=None, prix=10.0)  # type: ignore[call-arg]
     assert ItemService.update(db_session, 9999, update_data) is None
 
 

@@ -6,6 +6,12 @@ from app.routes import items_router
 import os
 from typing import AsyncGenerator
 
+# Initialize central logging as early as possible so module logs go into the
+# project `logs/app.log` file (rotating).
+from app.logging_config import setup_logging
+
+setup_logging()
+
 DEBUG_MODE = os.getenv("DEBUG_MODE", "False").lower() in ("true", "1", "t")
 
 

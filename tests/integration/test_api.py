@@ -1,7 +1,8 @@
 # pytest import not required; tests use TestClient via fixtures
+from fastapi.testclient import TestClient
 
 
-def test_health_and_crud(app_client):
+def test_health_and_crud(app_client: TestClient) -> None:
     # Health
     r = app_client.get("/health")
     assert r.status_code == 200

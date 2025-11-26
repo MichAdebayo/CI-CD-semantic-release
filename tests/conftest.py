@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Generator, Any
 from contextlib import suppress
 
 import pytest
@@ -15,7 +15,7 @@ def engine() -> Generator:
         sqlite_url,
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
-    )
+    )  # type: ignore[call-arg]
     # Ensure tables are created once for the test session
     SQLModel.metadata.create_all(engine)
     yield engine
@@ -29,14 +29,14 @@ def engine() -> Generator:
 
 
 @pytest.fixture()
-def session(engine) -> Generator:
+def session(engine: Any) -> Generator:
     """Provide a session to be used within tests."""
     with Session(engine) as session:
         yield session
 
 
 @pytest.fixture(scope="function")
-def app_client(monkeypatch, engine):
+def app_client(monkeypatch: Any, engine: Any) -> Generator:
     """Provide an httpx AsyncClient using the project's FastAPI app but with the test engine.
 
     This monkeypatches app.database.engine so the app uses the in-memory DB for tests.

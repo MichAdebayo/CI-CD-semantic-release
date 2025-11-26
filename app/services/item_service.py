@@ -5,6 +5,9 @@ opérations CRUD (Create, Read, Update, Delete) sur les articles.
 """
 
 from sqlmodel import Session, select
+import logging
+
+from app.database import engine as _engine
 from typing import cast
 from app.models.item import Item
 from app.schemas.item import ItemCreate, ItemUpdate
@@ -77,6 +80,15 @@ class ItemService:
         db.add(item)
         db.commit()
         db.refresh(item)
+        # Debug log to help diagnose persistence issues in dev
+        from contextlib import suppress
+
+        with suppress(Exception):
+            logging.getLogger(__name__).info(
+                "Created item id=%s using db=%s",
+                item.id,
+                getattr(_engine, "url", "<unknown>"),
+            )
         return item
 
     @staticmethod
