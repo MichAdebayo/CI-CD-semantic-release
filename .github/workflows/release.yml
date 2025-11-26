@@ -72,7 +72,13 @@ jobs:
         if: ${{ inputs.base_ref != '' }}
         run: |
           echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Running dry-run (print tag)"
-          uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
+          # If the PR targets develop, run dry-run with the 'dev' prerelease token
+          if [ "${{ inputs.base_ref }}" = "develop" ]; then
+            echo "[release] Target is 'develop' — using prerelease token 'dev' for dry-run"
+            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag --as-prerelease --prerelease-token dev || true
+          else
+            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
+          fi
 
       - name: Checkout branch for publish
         if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
