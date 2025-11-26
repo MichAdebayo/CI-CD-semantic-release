@@ -106,6 +106,8 @@ jobs:
               ;;
             *)
               echo "Skipping CD: unsupported branch '$head_branch' (no tags to prepare)"
+              # Ensure we write an empty tags output so later steps can detect and skip safely
+              echo "tags=" >> "$GITHUB_OUTPUT"
               # Exit success so the job doesn't fail when CD is intentionally invoked for other branches
               exit 0
               ;;
@@ -115,6 +117,7 @@ jobs:
           echo "Prepared tags: $tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
       - name: Build and push Docker image to GHCR
+        if: ${{ steps.prepare_tags.outputs.tags != '' }}
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -124,13 +127,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Debug - verify pushed tags (sanity)
+      - name: Debug - verify prepared tags (sanity)
         if: always()
         run: |
           echo "--- pre-push sanity ---"
           docker --version || true
           echo "buildx info:" && docker buildx version || true
-          echo "Computed tags to push: ${{ steps.meta.outputs.tags }}"
+          echo "Prepared tags to push: '${{ steps.prepare_tags.outputs.tags }}'"
           echo "Note: secrets are not printed."
           echo "-------------------------"
 
