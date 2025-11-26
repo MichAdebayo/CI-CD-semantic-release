@@ -28,8 +28,12 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# Create non-root user
-RUN groupadd --system app && useradd --system --gid app app
+# Create non-root user with a home directory
+RUN groupadd --system app && useradd --system --gid app --home /home/app --create-home app
+
+# Ensure home and cache dirs exist and are owned by the app user
+RUN mkdir -p /home/app/.cache/uv && chown -R app:app /home/app
+ENV HOME=/home/app
 
 # Copy uv binary for runtime
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
