@@ -37,3 +37,8 @@ docs/docsIA/
 # Pycache files
 *.pyc
 __pycache__/
+.mypy_cache/
+.ruff_cache/
+logs/
+
+# .secrets.baseline

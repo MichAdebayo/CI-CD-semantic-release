@@ -10,10 +10,55 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.121.0",
     "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.4",
+    "sqlalchemy>=2.0.44",
     "sqlmodel>=0.0.27",
 ]
 
 [dependency-groups]
 dev = [
+    "bandit>=1.9.2",
+    "detect-secrets>=1.5.0",
     "diagrams>=0.24.4",
+    "httpx>=0.28.1",
+    "mypy==1.17.0",
+    "pre-commit>=4.4.0",
+    "pydantic==2.12.4",
+    "pytest>=9.0.1",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=1.3.0",
+    "ruff==0.8.0",
 ]
+
+[tool.mypy]
+python_version = "3.14"
+ignore_missing_imports = false
+mypy_path = "stubs"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "fastapi.*"
+ignore_missing_imports = false
+
+[[tool.mypy.overrides]]
+module = "sqlmodel.*"
+ignore_missing_imports = false
+
+[[tool.mypy.overrides]]
+module = "app.models.*"
+ignore_errors = false
+
+[[tool.mypy.overrides]]
+module = "app.database"
+ignore_errors = false

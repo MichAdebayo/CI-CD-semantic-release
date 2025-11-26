@@ -1,6 +1,6 @@
 # Veille CI/CD
 
-> Ci‑dessous, une synthèse de veille sur l'approche CI/CD. 
+> Ci‑dessous, une synthèse de veille sur l'approche CI/CD.
 
 ---
 

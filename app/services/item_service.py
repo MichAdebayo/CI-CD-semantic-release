@@ -5,6 +5,10 @@ opérations CRUD (Create, Read, Update, Delete) sur les articles.
 """
 
 from sqlmodel import Session, select
+import logging
+
+from app.database import engine as _engine
+from typing import cast
 from app.models.item import Item
 from app.schemas.item import ItemCreate, ItemUpdate
 
@@ -16,6 +20,7 @@ class ItemService:
     toutes les opérations CRUD sur les articles, en séparant
     la logique métier des routes API.
     """
+
     @staticmethod
     def get_all(db: Session, skip: int = 0, limit: int = 100) -> list[Item]:
         """Récupère une liste paginée d'articles.
@@ -33,7 +38,9 @@ class ItemService:
             >>> len(items)  # Maximum 10 articles
         """
         statement = select(Item).offset(skip).limit(limit)
-        return list(db.exec(statement).all())
+        result = db.exec(statement)
+        # Return value is Any; cast to the concrete type for mypy
+        return cast(list[Item], result.all())
 
     @staticmethod
     def get_by_id(db: Session, item_id: int) -> Item | None:
@@ -73,6 +80,15 @@ class ItemService:
         db.add(item)
         db.commit()
         db.refresh(item)
+        # Debug log to help diagnose persistence issues in dev
+        from contextlib import suppress
+
+        with suppress(Exception):
+            logging.getLogger(__name__).info(
+                "Created item id=%s using db=%s",
+                item.id,
+                getattr(_engine, "url", "<unknown>"),
+            )
         return item
 
     @staticmethod
