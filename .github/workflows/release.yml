@@ -58,13 +58,31 @@ jobs:
           echo "BASE_REF=${{ inputs.base_ref }}"
           echo "SHA=${{ inputs.sha }}"
 
+      - name: Prepare branch for PR dry-run
+        if: ${{ inputs.base_ref != '' }}
+        run: |
+          echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Preparing local branch '${{ inputs.head_branch }}' for dry-run"
+          # Fetch all remote branches so we can create a local branch name
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
+          # Create or move a local branch to point at the provided SHA, then check it out
+          git branch -f "${{ inputs.head_branch }}" "${{ inputs.sha }}"
+          git checkout "${{ inputs.head_branch }}"
+
       - name: Dry-run semantic release — Print tag (PRs only)
         if: ${{ inputs.base_ref != '' }}
         run: |
           echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Running dry-run (print tag)"
           uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
 
+      - name: Checkout branch for publish
+        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.head_branch }}
+
       - name: Python Semantic Release — Publish
+        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
         run: |
