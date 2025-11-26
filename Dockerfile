@@ -46,6 +46,9 @@ COPY --from=builder /usr/lib /usr/lib
 # Copy application code
 COPY --from=builder /src /app
 
+# Change ownership of /app to app user
+RUN chown -R app:app /app
+
 USER app
 
 EXPOSE 8000
