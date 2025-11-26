@@ -70,7 +70,6 @@ jobs:
   call-release:
     name: Call Release workflow
     needs: checks
-    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') }}
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write

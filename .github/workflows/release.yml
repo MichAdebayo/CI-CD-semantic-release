@@ -24,9 +24,6 @@ jobs:
     # Only run when the CI workflow invoked this workflow call and the repo and branch match
     if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
     runs-on: ubuntu-latest
-    concurrency:
-      group: release-${{ inputs.head_branch }}
-      cancel-in-progress: true
     permissions:
       contents: write
       packages: write
