@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   checks:
@@ -80,4 +81,5 @@ jobs:
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
     secrets:
-      RELEASE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Do not forward the token for pull_request events (avoid exposing secrets to forks/PRs)
+      RELEASE_GITHUB_TOKEN: "${{ github.event_name != 'pull_request' && secrets.GITHUB_TOKEN || '' }}"
