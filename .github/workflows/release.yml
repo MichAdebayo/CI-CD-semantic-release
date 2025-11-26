@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  workflow_call:
+    inputs:
+      head_branch:
+        required: true
+        type: string
+      base_ref:
+        required: false
+        type: string
+      repo:
+        required: true
+        type: string
+      sha:
+        required: true
+        type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+jobs:
+  release:
+    # Only run when the CI workflow invoked this workflow call and the repo and branch match
+    if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-${{ inputs.head_branch }}
+      cancel-in-progress: true
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.sha }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies
+        run: |
+          # Install all dependencies including dev so python-semantic-release is available
+          uv sync --dev
+
+      - name: Configure Git for release
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Show invocation inputs
+        run: |
+          echo "GITHUB_EVENT_NAME=${{ github.event_name }}"
+          echo "HEAD_BRANCH=${{ inputs.head_branch }}"
+          echo "BASE_REF=${{ inputs.base_ref }}"
+          echo "SHA=${{ inputs.sha }}"
+
+      - name: Python Semantic Release — Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Run the semantic release publish command via uv
+          uv run semantic-release publish
