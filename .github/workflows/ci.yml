@@ -66,3 +66,18 @@ jobs:
         run: |
           pip install pre-commit
           pre-commit run --all-files
+
+  call-release:
+    name: Call Release workflow
+    needs: checks
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+      packages: write
+    with:
+      head_branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      base_ref: ${{ github.event.pull_request.base.ref || '' }}
+      repo: ${{ github.repository }}
+      sha: ${{ github.sha }}
+    secrets:
+      RELEASE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
