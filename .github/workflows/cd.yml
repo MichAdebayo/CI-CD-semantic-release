@@ -85,15 +85,32 @@ jobs:
       - name: Prepare tags (prepend semantic version if provided)
         id: prepare_tags
         run: |
-          meta_tags="${{ steps.meta.outputs.tags }}"
           ver="${{ inputs.version }}"
-          # If a version was provided, ensure it's included as a tag (no leading whitespace)
-          if [ -n "$ver" ]; then
-            # Ensure version does not include a leading 'v' duplication
-            tags="$ver,$meta_tags"
-          else
-            tags="$meta_tags"
-          fi
+          repo="ghcr.io/${{ github.repository }}"
+          head_branch="${{ inputs.head_branch }}"
+
+          out=()
+          case "$head_branch" in
+            main)
+              out+=("$repo:latest")
+              ;;
+            develop)
+              if [ -n "$ver" ]; then
+                out+=("$repo:$ver")
+              else
+                # Fallback to cleaned short SHA so each build is unique and identifiable
+                short="${{ inputs.sha }}"
+                short="${short:0:7}"
+                out+=("$repo:develop-$short")
+              fi
+              ;;
+            *)
+              echo "ERROR: cd.yml called for unsupported branch '$head_branch'" >&2
+              exit 1
+              ;;
+          esac
+
+          IFS=','; tags="${out[*]}"; unset IFS
           echo "Prepared tags: $tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
       - name: Build and push Docker image to GHCR
