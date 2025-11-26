@@ -79,7 +79,7 @@ version_source = "pyproject"
 tag_format = "v{version}"
 upload_to_pypi = false
 version_variable = "project.version"
-
+starting_version = "0.1.0"
 
 [tool.semantic_release.branches]
 main = { prerelease = false }
