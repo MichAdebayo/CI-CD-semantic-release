@@ -15,63 +15,114 @@ on:
       sha:
         required: true
         type: string
+      version:
+        required: false
+        type: string
     secrets:
       ACR_USERNAME:
         required: false
       ACR_PASSWORD:
         required: false
-
-env:
-  REGISTRY: madebayocicd.azurecr.io
-  IMAGE_NAME: ci-cd-semantic-release
+      RELEASE_GITHUB_TOKEN:
+        required: false
 
 jobs:
-  dummy:
+  build-and-push-ghcr:
+    name: Build & push to GHCR
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
     steps:
-      - name: No-op
-        run: echo "Workflow is called as a stub by release pipeline"
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-  # build-and-push:
+      - name: Debug - print workflow inputs and GitHub context
+        run: |
+          echo "--- CD debug: inputs & context ---"
+          echo "inputs.head_branch=${{ inputs.head_branch }}"
+          echo "inputs.base_ref=${{ inputs.base_ref }}"
+          echo "inputs.repo=${{ inputs.repo }}"
+          echo "inputs.sha=${{ inputs.sha }}"
+          echo "github.repository=${{ github.repository }}"
+          echo "github.ref=${{ github.ref }}"
+          echo "github.event_name=${{ github.event_name }}"
+          echo "github.actor=${{ github.actor }}"
+          echo "----------------------------------"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Debug - show metadata-action outputs
+        if: always()
+        run: |
+          echo "--- metadata-action outputs ---"
+          echo "meta.tags=${{ steps.meta.outputs.tags }}"
+          echo "meta.labels=${{ steps.meta.outputs.labels }}"
+          echo "--- parsed tags (one per line) ---"
+          printf '%s' "${{ steps.meta.outputs.tags }}" | tr ',' '\n' || true
+          echo "----------------------------------"
+
+      - name: Prepare tags (prepend semantic version if provided)
+        id: prepare_tags
+        run: |
+          meta_tags="${{ steps.meta.outputs.tags }}"
+          ver="${{ inputs.version }}"
+          # If a version was provided, ensure it's included as a tag (no leading whitespace)
+          if [ -n "$ver" ]; then
+            # Ensure version does not include a leading 'v' duplication
+            tags="$ver,$meta_tags"
+          else
+            tags="$meta_tags"
+          fi
+          echo "Prepared tags: $tags"
+          echo "tags=$tags" >> "$GITHUB_OUTPUT"
+      - name: Build and push Docker image to GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.prepare_tags.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Debug - verify pushed tags (sanity)
+        if: always()
+        run: |
+          echo "--- pre-push sanity ---"
+          docker --version || true
+          echo "buildx info:" && docker buildx version || true
+          echo "Computed tags to push: ${{ steps.meta.outputs.tags }}"
+          echo "Note: secrets are not printed."
+          echo "-------------------------"
+
+  # previous stub preserved for callers that expect it; kept commented
+  # dummy:
   #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-
+  #   if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
   #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
-
-  #     - name: Log in to Azure Container Registry
-  #       uses: docker/login-action@v3
-  #       with:
-  #         registry: ${{ env.REGISTRY }}
-  #         username: ${{ secrets.ACR_USERNAME }}
-  #         password: ${{ secrets.ACR_PASSWORD }}
-
-  #     - name: Extract metadata
-  #       id: meta
-  #       uses: docker/metadata-action@v5
-  #       with:
-  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-  #         tags: |
-  #           type=ref,event=branch
-  #           type=ref,event=pr
-  #           type=sha,prefix={{branch}}-
-  #           type=raw,value=latest,enable={{is_default_branch}}
-
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: .
-  #         push: true
-  #         tags: ${{ steps.meta.outputs.tags }}
-  #         labels: ${{ steps.meta.outputs.labels }}
-  #         cache-from: type=gha
-  #         cache-to: type=gha,mode=max
+  #     - name: No-op
+  #       run: echo "Workflow is called as a stub by release pipeline"
 
   # deploy:
   #   runs-on: ubuntu-latest
