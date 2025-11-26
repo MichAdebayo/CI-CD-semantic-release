@@ -105,8 +105,9 @@ jobs:
               fi
               ;;
             *)
-              echo "ERROR: cd.yml called for unsupported branch '$head_branch'" >&2
-              exit 1
+              echo "Skipping CD: unsupported branch '$head_branch' (no tags to prepare)"
+              # Exit success so the job doesn't fail when CD is intentionally invoked for other branches
+              exit 0
               ;;
           esac
 
