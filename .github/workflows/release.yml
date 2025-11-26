@@ -58,6 +58,12 @@ jobs:
           echo "BASE_REF=${{ inputs.base_ref }}"
           echo "SHA=${{ inputs.sha }}"
 
+      - name: Dry-run semantic release — Print tag (PRs only)
+        if: ${{ inputs.base_ref != '' }}
+        run: |
+          echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Running dry-run (print tag)"
+          uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
+
       - name: Python Semantic Release — Publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
