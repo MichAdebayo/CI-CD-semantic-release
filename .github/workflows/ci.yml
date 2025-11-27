@@ -78,6 +78,7 @@ jobs:
     with:
       head_branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
       base_ref: ${{ github.event.pull_request.base.ref || '' }}
+      is_pr: ${{ github.event_name == 'pull_request' }}
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
     secrets:

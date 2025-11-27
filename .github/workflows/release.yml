@@ -9,6 +9,9 @@ on:
       base_ref:
         required: false
         type: string
+      is_pr:
+        required: false
+        type: boolean
       repo:
         required: true
         type: string
@@ -32,10 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # When invoked via workflow_call, prefer the provided inputs; otherwise derive from push context
-      HEAD_BRANCH: ${{ github.event_name == 'workflow_call' && inputs.head_branch || github.ref_name }}
-      BASE_REF: ${{ github.event_name == 'workflow_call' && inputs.base_ref || '' }}
+      # HEAD_BRANCH resolution: prefer workflow_call input, then pull_request context, then ref_name
+      HEAD_BRANCH: ${{ github.event_name == 'workflow_call' && inputs.head_branch || github.event.pull_request.head.ref || github.ref_name }}
+      # BASE_REF resolution: prefer workflow_call input, then pull_request.base.ref, otherwise empty
+      BASE_REF: ${{ github.event_name == 'workflow_call' && inputs.base_ref || github.event.pull_request.base.ref || '' }}
       REPO_INPUT: ${{ github.event_name == 'workflow_call' && inputs.repo || github.repository }}
       SHA_INPUT: ${{ github.event_name == 'workflow_call' && inputs.sha || github.sha }}
+      # Caller can explicitly indicate PR context; otherwise derive from event_name
+      IS_PR: ${{ github.event_name == 'workflow_call' && inputs.is_pr || github.event_name == 'pull_request' }}
     permissions:
       contents: write
       packages: write
@@ -92,18 +99,13 @@ jobs:
 
       # PR dry-run: Just print what version would be created
       - name: Dry-run semantic release — Print tag (PRs only)
-        if: ${{ env.BASE_REF != '' }}
+        if: ${{ env.IS_PR == 'true' || env.BASE_REF != '' }}
         run: |
-          echo "[release] PR detected (base_ref=${{ env.BASE_REF }}). Running dry-run (print tag)"
+          echo "[release] PR detected (is_pr=${{ env.IS_PR }}, base_ref=${{ env.BASE_REF }}). Running dry-run (print tag)"
 
           # Determine if we need prerelease mode
-          if [ "${{ env.BASE_REF }}" = "develop" ]; then
-            echo "[release] Target is 'develop' — using prerelease token 'dev' for dry-run"
-            uv run semantic-release version --print --prerelease --prerelease-token dev || echo "Dry-run completed"
-          else
-            echo "[release] Target is 'main' — running standard version dry-run"
-            uv run semantic-release version --print || echo "Dry-run completed"
-          fi
+          # semantic-release is configured in pyproject.toml to mark 'develop' as prerelease
+          uv run semantic-release version --print || echo "Dry-run completed"
 
       # Actual release: Compute version and publish
       - name: Compute and publish release
@@ -116,19 +118,11 @@ jobs:
           echo "[release] Publishing release for branch '${{ env.HEAD_BRANCH }}'"
 
           # For develop branch, use prerelease mode; for main, use standard release
-          if [ "${{ env.HEAD_BRANCH }}" = "develop" ]; then
-            echo "[release] Branch is 'develop' — publishing as prerelease with token 'dev'"
-            # Publish the release with prerelease mode
-            uv run semantic-release publish --prerelease --prerelease-token dev
-            # Get the version that was just published
-            ver=$(uv run semantic-release version --print --prerelease --prerelease-token dev)
-          else
-            echo "[release] Branch is 'main' — publishing as standard release"
-            # Publish the release
-            uv run semantic-release publish
-            # Get the version that was just published
-            ver=$(uv run semantic-release version --print)
-          fi
+          # semantic-release branch settings in pyproject.toml determine prerelease behavior
+          echo "[release] Invoking semantic-release publish (configuration controls prerelease)"
+          uv run semantic-release publish
+          # Get the version that was just published
+          ver=$(uv run semantic-release version --print)
 
           echo "Published version: $ver"
           echo "version=$ver" >> "$GITHUB_OUTPUT"
