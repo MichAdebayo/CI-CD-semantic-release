@@ -112,8 +112,8 @@ jobs:
         id: compute_version
         if: ${{ env.BASE_REF == '' && (env.HEAD_BRANCH == 'main' || env.HEAD_BRANCH == 'develop') }}
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN != '' && secrets.RELEASE_GITHUB_TOKEN || github.token }}
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN != '' && secrets.RELEASE_GITHUB_TOKEN || github.token }}
         run: |
           echo "[release] Publishing release for branch '${{ env.HEAD_BRANCH }}'"
 
@@ -130,6 +130,14 @@ jobs:
           # Verify the tag was created
           echo "Verifying tags:"
           git tag --list --sort=-version:refname | head -5
+
+      - name: "Debug: verify local and remote tags (no secrets printed)"
+        if: ${{ always() }}
+        run: |
+          echo "Local tags (recent):"
+          git tag --list --sort=-version:refname | head -10 || true
+          echo "Remote tags (origin, recent):"
+          git ls-remote --tags origin | tail -20 || true
 
       - name: Set release job outputs
         id: set_release_outputs

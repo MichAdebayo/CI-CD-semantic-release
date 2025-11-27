@@ -90,7 +90,7 @@ filename = "CHANGELOG.md"
 
 [tool.semantic_release.branches.main]
 match = "main"
-prerelease = true
+prerelease = false
 
 [tool.semantic_release.branches.develop]
 match = "develop"
