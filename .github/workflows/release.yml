@@ -268,14 +268,17 @@ jobs:
           LOGFILE="semantic-release-publish.log"
           rm -f "$LOGFILE"
 
-          echo "[release] Invoking semantic-release publish (capturing output to $LOGFILE)"
-          # Use pipefail so we capture failure exit code
+          echo "[release] Invoking semantic-release version to bump/version and changelog (capturing output to $LOGFILE)"
           set -o pipefail
           # Confirm which token will be used
           echo "GITHUB_TOKEN present: ${GITHUB_TOKEN:+true}"
           echo "GH_APP_TOKEN present: ${GH_APP_TOKEN:+true}"
-          # Run publish with verbose logging
-          uv run semantic-release publish -v 2>&1 | tee "$LOGFILE"
+
+          echo "Running version (update pyproject and changelog if configured)"
+          uv run semantic-release version --changelog 2>&1 | tee -a "$LOGFILE"
+
+          echo "Running publish (create VCS release via GitHub)"
+          uv run semantic-release publish 2>&1 | tee -a "$LOGFILE"
           SR_EXIT=${PIPESTATUS[0]:-0}
           echo "semantic-release exit code: $SR_EXIT"
 
