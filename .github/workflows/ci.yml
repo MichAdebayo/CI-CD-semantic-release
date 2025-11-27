@@ -153,3 +153,7 @@ jobs:
     secrets:
       # Prefer App installation token created in the checks job (only for non-PR). Fallback to workflow GITHUB_TOKEN for non-PR; empty for PRs.
       RELEASE_GITHUB_TOKEN: ${{ needs.checks.outputs.app_token }}
+      # Forward APP secrets to Release so the release workflow can self-create tokens
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
