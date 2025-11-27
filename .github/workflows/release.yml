@@ -38,22 +38,21 @@ jobs:
       sha: ${{ inputs.sha }}
       gh_app_token: ${{ steps.create_app_token.outputs.token }}
     runs-on: ubuntu-latest
-    env:
-      APP_PRIVATE_KEY: ''
     steps:
       - name: Decode GitHub App private key
+        id: decode_key
         run: |
-          printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-          echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-          cat /tmp/app.pem >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          decoded_key=$(printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d)
+          echo "private_key<<EOF" >> $GITHUB_OUTPUT
+          echo "$decoded_key" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub App token
         id: create_app_token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ env.APP_PRIVATE_KEY }}
+          private-key: ${{ steps.decode_key.outputs.private_key }}
           repositories: ${{ github.event.repository.name }}
 
       - name: Checkout code
@@ -93,15 +92,17 @@ jobs:
       - name: Compute and publish release
         id: compute_version
         if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
+        env:
+          GH_TOKEN: ${{ steps.create_app_token.outputs.token }}
         run: |
           echo "Publishing release for branch '${{ inputs.head_branch }}'"
 
           # Configure authenticated remote
-          git remote set-url origin "https://x-access-token:${{ steps.create_app_token.outputs.token }}@github.com/${{ inputs.repo }}.git"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ inputs.repo }}.git"
 
-          # Run semantic-release
-          uv run semantic-release version --changelog
-          uv run semantic-release publish
+          # Run semantic-release with explicit token
+          GH_TOKEN="${GH_TOKEN}" uv run semantic-release version --changelog
+          GH_TOKEN="${GH_TOKEN}" uv run semantic-release publish
 
           # Capture version
           ver=$(uv run semantic-release version --print || echo "")
