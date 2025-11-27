@@ -9,14 +9,16 @@ on:
 permissions:
   contents: write
   packages: write
+  pull-requests: write
+  id-token: write
 
 jobs:
   checks:
     name: Lint, Typecheck, Security & Tests
     runs-on: ubuntu-latest
     outputs:
-      app_token: ${{ steps.set_token_outputs.outputs.token }}
-      token_source: ${{ steps.set_token_outputs.outputs.token_source }}
+      app_token: ${{ steps.set_token_value.outputs.token }}
+      token_source: ${{ steps.set_token_source.outputs.token_source }}
 
     steps:
       - name: Checkout
@@ -67,9 +69,9 @@ jobs:
         run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
       - name: Run pre-commit (safety check)
-        run: |
-          pip install pre-commit
-          pre-commit run --all-files
+        uses: pre-commit/action@v3.0.0
+        with:
+          extra_args: "--all-files"
 
       - name: Create GitHub App installation token (non-PR)
         id: create_app_token
@@ -180,33 +182,41 @@ jobs:
 
           echo "token=$access_token" >> "$GITHUB_OUTPUT"
 
-      - name: Set token outputs for downstream jobs
-        id: set_token_outputs
+      - name: Set token value for downstream jobs
+        id: set_token_value
         run: |
           # Use the token produced by the create_app_token step when present.
           token="${{ steps.create_app_token.outputs.token }}"
 
           if [ -n "$token" ]; then
             echo "app token created by checks job"
+            # Only write the token in this step output (secret); this step may be redacted by GitHub, which is expected.
             echo "token=$token" >> "$GITHUB_OUTPUT"
+          else
+            # Explicitly write an empty token output if none was created
+            echo "token=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set token_source for downstream jobs
+        id: set_token_source
+        run: |
+          # Use the presence of the token to determine the token source; token_source is non-secret and should not be redacted.
+          token="${{ steps.create_app_token.outputs.token }}"
+
+          if [ -n "$token" ]; then
             echo "token_source=app" >> "$GITHUB_OUTPUT"
           else
-            # If not a PR and no app token was created, we will fall back to the workflow token
             if [ "${{ github.event_name }}" != "pull_request" ]; then
-              echo "no app token; falling back to workflow token"
-              echo "token=" >> "$GITHUB_OUTPUT"
               echo "token_source=workflow" >> "$GITHUB_OUTPUT"
             else
-              echo "PR context; do not forward any token"
-              echo "token=" >> "$GITHUB_OUTPUT"
               echo "token_source=none" >> "$GITHUB_OUTPUT"
             fi
           fi
 
       - name: "Debug: show token forwarding decision (no secrets)"
         run: |
-          echo "[debug] token_source (to be forwarded): '${{ steps.set_token_outputs.outputs.token_source }}'"
-          if [ -n "${{ steps.set_token_outputs.outputs.token }}" ]; then
+          echo "[debug] token_source (to be forwarded): '${{ steps.set_token_source.outputs.token_source }}'"
+          if [ -n "${{ steps.set_token_value.outputs.token }}" ]; then
             echo "[debug] app token was created: true (value masked)"
           else
             echo "[debug] app token was created: false"
