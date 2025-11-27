@@ -19,9 +19,6 @@ jobs:
     env:
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-    outputs:
-      app_token: ${{ steps.set_token_value.outputs.token }}
-      token_source: ${{ steps.set_token_source.outputs.token_source }}
 
     steps:
       - name: Checkout
@@ -35,20 +32,10 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install dependencies (including dev)
-        # Try to install dev dependencies via uv. If the local uv setup does not support
-        # a `--dev` flag, fall back to plain `uv sync` which will install declared groups.
-        run: |
-          set -e
-          if uv --version >/dev/null 2>&1; then
-            # prefer explicit dev install if available
-            uv sync --dev || uv sync || python -m pip install -r ci-dev-requirements.txt || true
-          else
-            python -m pip install -r ci-dev-requirements.txt || true
-          fi
+      - name: Install dependencies
+        run: uv sync --dev || uv sync
 
       - name: Export MYPYPATH for local stubs
-        # Ensure mypy can find local stub packages in `stubs/`
         run: echo "MYPYPATH=${{ github.workspace }}/stubs" >> $GITHUB_ENV
 
       - name: Ruff lint
@@ -57,12 +44,12 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check app tests
 
-      - name: Mypy type check (full)
+      - name: Mypy type check
         env:
           MYPYPATH: ${{ github.workspace }}/stubs
         run: uv run mypy --config-file pyproject.toml app tests
 
-      - name: Bandit security scan (exclude tests)
+      - name: Bandit security scan
         run: uv run bandit -r app -x tests
 
       - name: Detect secrets baseline scan
@@ -71,73 +58,10 @@ jobs:
       - name: Run unit and integration tests (with coverage)
         run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
-      - name: Run pre-commit (safety check)
+      - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
         with:
           extra_args: "--all-files"
-
-      - name: Prefer BASE64 private key and set `APP_PRIVATE_KEY`
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          set -euo pipefail
-          # If APP_PRIVATE_KEY_B64 is provided, decode into APP_PRIVATE_KEY so action can use a PEM string
-          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
-          fi
-
-      - name: Create GitHub App installation token (non-PR)
-        id: create_app_token_action
-        if: ${{ github.event_name != 'pull_request' && env.APP_PRIVATE_KEY != '' }}
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ env.APP_PRIVATE_KEY }}
-
-
-
-      - name: Set token value for downstream jobs
-        id: set_token_value
-        run: |
-          # Use the token produced by the create_app_token action when present
-          token="${{ steps.create_app_token_action.outputs.token }}"
-
-          if [ -n "$token" ]; then
-            echo "app token created by checks job"
-            # Only write the token in this step output (secret); this step may be redacted by GitHub, which is expected.
-            echo "token=$token" >> "$GITHUB_OUTPUT"
-          else
-            # Explicitly write an empty token output if none was created
-            echo "token=" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Set token_source for downstream jobs
-        id: set_token_source
-        run: |
-          # Use the presence of the token (either action or fallback) to determine the token source; token_source is non-secret and should not be redacted.
-          token="${{ steps.create_app_token_action.outputs.token }}"
-
-          if [ -n "$token" ]; then
-            echo "token_source=app" >> "$GITHUB_OUTPUT"
-          else
-            if [ "${{ github.event_name }}" != "pull_request" ]; then
-              echo "token_source=workflow" >> "$GITHUB_OUTPUT"
-            else
-              echo "token_source=none" >> "$GITHUB_OUTPUT"
-            fi
-          fi
-
-      - name: "Debug: show token forwarding decision (no secrets)"
-        run: |
-          echo "[debug] token_source (to be forwarded): '${{ steps.set_token_source.outputs.token_source }}'"
-          if [ -n "${{ steps.set_token_value.outputs.token }}" ]; then
-            echo "[debug] app token was created: true (value masked)"
-          else
-            echo "[debug] app token was created: false"
-          fi
 
   call-release:
     name: Call Release workflow
@@ -149,11 +73,6 @@ jobs:
       is_pr: ${{ github.event_name == 'pull_request' }}
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
-      token_source: ${{ needs.checks.outputs.token_source }}
     secrets:
-      # Prefer App installation token created in the checks job (only for non-PR). Fallback to workflow GITHUB_TOKEN for non-PR; empty for PRs.
-      RELEASE_GITHUB_TOKEN: ${{ needs.checks.outputs.app_token }}
-      # Forward APP secrets to Release so the release workflow can self-create tokens
       APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
