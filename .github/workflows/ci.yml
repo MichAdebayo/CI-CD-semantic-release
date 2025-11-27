@@ -7,7 +7,7 @@ on:
     branches: [develop, main]
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -154,9 +154,6 @@ jobs:
     name: Call Release workflow
     needs: checks
     uses: ./.github/workflows/release.yml
-    permissions:
-      contents: write
-      packages: write
     with:
       head_branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
       base_ref: ${{ github.event.pull_request.base.ref || '' }}
