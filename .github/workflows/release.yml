@@ -57,15 +57,58 @@ jobs:
       IS_PR: ${{ github.event_name == 'workflow_call' && inputs.is_pr || github.event_name == 'pull_request' }}
       # Token source forwarded from CI: 'app', 'workflow', or 'none'
       TOKEN_SOURCE: ${{ github.event_name == 'workflow_call' && inputs.token_source || 'unknown' }}
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
     permissions:
       contents: write
       packages: write
 
     steps:
-      - name: Checkout code
+      - name: Prepare APP private key if provided (base64 -> PEM)
+        if: ${{ env.APP_ID != '' && (env.APP_PRIVATE_KEY_B64 != '' || env.APP_PRIVATE_KEY != '') }}
+        run: |
+          set -euo pipefail
+          # Prefer APP_PRIVATE_KEY_B64 when provided
+          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
+            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
+            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+            cat /tmp/app.pem >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
+          elif [ -n "${{ secrets.APP_PRIVATE_KEY }}" ]; then
+            # Use the provided PEM as-is
+            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+            printf '%s' "${{ secrets.APP_PRIVATE_KEY }}" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          fi
+
+      - name: Create GitHub App installation token (self-contained)
+        id: create_app_token_release
+        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ env.APP_PRIVATE_KEY }}
+
+      - name: Export GH_APP_TOKEN to env
+        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
+        run: |
+          echo "GH_APP_TOKEN=${{ steps.create_app_token_release.outputs.token }}" >> $GITHUB_ENV
+
+      - name: Checkout code (GH app token)
+        if: ${{ env.GH_APP_TOKEN != '' }}
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0  # Critical: semantic-release needs full history
+          fetch-depth: 0
+          ref: ${{ env.SHA_INPUT }}
+          token: ${{ env.GH_APP_TOKEN }}
+
+      - name: Checkout code (fallback)
+        if: ${{ env.GH_APP_TOKEN == '' }}
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
           ref: ${{ env.SHA_INPUT }}
           token: ${{ secrets.RELEASE_GITHUB_TOKEN != '' && secrets.RELEASE_GITHUB_TOKEN || github.token }}
 
@@ -132,100 +175,25 @@ jobs:
           echo "Recent tags:"
           git tag --list --sort=-version:refname | head -10
 
-      - name: Create GitHub App installation token (fallback)
-        if: ${{ env.TOKEN_SOURCE == 'unknown' }}
-        env:
-          APP_ID: ${{ secrets.APP_ID }}
-          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-          REPO: ${{ env.REPO_INPUT }}
+      - name: Create GitHub App installation token fallback (legacy)
+        if: ${{ env.TOKEN_SOURCE == 'unknown' && (env.APP_ID == '' || (env.APP_PRIVATE_KEY == '' && env.APP_PRIVATE_KEY_B64 == '')) }}
         run: |
-          set -euo pipefail
-
-          if [ -z "${APP_ID:-}" ] || ( [ -z "${APP_PRIVATE_KEY:-}" ] && [ -z "${APP_PRIVATE_KEY_B64:-}" ] ); then
-            echo "No App secrets available in release workflow; skipping App token creation"
-            exit 0
-          fi
-
-          wrote_pem=0
-          if [ -n "${APP_PRIVATE_KEY_B64:-}" ]; then
-            echo "Decoding base64 private key from APP_PRIVATE_KEY_B64 (release fallback)"
-            if printf '%s' "$APP_PRIVATE_KEY_B64" | base64 -d > /tmp/app.pem 2>/dev/null; then
-              wrote_pem=1
-            else
-              echo "Failed to decode APP_PRIVATE_KEY_B64 in release workflow"
-            fi
-          fi
-
-          if [ "$wrote_pem" -eq 0 ] && [ -n "${APP_PRIVATE_KEY:-}" ]; then
-            if printf '%s' "$APP_PRIVATE_KEY" | grep -q "-----BEGIN"; then
-              printf "%s" "$APP_PRIVATE_KEY" | sed 's/\r$//' > /tmp/app.pem
-              wrote_pem=1
-            else
-              if printf '%s' "$APP_PRIVATE_KEY" | base64 -d > /tmp/app.pem 2>/dev/null; then
-                if grep -q "-----BEGIN" /tmp/app.pem 2>/dev/null; then
-                  wrote_pem=1
-                else
-                  rm -f /tmp/app.pem || true
-                fi
-              fi
-            fi
-          fi
-
-          if [ "$wrote_pem" -ne 1 ]; then
-            echo "Could not obtain a private key PEM in release workflow; skipping App token creation"
-            exit 0
-          fi
-
-          # validate PEM
-          if ! openssl pkey -in /tmp/app.pem -noout >/dev/null 2>&1 && ! openssl rsa -in /tmp/app.pem -check -noout >/dev/null 2>&1; then
-            echo "Decoded file does not appear to be a valid private key PEM (release)"
-            exit 0
-          fi
-
-          chmod 600 /tmp/app.pem
-
-          now=$(date +%s)
-          iat=$((now - 60))
-          exp=$((now + 600))
-
-          header='{"alg":"RS256","typ":"JWT"}'
-          payload=$(printf '{"iat":%d,"exp":%d,"iss":%s}' "$iat" "$exp" "$APP_ID")
-
-          b64url() { openssl base64 -e | tr -d '\n' | tr '+/' '-_' | tr -d '='; }
-
-          hdr_b64=$(printf '%s' "$header" | b64url)
-          pay_b64=$(printf '%s' "$payload" | b64url)
-          signing_input="$hdr_b64.$pay_b64"
-          sig=$(printf '%s' "$signing_input" | openssl dgst -sha256 -sign /tmp/app.pem | openssl base64 -A | tr '+/' '-_' | tr -d '=')
-          jwt="$signing_input.$sig"
-
-          install_info=$(curl -s -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/installation")
-          install_id=$(printf '%s' "$install_info" | jq -r '.id')
-          if [ "$install_id" = "null" ] || [ -z "$install_id" ]; then
-            echo "Could not get installation id in release workflow; installation info: $install_info"
-            exit 0
-          fi
-
-          token_resp=$(curl -s -X POST -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/app/installations/$install_id/access_tokens")
-          access_token=$(printf '%s' "$token_resp" | jq -r '.token')
-          if [ -z "$access_token" ] || [ "$access_token" = "null" ]; then
-            echo "Failed to create installation token in release workflow: $token_resp"
-            exit 0
-          fi
-
-          # export for subsequent steps
-          echo "GH_APP_TOKEN=$access_token" >> $GITHUB_ENV
-          echo "Created GitHub App installation token in release workflow (exported to GH_APP_TOKEN)"
+          echo "No app secrets forwarded; fallback branch for legacy behavior. No token created."
+          # Skip token creation
 
       - name: Validate token forwarding for publish runs
         run: |
           # If this is a publish run (not a PR and on main/develop), require token_source to be provided by the caller (CI)
           if [ "${{ env.BASE_REF }}" = "" ] && ( [ "${{ env.HEAD_BRANCH }}" = "main" ] || [ "${{ env.HEAD_BRANCH }}" = "develop" ] ) && [ "${{ env.IS_PR }}" = "false" ]; then
             if [ "${{ env.TOKEN_SOURCE }}" = "unknown" ] || [ "${{ env.TOKEN_SOURCE }}" = "" ]; then
-              echo "ERROR: release workflow invoked without token forwarding (TOKEN_SOURCE=${{ env.TOKEN_SOURCE }})."
-              echo "This run cannot safely publish. Ensure the CI workflow calls this workflow via workflow_call and forwards the App installation token as 'RELEASE_GITHUB_TOKEN' and 'token_source'."
-              exit 1
+              # If the TOKEN_SOURCE is unknown/empty, ensure GH_APP_TOKEN or RELEASE_GITHUB_TOKEN is available
+              if [ -n "${GH_APP_TOKEN:-}" ] || [ -n "${RELEASE_GITHUB_TOKEN:-}" ]; then
+                echo "Token available via GH_APP_TOKEN or RELEASE_GITHUB_TOKEN; proceeding"
+              else
+                echo "ERROR: release workflow invoked without token forwarding (TOKEN_SOURCE=${{ env.TOKEN_SOURCE }})."
+                echo "This run cannot safely publish. Ensure the CI workflow calls this workflow via workflow_call and forwards the App installation token as 'RELEASE_GITHUB_TOKEN' and 'token_source', or provide APP_* secrets to create one in the release workflow."
+                exit 1
+              fi
             else
               echo "TOKEN_SOURCE=${{ env.TOKEN_SOURCE }} (ok)"
             fi
