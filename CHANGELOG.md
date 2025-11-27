@@ -2,6 +2,20 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.2 (2025-11-27)
+
+### Features
+
+- **release**: Add GitHub App token handling and permissions checks in workflows
+  ([`15de9bb`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/15de9bbb03c0bf59bd38e9743ce89e732fa5564a))
+
+- **release**: Refine token source handling and diagnostics in workflows
+  ([`0b8b5d3`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/0b8b5d3481af25df74ff846bd995889c61e63d6d))
+
+- **release**: Update GitHub App token handling and streamline workflow inputs
+  ([`aaea965`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/aaea965ed4fa450ce723ae9abc1e8f0131cc71b1))
+
+
 ## v0.2.0-dev.1 (2025-11-27)
 
 ### Bug Fixes
