@@ -42,3 +42,7 @@ __pycache__/
 logs/
 
 # .secrets.baseline
+
+
+release.yml
+cd.yml

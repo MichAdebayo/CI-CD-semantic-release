@@ -34,8 +34,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Critical: semantic-release needs full history
           ref: ${{ inputs.sha }}
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}  # Use PAT for pushing tags
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
@@ -59,66 +60,72 @@ jobs:
           echo "HEAD_BRANCH=${{ inputs.head_branch }}"
           echo "BASE_REF=${{ inputs.base_ref }}"
           echo "SHA=${{ inputs.sha }}"
+          echo "Current branch: $(git branch --show-current)"
+          echo "Current commit: $(git rev-parse HEAD)"
 
-      - name: Prepare branch for PR dry-run
-        if: ${{ inputs.base_ref != '' }}
+      - name: Prepare branch for semantic-release
         run: |
-          echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Preparing local branch '${{ inputs.head_branch }}' for dry-run"
-          # Fetch all remote branches so we can create a local branch name
-          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
-          # Create or move a local branch to point at the provided SHA, then check it out
-          git branch -f "${{ inputs.head_branch }}" "${{ inputs.sha }}"
-          git checkout "${{ inputs.head_branch }}"
+          # Fetch all remote branches and tags
+          git fetch --all --tags
 
+          # Ensure we're on the correct branch
+          if [ "$(git branch --show-current)" != "${{ inputs.head_branch }}" ]; then
+            echo "Creating/checking out branch '${{ inputs.head_branch }}' at SHA ${{ inputs.sha }}"
+            git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}"
+          fi
+
+          echo "Current branch: $(git branch --show-current)"
+          echo "Recent commits:"
+          git log --oneline -n 5
+          echo "Recent tags:"
+          git tag --list --sort=-version:refname | head -10
+
+      # PR dry-run: Just print what version would be created
       - name: Dry-run semantic release — Print tag (PRs only)
         if: ${{ inputs.base_ref != '' }}
         run: |
           echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Running dry-run (print tag)"
-          # If the PR targets develop, run dry-run with the 'dev' prerelease token
+
+          # Determine if we need prerelease mode
           if [ "${{ inputs.base_ref }}" = "develop" ]; then
             echo "[release] Target is 'develop' — using prerelease token 'dev' for dry-run"
-            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag --as-prerelease --prerelease-token dev || true
+            uv run semantic-release version --print --prerelease --prerelease-token dev || echo "Dry-run completed"
           else
-            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
+            echo "[release] Target is 'main' — running standard version dry-run"
+            uv run semantic-release version --print || echo "Dry-run completed"
           fi
 
-      - name: Checkout branch for publish
-        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ${{ inputs.head_branch }}
-
-      - name: Ensure branch is checked out for version computation
-        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
-        run: |
-          echo "[release] Ensuring branch '${{ inputs.head_branch }}' is checked out for version computation"
-          # Fetch all remote branches to ensure refs are available
-          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
-          # Force checkout the branch at the provided SHA
-          git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}" || git checkout "${{ inputs.head_branch }}" || true
-          echo "Current branch: $(git branch --show-current)"
-          echo "Recent commits:"
-          git log --oneline -n 5
-          echo "Tags:"
-          git tag --list | tail -10
-
-      - name: Compute release version
+      # Actual release: Compute version and publish
+      - name: Compute and publish release
         id: compute_version
-        if: ${{ inputs.base_ref == '' }}
-        run: |
-          echo "[release] Computing release version (for tagging images)"
-          ver=$(uv run semantic-release version --print)
-          echo "Computed version: $ver"
-          echo "version=$ver" >> "$GITHUB_OUTPUT"
-
-      - name: Python Semantic Release — Publish
         if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
         run: |
-          # Run the semantic release publish command via uv
-          uv run semantic-release publish
+          echo "[release] Publishing release for branch '${{ inputs.head_branch }}'"
+
+          # For develop branch, use prerelease mode; for main, use standard release
+          if [ "${{ inputs.head_branch }}" = "develop" ]; then
+            echo "[release] Branch is 'develop' — publishing as prerelease with token 'dev'"
+            # Publish the release with prerelease mode
+            uv run semantic-release publish --prerelease --prerelease-token dev
+            # Get the version that was just published
+            ver=$(uv run semantic-release version --print --prerelease --prerelease-token dev)
+          else
+            echo "[release] Branch is 'main' — publishing as standard release"
+            # Publish the release
+            uv run semantic-release publish
+            # Get the version that was just published
+            ver=$(uv run semantic-release version --print)
+          fi
+
+          echo "Published version: $ver"
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+
+          # Verify the tag was created
+          echo "Verifying tags:"
+          git tag --list --sort=-version:refname | head -5
 
   call-cd:
     name: Call CD workflow

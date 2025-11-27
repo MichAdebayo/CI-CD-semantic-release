@@ -47,6 +47,7 @@ jobs:
           echo "inputs.base_ref=${{ inputs.base_ref }}"
           echo "inputs.repo=${{ inputs.repo }}"
           echo "inputs.sha=${{ inputs.sha }}"
+          echo "inputs.version=${{ inputs.version }}"
           echo "github.repository=${{ github.repository }}"
           echo "github.ref=${{ github.ref }}"
           echo "github.event_name=${{ github.event_name }}"
@@ -74,7 +75,7 @@ jobs:
           printf '%s' "${{ steps.meta.outputs.tags }}" | tr ',' '\n' || true
           echo "----------------------------------"
 
-      - name: Prepare tags (prepend semantic version if provided)
+      - name: Prepare tags (use semantic version)
         id: prepare_tags
         run: |
           ver="${{ inputs.version }}"
@@ -82,16 +83,37 @@ jobs:
           # Lowercase image name to satisfy registry rules (owner/repo must be lowercase)
           repo="$(echo "$repo_full" | tr '[:upper:]' '[:lower:]')"
           head_branch="${{ inputs.head_branch }}"
+          base_ref="${{ inputs.base_ref }}"
 
           out=()
+
+          # If this is a PR (base_ref is set), don't push any images
+          if [ -n "$base_ref" ]; then
+            echo "Skipping CD: PR detected (base_ref=$base_ref). No images will be pushed for PRs."
+            echo "tags=" >> "$GITHUB_OUTPUT"
+            echo "labels=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           case "$head_branch" in
             main)
+              # For main branch: use 'latest' tag and semantic version (if available)
               out+=("$repo:latest")
+              if [ -n "$ver" ] && [ "$ver" != "" ]; then
+                echo "Adding semantic version tag: $ver"
+                out+=("$repo:$ver")
+              fi
               ;;
             develop)
-              if [ -n "$ver" ]; then
+              # For develop branch: use semantic version (should be prerelease like 1.2.3-dev.1)
+              if [ -n "$ver" ] && [ "$ver" != "" ]; then
+                echo "Using semantic version for develop: $ver"
                 out+=("$repo:$ver")
+                # Also add a 'develop' tag for convenience
+                out+=("$repo:develop")
               else
+                # Fallback if semantic-release didn't produce a version
+                echo "WARNING: No semantic version provided for develop branch. Using fallback."
                 short="${{ inputs.sha }}"
                 short="${short:0:7}"
                 out+=("$repo:develop-$short")
@@ -143,20 +165,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Debug - verify prepared tags (sanity)
+      - name: Debug - verify image push
         if: always()
         run: |
-          echo "--- pre-push sanity ---"
-          docker --version || true
-          echo "buildx info:" && docker buildx version || true
-          echo "Prepared tags to push: '${{ needs.prepare-tags.outputs.tags }}'"
-          echo "Note: secrets are not printed."
+          echo "--- Image push summary ---"
+          echo "Tags pushed: '${{ needs.prepare-tags.outputs.tags }}'"
+          echo "Branch: ${{ inputs.head_branch }}"
+          echo "Semantic version: ${{ inputs.version }}"
           echo "-------------------------"
-
-  # previous stub preserved for callers that expect it; kept commented
-  # dummy:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
-  #   steps:
-  #     - name: No-op
-  #       run: echo "Workflow is called as a stub by release pipeline"
