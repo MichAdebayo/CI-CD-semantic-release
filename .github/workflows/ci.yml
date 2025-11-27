@@ -87,7 +87,30 @@ jobs:
             exit 0
           fi
 
-          printf "%s\n" "$APP_PRIVATE_KEY" > /tmp/app.pem
+          # Support two formats for the private key secret:
+          # 1) `APP_PRIVATE_KEY` contains the full PEM file (multi-line) as created when you generate
+          #    a private key for your GitHub App in the App settings.
+          # 2) `APP_PRIVATE_KEY_B64` contains the base64 encoding of the PEM file (useful for single-line secrets).
+
+          if [ -n "${APP_PRIVATE_KEY_B64:-}" ]; then
+            echo "Decoding base64 private key from APP_PRIVATE_KEY_B64"
+            printf '%s' "$APP_PRIVATE_KEY_B64" | base64 -d > /tmp/app.pem || {
+              echo "Failed to decode APP_PRIVATE_KEY_B64; ensure it's valid base64"
+              echo "token=" >> "$GITHUB_OUTPUT"
+              exit 0
+            }
+          else
+            # If APP_PRIVATE_KEY looks like a PEM (contains BEGIN), write it out as-is
+            if printf '%s' "$APP_PRIVATE_KEY" | grep -q "-----BEGIN \(RSA \)\?PRIVATE KEY-----"; then
+              printf "%s\n" "$APP_PRIVATE_KEY" > /tmp/app.pem
+            else
+              echo "APP_PRIVATE_KEY does not look like a PEM and APP_PRIVATE_KEY_B64 not provided."
+              echo "Please upload the PEM private key for your GitHub App as the secret APP_PRIVATE_KEY (multi-line),"
+              echo "or upload the base64-encoded PEM as APP_PRIVATE_KEY_B64."
+              echo "token=" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
           chmod 600 /tmp/app.pem
 
           now=$(date +%s)
