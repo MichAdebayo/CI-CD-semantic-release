@@ -97,14 +97,6 @@ match = "develop"
 prerelease = true
 prerelease_token = "dev"
 
-[tool.semantic_release.branches."deploy/ci_cd"]
-match = "deploy/ci_cd"
-prerelease = true
-prerelease_token = "ci_cd"
-
-
-
-
 [tool.semantic_release.remote]
 name = "origin"
 
