@@ -36,7 +36,7 @@ jobs:
         with:
           fetch-depth: 0  # Critical: semantic-release needs full history
           ref: ${{ inputs.sha }}
-          token: ${{ secrets.RELEASE_GITHUB_TOKEN }}  # Use PAT for pushing tags
+          token: ${{ secrets.RELEASE_GITHUB_TOKEN != '' && secrets.RELEASE_GITHUB_TOKEN || github.token }}
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
