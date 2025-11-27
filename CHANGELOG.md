@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.3 (2025-11-27)
+
+### Features
+
+- **release**: Refactor GitHub App token handling and streamline private key decoding
+  ([`f0d324b`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/f0d324b6fd4249b859901b543ba1b9215411ab62))
+
+
 ## v0.2.0-dev.2 (2025-11-27)
 
 ### Features
