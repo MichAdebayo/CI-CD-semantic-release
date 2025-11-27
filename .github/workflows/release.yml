@@ -271,8 +271,11 @@ jobs:
           echo "[release] Invoking semantic-release publish (capturing output to $LOGFILE)"
           # Use pipefail so we capture failure exit code
           set -o pipefail
-          # Run debug publish to collect extra logs
-          uv run semantic-release publish --debug 2>&1 | tee "$LOGFILE"
+          # Confirm which token will be used
+          echo "GITHUB_TOKEN present: ${GITHUB_TOKEN:+true}"
+          echo "GH_APP_TOKEN present: ${GH_APP_TOKEN:+true}"
+          # Run publish with verbose logging
+          uv run semantic-release publish -v 2>&1 | tee "$LOGFILE"
           SR_EXIT=${PIPESTATUS[0]:-0}
           echo "semantic-release exit code: $SR_EXIT"
 
@@ -292,6 +295,12 @@ jobs:
           # Show what a push would attempt (dry-run). This helps detect whether a push was blocked/authorized.
           echo "Git dry-run push (follow-tags) — may still contact remote to show what would be pushed:"
           git push --dry-run origin --follow-tags HEAD || true
+
+          # Show local tags after publish and remote tags to see what was created
+          echo "Local tags (after publish):"
+          git tag --list --sort=-version:refname | head -10 || true
+          echo "Remote tags (origin, after publish):"
+          git ls-remote --tags origin | tail -20 || true
 
           # Attempt to print the version even if publish failed
           ver=$(uv run semantic-release version --print || true)
