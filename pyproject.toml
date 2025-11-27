@@ -90,12 +90,17 @@ filename = "CHANGELOG.md"
 
 [tool.semantic_release.branches.main]
 match = "main"
-prerelease = false
+prerelease = true
 
 [tool.semantic_release.branches.develop]
 match = "develop"
 prerelease = true
 prerelease_token = "dev"
+
+[tool.semantic_release.branches."deploy/ci_cd"]
+match = "deploy/ci_cd"
+prerelease = true
+prerelease_token = "ci_cd"
 
 [tool.semantic_release.remote]
 name = "origin"
