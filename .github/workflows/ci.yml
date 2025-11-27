@@ -15,7 +15,8 @@ jobs:
     name: Lint, Typecheck, Security & Tests
     runs-on: ubuntu-latest
     outputs:
-      app_token: ${{ steps.create_app_token.outputs.token }}
+      app_token: ${{ steps.set_token_outputs.outputs.token }}
+      token_source: ${{ steps.set_token_outputs.outputs.token_source }}
 
     steps:
       - name: Checkout
@@ -179,6 +180,38 @@ jobs:
 
           echo "token=$access_token" >> "$GITHUB_OUTPUT"
 
+      - name: Set token outputs for downstream jobs
+        id: set_token_outputs
+        run: |
+          # Use the token produced by the create_app_token step when present.
+          token="${{ steps.create_app_token.outputs.token }}"
+
+          if [ -n "$token" ]; then
+            echo "app token created by checks job"
+            echo "token=$token" >> "$GITHUB_OUTPUT"
+            echo "token_source=app" >> "$GITHUB_OUTPUT"
+          else
+            # If not a PR and no app token was created, we will fall back to the workflow token
+            if [ "${{ github.event_name }}" != "pull_request" ]; then
+              echo "no app token; falling back to workflow token"
+              echo "token=" >> "$GITHUB_OUTPUT"
+              echo "token_source=workflow" >> "$GITHUB_OUTPUT"
+            else
+              echo "PR context; do not forward any token"
+              echo "token=" >> "$GITHUB_OUTPUT"
+              echo "token_source=none" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: "Debug: show token forwarding decision (no secrets)"
+        run: |
+          echo "[debug] token_source (to be forwarded): '${{ steps.set_token_outputs.outputs.token_source }}'"
+          if [ -n "${{ steps.set_token_outputs.outputs.token }}" ]; then
+            echo "[debug] app token was created: true (value masked)"
+          else
+            echo "[debug] app token was created: false"
+          fi
+
   call-release:
     name: Call Release workflow
     needs: checks
@@ -189,7 +222,7 @@ jobs:
       is_pr: ${{ github.event_name == 'pull_request' }}
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
-      token_source: ${{ github.event_name != 'pull_request' && (needs.checks.outputs.app_token != '' && 'app' || 'workflow') || 'none' }}
+      token_source: ${{ needs.checks.outputs.token_source }}
     secrets:
       # Prefer App installation token created in the checks job (only for non-PR). Fallback to workflow GITHUB_TOKEN for non-PR; empty for PRs.
-      RELEASE_GITHUB_TOKEN: "${{ github.event_name != 'pull_request' && (needs.checks.outputs.app_token != '' && needs.checks.outputs.app_token || secrets.GITHUB_TOKEN) || '' }}"
+      RELEASE_GITHUB_TOKEN: ${{ needs.checks.outputs.app_token }}
