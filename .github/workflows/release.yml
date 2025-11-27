@@ -24,8 +24,7 @@ on:
     secrets:
       RELEASE_GITHUB_TOKEN:
         required: true
-  push:
-    branches: [ main, develop ]
+
 
 jobs:
   release:
@@ -158,19 +157,51 @@ jobs:
             echo "Selected token source: none (using default workflow GITHUB_TOKEN)"
           fi
 
-          # For develop branch, use prerelease mode; for main, use standard release
-          # semantic-release branch settings in pyproject.toml determine prerelease behavior
-          echo "[release] Invoking semantic-release publish (configuration controls prerelease)"
-          uv run semantic-release publish
-          # Get the version that was just published
-          ver=$(uv run semantic-release version --print)
+          # Configure authenticated origin so git push and semantic-release can push tags/releases
+          if [ -n "${GITHUB_TOKEN:-}" ]; then
+            echo "Configuring origin remote to use authenticated token for pushes"
+            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_INPUT}.git"
+          else
+            echo "No GITHUB_TOKEN available to configure origin remote; pushes may fail"
+          fi
 
-          echo "Published version: $ver"
+          # Prepare detailed logging for debugging push behavior
+          LOGFILE="semantic-release-publish.log"
+          rm -f "$LOGFILE"
+
+          echo "[release] Invoking semantic-release publish (capturing output to $LOGFILE)"
+          # Use pipefail so we capture failure exit code
+          set -o pipefail
+          uv run semantic-release publish 2>&1 | tee "$LOGFILE"
+          SR_EXIT=${PIPESTATUS[0]:-0}
+          echo "semantic-release exit code: $SR_EXIT"
+
+          echo "==== semantic-release log (head) ===="
+          sed -n '1,200p' "$LOGFILE" || true
+
+          echo "==== semantic-release log (search for push/errors) ===="
+          # Look for common push/publishing related messages and errors
+          grep -nEi "git push|pushing|push to|pushed|push failed|error|fatal|permission denied|403|401|denied|unable to|could not" "$LOGFILE" || true
+
+          # Show local tags and remote tags for quick comparison
+          echo "Local tags (recent):"
+          git tag --list --sort=-version:refname | head -10 || true
+          echo "Remote tags (origin, recent):"
+          git ls-remote --tags origin | tail -20 || true
+
+          # Show what a push would attempt (dry-run). This helps detect whether a push was blocked/authorized.
+          echo "Git dry-run push (follow-tags) — may still contact remote to show what would be pushed:"
+          git push --dry-run origin --follow-tags HEAD || true
+
+          # Attempt to print the version even if publish failed
+          ver=$(uv run semantic-release version --print || true)
+          echo "Published version (or candidate): $ver"
           echo "version=$ver" >> "$GITHUB_OUTPUT"
 
-          # Verify the tag was created
-          echo "Verifying tags:"
-          git tag --list --sort=-version:refname | head -5
+          # Final note showing semantic-release exit status
+          if [ "$SR_EXIT" -ne 0 ]; then
+            echo "WARNING: semantic-release exited with non-zero status ($SR_EXIT). See $LOGFILE for details."
+          fi
 
       - name: "Debug: verify local and remote tags (no secrets printed)"
         if: ${{ always() }}
