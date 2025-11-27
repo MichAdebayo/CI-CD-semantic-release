@@ -80,10 +80,6 @@ jobs:
       contents: read
       packages: write
     if: ${{ needs.prepare-tags.outputs.should_push == 'true' }}
-    env:
-      APP_PRIVATE_KEY: ''
-      USE_APP: ''
-      PASSWORD: ''
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -91,45 +87,68 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Determine auth method
+      - name: Check if App token creation is needed
+        id: check_app_token
         run: |
-          if [ -n "${{ secrets.GH_APP_TOKEN }}" ]; then
-            echo "USE_APP=false" >> $GITHUB_ENV
+          if [ -z "${{ secrets.GH_APP_TOKEN }}" ] && [ -n "${{ secrets.APP_ID }}" ] && [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
+            echo "create_token=true" >> "$GITHUB_OUTPUT"
           else
-            echo "USE_APP=true" >> $GITHUB_ENV
+            echo "create_token=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Decode GitHub App private key
-        if: ${{ env.USE_APP == 'true' }}
+        id: decode_key
+        if: steps.check_app_token.outputs.create_token == 'true'
         run: |
-          printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-          echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-          cat /tmp/app.pem >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          decoded_key=$(printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d)
+          echo "private_key<<EOF" >> $GITHUB_OUTPUT
+          echo "$decoded_key" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub App token
         id: create_app_token
-        if: ${{ env.USE_APP == 'true' }}
+        if: steps.check_app_token.outputs.create_token == 'true'
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ env.APP_PRIVATE_KEY }}
+          private-key: ${{ steps.decode_key.outputs.private_key }}
           repositories: ${{ github.event.repository.name }}
 
-      - name: Set password
+      - name: Determine authentication token
+        id: determine_token
         run: |
           if [ -n "${{ secrets.GH_APP_TOKEN }}" ]; then
-            echo "PASSWORD=${{ secrets.GH_APP_TOKEN }}" >> $GITHUB_ENV
+            echo "token_source=gh_app_token_forwarded" >> "$GITHUB_OUTPUT"
+            echo "token=${{ secrets.GH_APP_TOKEN }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ steps.create_app_token.outputs.token }}" ]; then
+            echo "token_source=gh_app_token_created" >> "$GITHUB_OUTPUT"
+            echo "token=${{ steps.create_app_token.outputs.token }}" >> "$GITHUB_OUTPUT"
           else
-            echo "PASSWORD=${{ steps.create_app_token.outputs.token }}" >> $GITHUB_ENV
+            echo "token_source=github_token_fallback" >> "$GITHUB_OUTPUT"
+            echo "token=${{ secrets.GITHUB_TOKEN }}" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Log authentication method
+        run: |
+          echo "🔐 Authentication method: ${{ steps.determine_token.outputs.token_source }}"
+          case "${{ steps.determine_token.outputs.token_source }}" in
+            gh_app_token_forwarded)
+              echo "Using GitHub App token forwarded from release workflow"
+              ;;
+            gh_app_token_created)
+              echo "Using GitHub App token created in CD workflow"
+              ;;
+            github_token_fallback)
+              echo "⚠️  Using fallback GITHUB_TOKEN (App token unavailable)"
+              ;;
+          esac
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ env.PASSWORD }}
+          password: ${{ steps.determine_token.outputs.token }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -142,7 +161,7 @@ jobs:
 
       - name: Image push summary
         run: |
-          echo "✅ Image pushed successfully"
+          echo "✅ Image pushed successfully using: ${{ steps.determine_token.outputs.token_source }}"
           echo "Tags: ${{ needs.prepare-tags.outputs.tags }}"
           echo "Branch: ${{ inputs.head_branch }}"
           echo "Version: ${{ inputs.version }}"
