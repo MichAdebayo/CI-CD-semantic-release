@@ -105,6 +105,7 @@ jobs:
 
       - name: Compute release version
         id: compute_version
+        if: ${{ inputs.base_ref == '' }}
         run: |
           echo "[release] Computing release version (for tagging images)"
           ver=$(uv run semantic-release version --print)
