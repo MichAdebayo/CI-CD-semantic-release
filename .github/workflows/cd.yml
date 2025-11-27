@@ -105,8 +105,20 @@ jobs:
           context: .
           push: true
           tags: ${{ needs.prepare-tags.outputs.tags }}
+          labels: |
+            org.opencontainers.image.version=${{ inputs.version }}
+            org.opencontainers.image.revision=${{ inputs.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ needs.prepare-tags.outputs.tags }}
+          format: "table"
+          exit-code: "0"
+          ignore-unfixed: true
+          severity: "CRITICAL,HIGH"
 
       - name: Image push summary
         run: |
@@ -114,3 +126,121 @@ jobs:
           echo "Tags: ${{ needs.prepare-tags.outputs.tags }}"
           echo "Branch: ${{ inputs.head_branch }}"
           echo "Version: ${{ inputs.version }}"
+
+
+# name: CD - Build & Push Docker Image
+
+# on:
+#   workflow_call:
+#     inputs:
+#       head_branch:
+#         required: true
+#         type: string
+#       base_ref:
+#         required: false
+#         type: string
+#       repo:
+#         required: true
+#         type: string
+#       sha:
+#         required: true
+#         type: string
+#       version:
+#         required: false
+#         type: string
+#     secrets:
+#       ACR_USERNAME:
+#         required: false
+#       ACR_PASSWORD:
+#         required: false
+#       GH_APP_TOKEN:
+#         required: false
+#       APP_ID:
+#         required: false
+#       APP_PRIVATE_KEY_B64:
+#         required: false
+
+# jobs:
+#   prepare-tags:
+#     name: Prepare tags
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#     if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
+#     outputs:
+#       tags: ${{ steps.prepare_tags.outputs.tags }}
+#       should_push: ${{ steps.prepare_tags.outputs.should_push }}
+#     steps:
+#       - name: Prepare tags
+#         id: prepare_tags
+#         run: |
+#           repo_full="ghcr.io/${{ inputs.repo }}"
+#           repo="$(echo "$repo_full" | tr '[:upper:]' '[:lower:]')"
+#           ver="${{ inputs.version }}"
+#           head_branch="${{ inputs.head_branch }}"
+#           short="${{ inputs.sha }}"
+#           short="${short:0:7}"
+
+#           if [ "$head_branch" = "main" ]; then
+#             if [ -n "$ver" ]; then
+#               tags="$repo:latest"
+#             else
+#               tags="$repo:dev-$short"
+#             fi
+#           elif [ "$head_branch" = "develop" ]; then
+#             if [ -n "$ver" ]; then
+#               tags="$repo:v$ver"
+#             else
+#               tags="$repo:dev-$short"
+#             fi
+#           else
+#             echo "should_push=false" >> "$GITHUB_OUTPUT"
+#             exit 0
+#           fi
+
+#           echo "tags=$tags" >> "$GITHUB_OUTPUT"
+#           echo "should_push=true" >> "$GITHUB_OUTPUT"
+#           echo "Prepared tags: $tags"
+
+#   build-and-push-ghcr:
+#     name: Build & push to GHCR
+#     needs: prepare-tags
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       packages: write
+#     if: ${{ needs.prepare-tags.outputs.should_push == 'true' }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v6
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v3
+
+#       - name: Log authentication method
+#         run: |
+#           echo "🔐 Authentication method: github_token"
+#           echo "Using workflow GITHUB_TOKEN for GHCR (has packages: write permission)"
+
+#       - name: Log in to GitHub Container Registry
+#         uses: docker/login-action@v2
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Build and push Docker image
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: .
+#           push: true
+#           tags: ${{ needs.prepare-tags.outputs.tags }}
+#           cache-from: type=gha
+#           cache-to: type=gha,mode=max
+
+#       - name: Image push summary
+#         run: |
+#           echo "✅ Image pushed successfully using: github_token"
+#           echo "Tags: ${{ needs.prepare-tags.outputs.tags }}"
+#           echo "Branch: ${{ inputs.head_branch }}"
+#           echo "Version: ${{ inputs.version }}"
