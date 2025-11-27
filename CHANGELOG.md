@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.4 (2025-11-27)
+
+### Features
+
+- **release**: Enhance GitHub App token handling and streamline authentication process in workflows
+  ([`89d57a3`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/89d57a3f64c9eda9b12d9f86b5fb7e37b66bb29f))
+
+
 ## v0.2.0-dev.3 (2025-11-27)
 
 ### Features
