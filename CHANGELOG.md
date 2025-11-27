@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.6 (2025-11-27)
+
+### Features
+
+- **ci**: Add Trivy image scanning step and include image metadata labels
+  ([`82cd64e`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/82cd64e0600ea1c30fc9487a294612c6ee766369))
+
+### Refactoring
+
+- **ci**: Simplify authentication method by using GITHUB_TOKEN for GHCR
+  ([`7d438bf`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/7d438bf9e890bf9c766a3c73f08a43993216c5e3))
+
+
 ## v0.2.0-dev.5 (2025-11-27)
 
 ### Features
