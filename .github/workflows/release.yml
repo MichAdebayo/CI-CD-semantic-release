@@ -44,6 +44,7 @@ jobs:
       base_ref: ${{ steps.set_release_outputs.outputs.base_ref }}
       repo: ${{ steps.set_release_outputs.outputs.repo }}
       sha: ${{ steps.set_release_outputs.outputs.sha }}
+      gh_app_token: ${{ steps.create_app_token_release.outputs.token }}
     runs-on: ubuntu-latest
     env:
       # When invoked via workflow_call, prefer the provided inputs; otherwise derive from push context
@@ -97,15 +98,15 @@ jobs:
           echo "GH_APP_TOKEN=${{ steps.create_app_token_release.outputs.token }}" >> $GITHUB_ENV
 
       - name: Checkout code (GH app token)
-        if: ${{ env.GH_APP_TOKEN != '' }}
+        if: ${{ steps.create_app_token_release.outputs.token != '' }}
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: ${{ env.SHA_INPUT }}
-          token: ${{ env.GH_APP_TOKEN }}
+          token: ${{ steps.create_app_token_release.outputs.token }}
 
       - name: Checkout code (fallback)
-        if: ${{ env.GH_APP_TOKEN == '' }}
+        if: ${{ steps.create_app_token_release.outputs.token == '' }}
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
@@ -174,6 +175,14 @@ jobs:
           git log --oneline -n 5
           echo "Recent tags:"
           git tag --list --sort=-version:refname | head -10
+
+      - name: Check GH App token permissions (if created)
+        if: ${{ steps.create_app_token_release.outputs.token != '' }}
+        run: |
+          set -euo pipefail
+          echo "Checking repo permissions for GH_APP_TOKEN (push/pull/admin):"
+          status=$(curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ env.REPO_INPUT }}" | jq -r '.permissions')
+          echo "$status"
 
       - name: Create GitHub App installation token fallback (legacy)
         if: ${{ env.TOKEN_SOURCE == 'unknown' && (env.APP_ID == '' || (env.APP_PRIVATE_KEY == '' && env.APP_PRIVATE_KEY_B64 == '')) }}
@@ -262,7 +271,8 @@ jobs:
           echo "[release] Invoking semantic-release publish (capturing output to $LOGFILE)"
           # Use pipefail so we capture failure exit code
           set -o pipefail
-          uv run semantic-release publish 2>&1 | tee "$LOGFILE"
+          # Run debug publish to collect extra logs
+          uv run semantic-release publish --debug 2>&1 | tee "$LOGFILE"
           SR_EXIT=${PIPESTATUS[0]:-0}
           echo "semantic-release exit code: $SR_EXIT"
 
@@ -323,4 +333,5 @@ jobs:
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-      RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      # Prefer GH_APP_TOKEN created in this workflow for subsequent CD publish. Fallback to caller-provided RELEASE_GITHUB_TOKEN
+      RELEASE_GITHUB_TOKEN: ${{ needs.release.outputs.gh_app_token != '' && needs.release.outputs.gh_app_token || secrets.RELEASE_GITHUB_TOKEN }}
