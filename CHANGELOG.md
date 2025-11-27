@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.5 (2025-11-27)
+
+### Features
+
+- **ci**: Comment out unused checks and scans in CI workflow
+  ([`c3382ef`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/c3382ef1afb09a4416a3610587a5b93f7347b845))
+
+
 ## v0.2.0-dev.4 (2025-11-27)
 
 ### Features
