@@ -101,9 +101,3 @@ prerelease_token = "dev"
 match = "deploy/ci_cd"
 prerelease = true
 prerelease_token = "ci_cd"
-
-[tool.semantic_release.remote]
-name = "origin"
-
-[tool.semantic_release.publish]
-provider = "github"
