@@ -23,11 +23,9 @@ on:
         required: false
       ACR_PASSWORD:
         required: false
-      RELEASE_GITHUB_TOKEN:
+      GH_APP_TOKEN:
         required: false
       APP_ID:
-        required: false
-      APP_PRIVATE_KEY:
         required: false
       APP_PRIVATE_KEY_B64:
         required: false
@@ -38,102 +36,41 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
+    if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
     outputs:
       tags: ${{ steps.prepare_tags.outputs.tags }}
-      labels: ${{ steps.prepare_tags.outputs.labels }}
+      should_push: ${{ steps.prepare_tags.outputs.should_push }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Debug - print workflow inputs and GitHub context
-        run: |
-          echo "--- CD prepare-tags debug: inputs & context ---"
-          echo "inputs.head_branch=${{ inputs.head_branch }}"
-          echo "inputs.base_ref=${{ inputs.base_ref }}"
-          echo "inputs.repo=${{ inputs.repo }}"
-          echo "inputs.sha=${{ inputs.sha }}"
-          echo "inputs.version=${{ inputs.version }}"
-          echo "github.repository=${{ github.repository }}"
-          echo "github.ref=${{ github.ref }}"
-          echo "github.event_name=${{ github.event_name }}"
-          echo "github.actor=${{ github.actor }}"
-          echo "-----------------------------------------------"
-
-      - name: Extract image metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ inputs.repo }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Debug - show metadata-action outputs
-        if: always()
-        run: |
-          echo "--- metadata-action outputs ---"
-          echo "meta.tags=${{ steps.meta.outputs.tags }}"
-          echo "meta.labels=${{ steps.meta.outputs.labels }}"
-          echo "--- parsed tags (one per line) ---"
-          printf '%s' "${{ steps.meta.outputs.tags }}" | tr ',' '\n' || true
-          echo "----------------------------------"
-
-      - name: Prepare tags (use semantic version)
+      - name: Prepare tags
         id: prepare_tags
         run: |
-          ver="${{ inputs.version }}"
           repo_full="ghcr.io/${{ inputs.repo }}"
-          # Lowercase image name to satisfy registry rules (owner/repo must be lowercase)
           repo="$(echo "$repo_full" | tr '[:upper:]' '[:lower:]')"
+          ver="${{ inputs.version }}"
           head_branch="${{ inputs.head_branch }}"
-          base_ref="${{ inputs.base_ref }}"
+          short="${{ inputs.sha }}"
+          short="${short:0:7}"
 
-          # If this is a PR (base_ref is set), don't push any images
-          if [ -n "$base_ref" ]; then
-            echo "Skipping CD: PR detected (base_ref=$base_ref). No images will be pushed for PRs."
-            echo "tags=" >> "$GITHUB_OUTPUT"
-            echo "labels=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Decide tags by branch and semantic version availability:
-          # - main + semver -> push only 'latest'
-          # - develop + semver -> push only the semver tag
-          # - any branch without semver -> push a single fallback tag 'dev-<short-sha>' (7 chars)
           if [ "$head_branch" = "main" ]; then
-            if [ -n "$ver" ] && [ "$ver" != "" ]; then
-              echo "Main branch with semantic version available -> using 'latest'"
+            if [ -n "$ver" ]; then
               tags="$repo:latest"
             else
-              echo "Main branch with no semantic version -> using fallback dev-SHA"
-              short="${{ inputs.sha }}"
-              short="${short:0:7}"
               tags="$repo:dev-$short"
             fi
           elif [ "$head_branch" = "develop" ]; then
-            if [ -n "$ver" ] && [ "$ver" != "" ]; then
-              echo "Develop branch with semantic version available -> using semver v$ver"
+            if [ -n "$ver" ]; then
               tags="$repo:v$ver"
             else
-              echo "Develop branch with no semantic version -> using fallback dev-SHA"
-              short="${{ inputs.sha }}"
-              short="${short:0:7}"
               tags="$repo:dev-$short"
             fi
           else
-            echo "Skipping CD: unsupported branch '$head_branch' (no tags to prepare)"
-            echo "tags=" >> "$GITHUB_OUTPUT"
-            echo "labels=" >> "$GITHUB_OUTPUT"
+            echo "should_push=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "Prepared tags: $tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
-          # Forward labels from metadata-action so build step can reuse them
-          echo "labels=${{ steps.meta.outputs.labels }}" >> "$GITHUB_OUTPUT"
+          echo "should_push=true" >> "$GITHUB_OUTPUT"
+          echo "Prepared tags: $tags"
 
   build-and-push-ghcr:
     name: Build & push to GHCR
@@ -142,11 +79,11 @@ jobs:
     permissions:
       contents: read
       packages: write
-    if: ${{ needs.prepare-tags.outputs.tags != '' }}
+    if: ${{ needs.prepare-tags.outputs.should_push == 'true' }}
     env:
-      APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+      APP_PRIVATE_KEY: ''
+      USE_APP: ''
+      PASSWORD: ''
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -154,82 +91,58 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Prepare APP private key if provided (base64 -> PEM)
-        if: ${{ env.APP_ID != '' && (env.APP_PRIVATE_KEY_B64 != '' || env.APP_PRIVATE_KEY != '') }}
+      - name: Determine auth method
         run: |
-          set -euo pipefail
-          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
-          elif [ -n "${{ secrets.APP_PRIVATE_KEY }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY }}" > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+          if [ -n "${{ secrets.GH_APP_TOKEN }}" ]; then
+            echo "USE_APP=false" >> $GITHUB_ENV
+          else
+            echo "USE_APP=true" >> $GITHUB_ENV
           fi
 
-      - name: Create GitHub App installation token (CD)
-        id: create_app_token_cd
-        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
+      - name: Decode GitHub App private key
+        if: ${{ env.USE_APP == 'true' }}
+        run: |
+          printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
+          echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+          cat /tmp/app.pem >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub App token
+        id: create_app_token
+        if: ${{ env.USE_APP == 'true' }}
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ env.APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
 
-      - name: Check GH App token permissions (CD)
-        if: ${{ steps.create_app_token_cd.outputs.token != '' }}
+      - name: Set password
         run: |
-          set -euo pipefail
-          echo "Checking repo permissions for GH_APP_TOKEN (push/pull/admin):"
-          status=$(curl -s -H "Authorization: Bearer ${{ steps.create_app_token_cd.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ inputs.repo }}" | jq -r '.permissions')
-          echo "$status"
-          push_perm=$(printf '%s' "$status" | jq -r '.push')
-          if [ "$push_perm" != "true" ]; then
-            echo "WARNING: created GH App token does not have 'push' permission on this repo."
-            if [ -z "${{ secrets.RELEASE_GITHUB_TOKEN }}" ]; then
-              echo "This workflow cannot push images without token permission to write packages (packages: write on the GitHub App)."
-              echo "Please update the GitHub App permissions or pass a RELEASE_GITHUB_TOKEN PAT with proper scopes."
-              exit 1
-            else
-              echo "RELEASE_GITHUB_TOKEN is present; attempting fallback to that for login."
-            fi
-          fi
-
-      - name: Debug GHCR token presence
-        run: |
-          if [ -n "${{ steps.create_app_token_cd.outputs.token }}" ]; then
-            echo "GH_APP_TOKEN present — will use it for GHCR login"
-          elif [ -n "${{ secrets.RELEASE_GITHUB_TOKEN }}" ]; then
-            echo "RELEASE_GITHUB_TOKEN present — will use it for GHCR login"
+          if [ -n "${{ secrets.GH_APP_TOKEN }}" ]; then
+            echo "PASSWORD=${{ secrets.GH_APP_TOKEN }}" >> $GITHUB_ENV
           else
-            echo "No token present for GHCR login; login will fail unless a token is available"
+            echo "PASSWORD=${{ steps.create_app_token.outputs.token }}" >> $GITHUB_ENV
           fi
 
-      - name: Log in to GitHub Container Registry (GHCR)
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: x-access-token
-          password: ${{ steps.create_app_token_cd.outputs.token != '' && steps.create_app_token_cd.outputs.token || secrets.RELEASE_GITHUB_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ env.PASSWORD }}
 
-      - name: Build and push Docker image to GHCR
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ needs.prepare-tags.outputs.tags }}
-          labels: ${{ needs.prepare-tags.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Debug - verify image push
-        if: always()
+      - name: Image push summary
         run: |
-          echo "--- Image push summary ---"
-          echo "Tags pushed: '${{ needs.prepare-tags.outputs.tags }}'"
+          echo "✅ Image pushed successfully"
+          echo "Tags: ${{ needs.prepare-tags.outputs.tags }}"
           echo "Branch: ${{ inputs.head_branch }}"
-          echo "Semantic version: ${{ inputs.version }}"
-          echo "-------------------------"
+          echo "Version: ${{ inputs.version }}"

@@ -18,118 +18,50 @@ on:
       sha:
         required: true
         type: string
-      token_source:
-        required: false
-        type: string
     secrets:
-      RELEASE_GITHUB_TOKEN:
-        required: true
       APP_ID:
-        required: false
-      APP_PRIVATE_KEY:
-        required: false
+        required: true
       APP_PRIVATE_KEY_B64:
-        required: false
+        required: true
 
 permissions:
   contents: write
   packages: write
 
-
 jobs:
   release:
     outputs:
       version: ${{ steps.compute_version.outputs.version }}
-      head_branch: ${{ steps.set_release_outputs.outputs.head_branch }}
-      base_ref: ${{ steps.set_release_outputs.outputs.base_ref }}
-      repo: ${{ steps.set_release_outputs.outputs.repo }}
-      sha: ${{ steps.set_release_outputs.outputs.sha }}
-      gh_app_token: ${{ steps.create_app_token_release.outputs.token }}
+      head_branch: ${{ inputs.head_branch }}
+      base_ref: ${{ inputs.base_ref }}
+      repo: ${{ inputs.repo }}
+      sha: ${{ inputs.sha }}
+      gh_app_token: ${{ steps.create_app_token.outputs.token }}
     runs-on: ubuntu-latest
     env:
-      # When invoked via workflow_call, prefer the provided inputs; otherwise derive from push context
-      # HEAD_BRANCH resolution: prefer workflow_call input, then pull_request context, then ref_name
-      HEAD_BRANCH: ${{ github.event_name == 'workflow_call' && inputs.head_branch || github.event.pull_request.head.ref || github.ref_name }}
-      # BASE_REF resolution: prefer workflow_call input, then pull_request.base.ref, otherwise empty
-      BASE_REF: ${{ github.event_name == 'workflow_call' && inputs.base_ref || github.event.pull_request.base.ref || '' }}
-      REPO_INPUT: ${{ github.event_name == 'workflow_call' && inputs.repo || github.repository }}
-      SHA_INPUT: ${{ github.event_name == 'workflow_call' && inputs.sha || github.sha }}
-      # Caller can explicitly indicate PR context; otherwise derive from event_name
-      IS_PR: ${{ github.event_name == 'workflow_call' && inputs.is_pr || github.event_name == 'pull_request' }}
-      # Token source will be derived at runtime based on available tokens
-      # Default to 'unknown' until a token is created or a fallback is detected
-      TOKEN_SOURCE: unknown
-      APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-      # Expose the supplied fallback token at job level so steps can inspect it in `if` conditionals
-      RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-    permissions:
-      contents: write
-      packages: write
-
+      APP_PRIVATE_KEY: ''
     steps:
-      - name: Prepare APP private key if provided (base64 -> PEM)
-        if: ${{ env.APP_ID != '' && (env.APP_PRIVATE_KEY_B64 != '' || env.APP_PRIVATE_KEY != '') }}
+      - name: Decode GitHub App private key
         run: |
-          set -euo pipefail
-          # Prefer APP_PRIVATE_KEY_B64 when provided
-          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
-          elif [ -n "${{ secrets.APP_PRIVATE_KEY }}" ]; then
-            # Use the provided PEM as-is
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY }}" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          fi
+          printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
+          echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+          cat /tmp/app.pem >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
-      - name: Create GitHub App installation token (self-contained)
-        id: create_app_token_release
-        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
+      - name: Create GitHub App token
+        id: create_app_token
         uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ env.APP_PRIVATE_KEY }}
+          repositories: ${{ github.event.repository.name }}
 
-      - name: Export GH_APP_TOKEN to env
-        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
-        run: |
-          echo "GH_APP_TOKEN=${{ steps.create_app_token_release.outputs.token }}" >> $GITHUB_ENV
-
-      - name: Mark TOKEN_SOURCE as 'app' when we generated a GH App token
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
-        run: |
-          echo "TOKEN_SOURCE=app" >> $GITHUB_ENV
-
-      - name: Mark TOKEN_SOURCE as 'workflow' when we will rely on RELEASE_GITHUB_TOKEN
-        if: ${{ steps.create_app_token_release.outputs.token == '' && env.RELEASE_GITHUB_TOKEN != '' }}
-        run: |
-          echo "TOKEN_SOURCE=workflow" >> $GITHUB_ENV
-
-      - name: Mark TOKEN_SOURCE as 'none' when PR/no-token
-        if: ${{ steps.create_app_token_release.outputs.token == '' && env.RELEASE_GITHUB_TOKEN == '' }}
-        run: |
-          echo "TOKEN_SOURCE=none" >> $GITHUB_ENV
-
-      - name: Checkout code (GH app token)
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
+      - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          ref: ${{ env.SHA_INPUT }}
-          token: ${{ steps.create_app_token_release.outputs.token }}
-
-      - name: Checkout code (fallback)
-        if: ${{ steps.create_app_token_release.outputs.token == '' }}
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ${{ env.SHA_INPUT }}
-          token: ${{ secrets.RELEASE_GITHUB_TOKEN != '' && secrets.RELEASE_GITHUB_TOKEN || github.token }}
+          ref: ${{ inputs.sha }}
+          token: ${{ steps.create_app_token.outputs.token }}
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
@@ -138,272 +70,43 @@ jobs:
           cache-dependency-glob: "uv.lock"
 
       - name: Install dependencies
-        run: |
-          # Install all dependencies including dev so python-semantic-release is available
-          uv sync --dev
+        run: uv sync --dev
 
-      - name: Configure Git for release
+      - name: Configure Git
         run: |
-          # If we're using the GitHub App installation token, prefer the App bot identity
-          # so commits and tags are authored/committed with the expected bot name.
-          # Otherwise fall back to the default `github-actions[bot]` identity.
-          if [ "${TOKEN_SOURCE:-}" = "app" ] || [ -n "${GH_APP_TOKEN:-}" ]; then
-            git config user.name "CI-Semantic-Release-Bot"
-            git config user.email "ci-semantic-release-bot@users.noreply.github.com"
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-          fi
-
-      - name: Show invocation inputs
-        run: |
-          echo "GITHUB_EVENT_NAME=${{ github.event_name }}"
-          echo "HEAD_BRANCH=${{ env.HEAD_BRANCH }}"
-          echo "BASE_REF=${{ env.BASE_REF }}"
-          echo "SHA=${{ env.SHA_INPUT }}"
-          echo "Current branch: $(git branch --show-current)"
-          echo "Current commit: $(git rev-parse HEAD)"
-
-      - name: Verify which token source we're using (no secrets printed)
-        run: |
-          echo "TOKEN_SOURCE=${{ env.TOKEN_SOURCE }}"
-          if [ "${{ env.TOKEN_SOURCE }}" = "app" ]; then
-            echo "Using GitHub App installation token (provided by CI)."
-          elif [ "${{ env.TOKEN_SOURCE }}" = "workflow" ]; then
-            echo "Using workflow token or PAT fallback (RELEASE_GITHUB_TOKEN)."
-          elif [ "${{ env.TOKEN_SOURCE }}" = "none" ]; then
-            echo "No token forwarded (PR or explicit none). Dry-run behavior expected."
-          else
-            echo "Token source unknown or not provided; runtime will choose available token (RELEASE_GITHUB_TOKEN or GITHUB_TOKEN)."
-          fi
+          git config user.name "CI-Semantic-Release-Bot[bot]"
+          git config user.email "CI-Semantic-Release-Bot[bot]@users.noreply.github.com"
 
       - name: Prepare branch for semantic-release
         run: |
-          # Fetch all remote branches and tags
           git fetch --all --tags
-
-          # Ensure we're on the correct branch
-          if [ "$(git branch --show-current)" != "${{ env.HEAD_BRANCH }}" ]; then
-            echo "Creating/checking out branch '${{ env.HEAD_BRANCH }}' at SHA ${{ env.SHA_INPUT }}"
-            git checkout -B "${{ env.HEAD_BRANCH }}" "${{ env.SHA_INPUT }}"
+          if [ "$(git branch --show-current)" != "${{ inputs.head_branch }}" ]; then
+            git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}"
           fi
 
-          echo "Current branch: $(git branch --show-current)"
-          echo "Recent commits:"
-          git log --oneline -n 5
-          echo "Recent tags:"
-          git tag --list --sort=-version:refname | head -10
-
-      - name: Check GH App token permissions (if created)
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
+      - name: Dry-run semantic release (PRs only)
+        if: ${{ inputs.is_pr == true || inputs.base_ref != '' }}
         run: |
-          set -euo pipefail
-          echo "Checking repo permissions for GH_APP_TOKEN (push/pull/admin):"
-          status=$(curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ env.REPO_INPUT }}" | jq -r '.permissions')
-          echo "$status"
-          push_perm=$(printf '%s' "$status" | jq -r '.push')
-          if [ "$push_perm" != "true" ]; then
-            echo "WARNING: created GH App token does not have 'push' permission on this repo."
-            if [ -z "${RELEASE_GITHUB_TOKEN:-}" ]; then
-              echo "This workflow cannot publish tags without a token with push permission."
-              echo "Please update the GitHub App permissions to include 'Contents: Read & Write' and re-run, or supply a RELEASE_GITHUB_TOKEN PAT with repo:packages rights."
-              exit 1
-            else
-              echo "RELEASE_GITHUB_TOKEN is present; will attempt to use fallback token for publishing."
-            fi
-          fi
-
-      - name: "Diagnostic: list repositories accessible to GH App installation"
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
-        run: |
-          set -euo pipefail
-          echo "Checking which repositories this installation can access via /installation/repositories"
-          curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/installation/repositories" | jq '. | {total_count, repo_full_names: [.repositories[].full_name]}'
-
-      - name: "Diagnostic: fetch repo entry from installation list (permissions visible here if present)"
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
-        run: |
-          set -euo pipefail
-          echo "Searching installation repositories for ${REPO_INPUT}"
-          curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/installation/repositories" | jq --arg repo "${REPO_INPUT}" '.repositories[] | select(.full_name == $repo)'
-
-      - name: "Diagnostic: Print installation id (app JWT may be needed to view full install metadata)"
-        if: ${{ steps.create_app_token_release.outputs.token != '' }}
-        run: |
-          set -euo pipefail
-          echo "Attempting to print installation ID for repo via repo->installation endpoint (requires app access, but we'll try)"
-          # This endpoint may require a JWT (app-auth) rather than an installation token; if it fails it's expected.
-          curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${REPO_INPUT}/installation" || echo "Repo installation endpoint not accessible with installation token; try using app JWT via debug shell or check the App installation settings in UI."
-
-      - name: "JWT-based diagnostic: list app installations and repo installation metadata"
-        if: ${{ env.APP_ID != '' && env.APP_PRIVATE_KEY != '' }}
-        run: |
-          set -euo pipefail
-          echo "Preparing to generate an App JWT (will not reveal secrets)."
-          printf '%s' "$APP_PRIVATE_KEY" > /tmp/app.pem
-          chmod 600 /tmp/app.pem
-          NOW=$(date +%s)
-          IAT=$((NOW - 60))
-          EXP=$((NOW + 600))
-          header='{"alg":"RS256","typ":"JWT"}'
-          payload='{"iat":'"$IAT"',"exp":'"$EXP"',"iss":'"$APP_ID"'}'
-          base64url() { openssl base64 -e | tr -d '=' | tr '/+' '_-' | tr -d '\n'; }
-          header_b64=$(printf '%s' "$header" | base64url)
-          payload_b64=$(printf '%s' "$payload" | base64url)
-          unsigned="$header_b64.$payload_b64"
-          signature=$(printf '%s' "$unsigned" | openssl dgst -sha256 -sign /tmp/app.pem | base64url)
-          jwt="$unsigned.$signature"
-          echo "List app installations (id, account, repository_selection, permissions):"
-          curl -s -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/app/installations" | jq '.[] | {id, account: .account.login, repository_selection, permissions}' || echo "Failed to list app installations"
-          echo "Repo installation entry via /repos/{owner}/{repo}/installation:"
-          curl -s -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${REPO_INPUT}/installation" | jq '.' || echo "Failed to get repo installation (may require different auth/scopes)"
-
-      - name: Create GitHub App installation token fallback (legacy)
-        if: ${{ env.TOKEN_SOURCE == 'unknown' && (env.APP_ID == '' || (env.APP_PRIVATE_KEY == '' && env.APP_PRIVATE_KEY_B64 == '')) }}
-        run: |
-          echo "No app secrets forwarded; fallback branch for legacy behavior. No token created."
-          # Skip token creation
-
-      - name: Validate token forwarding for publish runs
-        run: |
-          # If this is a publish run (not a PR and on main/develop), require token_source to be provided by the caller (CI)
-          if [ "${{ env.BASE_REF }}" = "" ] && ( [ "${{ env.HEAD_BRANCH }}" = "main" ] || [ "${{ env.HEAD_BRANCH }}" = "develop" ] ) && [ "${{ env.IS_PR }}" = "false" ]; then
-            if [ "${{ env.TOKEN_SOURCE }}" = "unknown" ] || [ "${{ env.TOKEN_SOURCE }}" = "" ]; then
-              # If the TOKEN_SOURCE is unknown/empty, ensure GH_APP_TOKEN or RELEASE_GITHUB_TOKEN is available
-              if [ -n "${GH_APP_TOKEN:-}" ] || [ -n "${RELEASE_GITHUB_TOKEN:-}" ]; then
-                echo "Token available via GH_APP_TOKEN or RELEASE_GITHUB_TOKEN; proceeding"
-              else
-                echo "ERROR: release workflow invoked without token forwarding (TOKEN_SOURCE=${{ env.TOKEN_SOURCE }})."
-                echo "This run cannot safely publish. Ensure the CI workflow calls this workflow via workflow_call and forwards the App installation token as 'RELEASE_GITHUB_TOKEN' and 'token_source', or provide APP_* secrets to create one in the release workflow."
-                exit 1
-              fi
-            else
-              echo "TOKEN_SOURCE=${{ env.TOKEN_SOURCE }} (ok)"
-            fi
-          else
-            echo "Not a publish-run or running in PR context; skipping token_source enforcement"
-          fi
-
-      # Token creation and origin configuration are handled in CI and passed in as RELEASE_GITHUB_TOKEN
-      # PR dry-run: Just print what version would be created
-      - name: Dry-run semantic release — Print tag (PRs only)
-        if: ${{ env.IS_PR == 'true' || env.BASE_REF != '' }}
-        run: |
-          echo "[release] PR detected (is_pr=${{ env.IS_PR }}, base_ref=${{ env.BASE_REF }}). Running dry-run (print tag)"
-
-          # Determine if we need prerelease mode
-          # semantic-release is configured in pyproject.toml to mark 'develop' as prerelease
+          echo "PR detected - running dry-run"
           uv run semantic-release version --print || echo "Dry-run completed"
 
-      # Actual release: Compute version and publish
       - name: Compute and publish release
         id: compute_version
-        if: ${{ env.BASE_REF == '' && (env.HEAD_BRANCH == 'main' || env.HEAD_BRANCH == 'develop') }}
-        env:
-          # Expose RELEASE_GITHUB_TOKEN for use in the script; GH_APP_TOKEN (if created) will be available via $GH_APP_TOKEN
-          RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
         run: |
-          echo "[release] Publishing release for branch '${{ env.HEAD_BRANCH }}'"
+          echo "Publishing release for branch '${{ inputs.head_branch }}'"
 
-          # Prefer app installation token if available (set in GH_APP_TOKEN), otherwise prefer RELEASE_GITHUB_TOKEN, otherwise rely on the workflow GITHUB_TOKEN
-          if [ -n "${GH_APP_TOKEN:-}" ]; then
-            echo "Using GH_APP_TOKEN for git/auth"
-            export GH_TOKEN="$GH_APP_TOKEN"
-            export GITHUB_TOKEN="$GH_APP_TOKEN"
-          elif [ -n "${RELEASE_GITHUB_TOKEN:-}" ]; then
-            echo "Using RELEASE_GITHUB_TOKEN from secrets for git/auth"
-            export GH_TOKEN="$RELEASE_GITHUB_TOKEN"
-            export GITHUB_TOKEN="$RELEASE_GITHUB_TOKEN"
-          else
-            echo "No RELEASE_GITHUB_TOKEN or GH_APP_TOKEN found; using default GITHUB_TOKEN from actions context"
-          fi
+          # Configure authenticated remote
+          git remote set-url origin "https://x-access-token:${{ steps.create_app_token.outputs.token }}@github.com/${{ inputs.repo }}.git"
 
-          # Runtime token selection confirmation (no secrets printed)
-          if [ -n "${GH_APP_TOKEN:-}" ]; then
-            echo "Selected token source: app"
-          elif [ -n "${RELEASE_GITHUB_TOKEN:-}" ]; then
-            echo "Selected token source: workflow"
-          else
-            echo "Selected token source: none (using default workflow GITHUB_TOKEN)"
-          fi
+          # Run semantic-release
+          uv run semantic-release version --changelog
+          uv run semantic-release publish
 
-          # Configure authenticated origin so git push and semantic-release can push tags/releases
-          if [ -n "${GITHUB_TOKEN:-}" ]; then
-            echo "Configuring origin remote to use authenticated token for pushes"
-            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_INPUT}.git"
-            echo "Remote config after set-url:"
-            git remote -v || true
-            git remote show origin || true
-          else
-            echo "No GITHUB_TOKEN available to configure origin remote; pushes may fail"
-          fi
-
-          # Prepare detailed logging for debugging push behavior
-          LOGFILE="semantic-release-publish.log"
-          rm -f "$LOGFILE"
-
-          echo "[release] Invoking semantic-release version to bump/version and changelog (capturing output to $LOGFILE)"
-          set -o pipefail
-          # Confirm which token will be used
-          echo "GITHUB_TOKEN present: ${GITHUB_TOKEN:+true}"
-          echo "GH_APP_TOKEN present: ${GH_APP_TOKEN:+true}"
-
-          echo "Running version (update pyproject and changelog if configured)"
-          uv run semantic-release version --changelog 2>&1 | tee -a "$LOGFILE"
-
-          echo "Running publish (create VCS release via GitHub)"
-          uv run semantic-release publish 2>&1 | tee -a "$LOGFILE"
-          SR_EXIT=${PIPESTATUS[0]:-0}
-          echo "semantic-release exit code: $SR_EXIT"
-
-          echo "==== semantic-release log (head) ===="
-          sed -n '1,200p' "$LOGFILE" || true
-
-          echo "==== semantic-release log (search for push/errors) ===="
-          # Look for common push/publishing related messages and errors
-          grep -nEi "git push|pushing|push to|pushed|push failed|error|fatal|permission denied|403|401|denied|unable to|could not" "$LOGFILE" || true
-
-          # Show local tags and remote tags for quick comparison
-          echo "Local tags (recent):"
-          git tag --list --sort=-version:refname | head -10 || true
-          echo "Remote tags (origin, recent):"
-          git ls-remote --tags origin | tail -20 || true
-
-          # Show what a push would attempt (dry-run). This helps detect whether a push was blocked/authorized.
-          echo "Git dry-run push (follow-tags) — may still contact remote to show what would be pushed:"
-          git push --dry-run origin --follow-tags HEAD || true
-
-          # Show local tags after publish and remote tags to see what was created
-          echo "Local tags (after publish):"
-          git tag --list --sort=-version:refname | head -10 || true
-          echo "Remote tags (origin, after publish):"
-          git ls-remote --tags origin | tail -20 || true
-
-          # Attempt to print the version even if publish failed
-          ver=$(uv run semantic-release version --print || true)
-          echo "Published version (or candidate): $ver"
+          # Capture version
+          ver=$(uv run semantic-release version --print || echo "")
           echo "version=$ver" >> "$GITHUB_OUTPUT"
-
-          # Final note showing semantic-release exit status
-          if [ "$SR_EXIT" -ne 0 ]; then
-            echo "WARNING: semantic-release exited with non-zero status ($SR_EXIT). See $LOGFILE for details."
-          fi
-
-      - name: "Debug: verify local and remote tags (no secrets printed)"
-        if: ${{ always() }}
-        run: |
-          echo "Local tags (recent):"
-          git tag --list --sort=-version:refname | head -10 || true
-          echo "Remote tags (origin, recent):"
-          git ls-remote --tags origin | tail -20 || true
-
-      - name: Set release job outputs
-        id: set_release_outputs
-        run: |
-          echo "head_branch=$HEAD_BRANCH" >> "$GITHUB_OUTPUT"
-          echo "base_ref=$BASE_REF" >> "$GITHUB_OUTPUT"
-          echo "repo=$REPO_INPUT" >> "$GITHUB_OUTPUT"
-          echo "sha=$SHA_INPUT" >> "$GITHUB_OUTPUT"
+          echo "Published version: $ver"
 
   call-cd:
     name: Call CD workflow
@@ -419,8 +122,6 @@ jobs:
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-      # Prefer GH_APP_TOKEN created in this workflow for subsequent CD publish. Fallback to caller-provided RELEASE_GITHUB_TOKEN
-      RELEASE_GITHUB_TOKEN: ${{ needs.release.outputs.gh_app_token != '' && needs.release.outputs.gh_app_token || secrets.RELEASE_GITHUB_TOKEN }}
+      GH_APP_TOKEN: ${{ needs.release.outputs.gh_app_token }}
       APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}

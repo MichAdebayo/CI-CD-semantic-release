@@ -19,7 +19,6 @@ jobs:
     env:
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-    outputs: {}
 
     steps:
       - name: Checkout
@@ -33,20 +32,10 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install dependencies (including dev)
-        # Try to install dev dependencies via uv. If the local uv setup does not support
-        # a `--dev` flag, fall back to plain `uv sync` which will install declared groups.
-        run: |
-          set -e
-          if uv --version >/dev/null 2>&1; then
-            # prefer explicit dev install if available
-            uv sync --dev || uv sync || python -m pip install -r ci-dev-requirements.txt || true
-          else
-            python -m pip install -r ci-dev-requirements.txt || true
-          fi
+      - name: Install dependencies
+        run: uv sync --dev || uv sync
 
       - name: Export MYPYPATH for local stubs
-        # Ensure mypy can find local stub packages in `stubs/`
         run: echo "MYPYPATH=${{ github.workspace }}/stubs" >> $GITHUB_ENV
 
       - name: Ruff lint
@@ -55,12 +44,12 @@ jobs:
       - name: Ruff format check
         run: uv run ruff format --check app tests
 
-      - name: Mypy type check (full)
+      - name: Mypy type check
         env:
           MYPYPATH: ${{ github.workspace }}/stubs
         run: uv run mypy --config-file pyproject.toml app tests
 
-      - name: Bandit security scan (exclude tests)
+      - name: Bandit security scan
         run: uv run bandit -r app -x tests
 
       - name: Detect secrets baseline scan
@@ -69,48 +58,10 @@ jobs:
       - name: Run unit and integration tests (with coverage)
         run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
-      - name: Run pre-commit (safety check)
+      - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
         with:
           extra_args: "--all-files"
-
-      - name: Prefer BASE64 private key and set `APP_PRIVATE_KEY`
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          set -euo pipefail
-          # If APP_PRIVATE_KEY_B64 is provided, decode into APP_PRIVATE_KEY so action can use a PEM string
-          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
-          fi
-
-      - name: Set token value for downstream jobs (skipped)
-        id: set_token_value
-        run: |
-          echo "No token created in CI; release will handle token creation"
-
-      - name: Set token_source for downstream jobs (noop)
-        id: set_token_source
-        run: |
-          # CI no longer creates app tokens; release workflow is responsible for token creation.
-          # Keep a placeholder so downstream `workflow_call` input exists but do not declare an app token here.
-          if [ "${{ github.event_name }}" != "pull_request" ]; then
-            echo "token_source=workflow" >> "$GITHUB_OUTPUT"
-          else
-            echo "token_source=none" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: "Debug: show token forwarding decision (no secrets)"
-        run: |
-          echo "[debug] token_source (to be forwarded): '${{ steps.set_token_source.outputs.token_source }}'"
-          if [ -n "${{ steps.set_token_value.outputs.token }}" ]; then
-            echo "[debug] app token was created: true (value masked)"
-          else
-            echo "[debug] app token was created: false"
-          fi
 
   call-release:
     name: Call Release workflow
@@ -123,9 +74,5 @@ jobs:
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
     secrets:
-      # If you want to provide a PAT fallback, set the RELEASE_GITHUB_TOKEN secret in repository settings and it will be forwarded here by updating this mapping.
-      RELEASE_GITHUB_TOKEN: ''
-      # Forward APP secrets to Release so the release workflow can self-create tokens
       APP_ID: ${{ secrets.APP_ID }}
-      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
