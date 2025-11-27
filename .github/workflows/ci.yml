@@ -16,6 +16,9 @@ jobs:
   checks:
     name: Lint, Typecheck, Security & Tests
     runs-on: ubuntu-latest
+    env:
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
     outputs:
       app_token: ${{ steps.set_token_value.outputs.token }}
       token_source: ${{ steps.set_token_source.outputs.token_source }}
@@ -69,124 +72,49 @@ jobs:
         run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
       - name: Run pre-commit (safety check)
-        uses: pre-commit/action@v3.0.0
+        uses: pre-commit/action@v3.0.1
         with:
           extra_args: "--all-files"
 
-      - name: Create GitHub App installation token (non-PR)
-        id: create_app_token
+      - name: Prepare App private key if needed
         if: ${{ github.event_name != 'pull_request' }}
-        env:
-          APP_ID: ${{ secrets.APP_ID }}
-          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-          REPO: ${{ github.repository }}
+        run: |
+          # If the repo stores the private key as base64 (APP_PRIVATE_KEY_B64), decode it into APP_PRIVATE_KEY
+          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ] && [ -z "${{ secrets.APP_PRIVATE_KEY }}" ]; then
+            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
+            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+            cat /tmp/app.pem >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          fi
+
+      - name: Prefer BASE64 private key and set `APP_PRIVATE_KEY`
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           set -euo pipefail
-
-          # If App secrets are not provided, emit empty output
-          if [ -z "${APP_ID:-}" ] || [ -z "${APP_PRIVATE_KEY:-}" ]; then
-            echo "No APP_ID/APP_PRIVATE_KEY configured; skipping App token creation"
-            echo "token=" >> "$GITHUB_OUTPUT"
-            exit 0
+          # If APP_PRIVATE_KEY_B64 is provided, decode into APP_PRIVATE_KEY so action can use a PEM string
+          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
+            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
+            echo "APP_PRIVATE_KEY<<'EOF'" >> $GITHUB_ENV
+            cat /tmp/app.pem >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
           fi
 
-          # Support several formats for the private key secret (try them in order):
-          # 1) APP_PRIVATE_KEY_B64: single-line base64 encoding of the PEM (preferred)
-          # 2) APP_PRIVATE_KEY: either the full multi-line PEM, or (accidentally) the single-line base64
+      - name: Create GitHub App installation token (non-PR)
+        id: create_app_token_action
+        if: ${{ github.event_name != 'pull_request' && env.APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ env.APP_PRIVATE_KEY }}
 
-          wrote_pem=0
 
-          if [ -n "${APP_PRIVATE_KEY_B64:-}" ]; then
-            echo "Decoding base64 private key from APP_PRIVATE_KEY_B64"
-            if printf '%s' "$APP_PRIVATE_KEY_B64" | base64 -d > /tmp/app.pem 2>/dev/null; then
-              wrote_pem=1
-            else
-              echo "Failed to decode APP_PRIVATE_KEY_B64; ensure it's valid base64"
-            fi
-          fi
-
-          if [ "$wrote_pem" -eq 0 ] && [ -n "${APP_PRIVATE_KEY:-}" ]; then
-            # If APP_PRIVATE_KEY contains a PEM BEGIN marker, treat as multi-line PEM
-            if printf '%s' "$APP_PRIVATE_KEY" | grep -q "-----BEGIN"; then
-              echo "Writing multi-line PEM from APP_PRIVATE_KEY"
-              printf "%s" "$APP_PRIVATE_KEY" | sed 's/\r$//' > /tmp/app.pem
-              wrote_pem=1
-            else
-              # Might be a single-line base64 accidentally stored in APP_PRIVATE_KEY; try decoding
-              echo "APP_PRIVATE_KEY does not contain BEGIN marker; attempting to decode as base64"
-              if printf '%s' "$APP_PRIVATE_KEY" | base64 -d > /tmp/app.pem 2>/dev/null; then
-                # verify decoded file looks like a PEM
-                if grep -q "-----BEGIN" /tmp/app.pem 2>/dev/null; then
-                  wrote_pem=1
-                else
-                  echo "Decoded APP_PRIVATE_KEY did not contain a PEM header"
-                  rm -f /tmp/app.pem || true
-                fi
-              else
-                echo "Failed to decode APP_PRIVATE_KEY as base64"
-              fi
-            fi
-          fi
-
-          if [ "$wrote_pem" -ne 1 ]; then
-            echo "APP_PRIVATE_KEY_B64 and APP_PRIVATE_KEY are not valid PEM inputs."
-            echo "Please set either APP_PRIVATE_KEY (multi-line PEM) or APP_PRIVATE_KEY_B64 (base64-encoded PEM)."
-            echo "token=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Quick validation of the PEM using openssl
-          if ! openssl pkey -in /tmp/app.pem -noout >/dev/null 2>&1 && ! openssl rsa -in /tmp/app.pem -check -noout >/dev/null 2>&1; then
-            echo "Decoded file does not appear to be a valid private key PEM"
-            echo "token=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          chmod 600 /tmp/app.pem
-
-          now=$(date +%s)
-          iat=$((now - 60))
-          exp=$((now + 600))
-
-          header='{"alg":"RS256","typ":"JWT"}'
-          payload=$(printf '{"iat":%d,"exp":%d,"iss":%s}' "$iat" "$exp" "$APP_ID")
-
-          b64url() {
-            openssl base64 -e | tr -d '\n' | tr '+/' '-_' | tr -d '='
-          }
-
-          hdr_b64=$(printf '%s' "$header" | b64url)
-          pay_b64=$(printf '%s' "$payload" | b64url)
-          signing_input="$hdr_b64.$pay_b64"
-          sig=$(printf '%s' "$signing_input" | openssl dgst -sha256 -sign /tmp/app.pem | openssl base64 -A | tr '+/' '-_' | tr -d '=')
-          jwt="$signing_input.$sig"
-
-          install_info=$(curl -s -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/installation")
-          install_id=$(printf '%s' "$install_info" | jq -r '.id')
-
-          if [ "$install_id" = "null" ] || [ -z "$install_id" ]; then
-            echo "Could not get installation id; installation info: $install_info"
-            echo "token=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          token_resp=$(curl -s -X POST -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/app/installations/$install_id/access_tokens")
-          access_token=$(printf '%s' "$token_resp" | jq -r '.token')
-
-          if [ -z "$access_token" ] || [ "$access_token" = "null" ]; then
-            echo "Failed to create installation token: $token_resp"
-            echo "token=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "token=$access_token" >> "$GITHUB_OUTPUT"
 
       - name: Set token value for downstream jobs
         id: set_token_value
         run: |
-          # Use the token produced by the create_app_token step when present.
-          token="${{ steps.create_app_token.outputs.token }}"
+          # Use the token produced by the create_app_token action when present
+          token="${{ steps.create_app_token_action.outputs.token }}"
 
           if [ -n "$token" ]; then
             echo "app token created by checks job"
@@ -200,8 +128,8 @@ jobs:
       - name: Set token_source for downstream jobs
         id: set_token_source
         run: |
-          # Use the presence of the token to determine the token source; token_source is non-secret and should not be redacted.
-          token="${{ steps.create_app_token.outputs.token }}"
+          # Use the presence of the token (either action or fallback) to determine the token source; token_source is non-secret and should not be redacted.
+          token="${{ steps.create_app_token_action.outputs.token }}"
 
           if [ -n "$token" ]; then
             echo "token_source=app" >> "$GITHUB_OUTPUT"
