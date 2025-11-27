@@ -76,6 +76,7 @@ jobs:
         env:
           APP_ID: ${{ secrets.APP_ID }}
           APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+          APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
@@ -87,30 +88,58 @@ jobs:
             exit 0
           fi
 
-          # Support two formats for the private key secret:
-          # 1) `APP_PRIVATE_KEY` contains the full PEM file (multi-line) as created when you generate
-          #    a private key for your GitHub App in the App settings.
-          # 2) `APP_PRIVATE_KEY_B64` contains the base64 encoding of the PEM file (useful for single-line secrets).
+          # Support several formats for the private key secret (try them in order):
+          # 1) APP_PRIVATE_KEY_B64: single-line base64 encoding of the PEM (preferred)
+          # 2) APP_PRIVATE_KEY: either the full multi-line PEM, or (accidentally) the single-line base64
+
+          wrote_pem=0
 
           if [ -n "${APP_PRIVATE_KEY_B64:-}" ]; then
             echo "Decoding base64 private key from APP_PRIVATE_KEY_B64"
-            printf '%s' "$APP_PRIVATE_KEY_B64" | base64 -d > /tmp/app.pem || {
-              echo "Failed to decode APP_PRIVATE_KEY_B64; ensure it's valid base64"
-              echo "token=" >> "$GITHUB_OUTPUT"
-              exit 0
-            }
-          else
-            # If APP_PRIVATE_KEY looks like a PEM (contains BEGIN), write it out as-is
-            if printf '%s' "$APP_PRIVATE_KEY" | grep -q "-----BEGIN \(RSA \)\?PRIVATE KEY-----"; then
-              printf "%s\n" "$APP_PRIVATE_KEY" > /tmp/app.pem
+            if printf '%s' "$APP_PRIVATE_KEY_B64" | base64 -d > /tmp/app.pem 2>/dev/null; then
+              wrote_pem=1
             else
-              echo "APP_PRIVATE_KEY does not look like a PEM and APP_PRIVATE_KEY_B64 not provided."
-              echo "Please upload the PEM private key for your GitHub App as the secret APP_PRIVATE_KEY (multi-line),"
-              echo "or upload the base64-encoded PEM as APP_PRIVATE_KEY_B64."
-              echo "token=" >> "$GITHUB_OUTPUT"
-              exit 0
+              echo "Failed to decode APP_PRIVATE_KEY_B64; ensure it's valid base64"
             fi
           fi
+
+          if [ "$wrote_pem" -eq 0 ] && [ -n "${APP_PRIVATE_KEY:-}" ]; then
+            # If APP_PRIVATE_KEY contains a PEM BEGIN marker, treat as multi-line PEM
+            if printf '%s' "$APP_PRIVATE_KEY" | grep -q "-----BEGIN"; then
+              echo "Writing multi-line PEM from APP_PRIVATE_KEY"
+              printf "%s" "$APP_PRIVATE_KEY" | sed 's/\r$//' > /tmp/app.pem
+              wrote_pem=1
+            else
+              # Might be a single-line base64 accidentally stored in APP_PRIVATE_KEY; try decoding
+              echo "APP_PRIVATE_KEY does not contain BEGIN marker; attempting to decode as base64"
+              if printf '%s' "$APP_PRIVATE_KEY" | base64 -d > /tmp/app.pem 2>/dev/null; then
+                # verify decoded file looks like a PEM
+                if grep -q "-----BEGIN" /tmp/app.pem 2>/dev/null; then
+                  wrote_pem=1
+                else
+                  echo "Decoded APP_PRIVATE_KEY did not contain a PEM header"
+                  rm -f /tmp/app.pem || true
+                fi
+              else
+                echo "Failed to decode APP_PRIVATE_KEY as base64"
+              fi
+            fi
+          fi
+
+          if [ "$wrote_pem" -ne 1 ]; then
+            echo "APP_PRIVATE_KEY_B64 and APP_PRIVATE_KEY are not valid PEM inputs."
+            echo "Please set either APP_PRIVATE_KEY (multi-line PEM) or APP_PRIVATE_KEY_B64 (base64-encoded PEM)."
+            echo "token=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Quick validation of the PEM using openssl
+          if ! openssl pkey -in /tmp/app.pem -noout >/dev/null 2>&1 && ! openssl rsa -in /tmp/app.pem -check -noout >/dev/null 2>&1; then
+            echo "Decoded file does not appear to be a valid private key PEM"
+            echo "token=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           chmod 600 /tmp/app.pem
 
           now=$(date +%s)

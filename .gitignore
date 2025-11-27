@@ -46,3 +46,6 @@ logs/
 
 release.yml
 cd.yml
+cs.pem
+cs.pem.b64
+cat.txt
