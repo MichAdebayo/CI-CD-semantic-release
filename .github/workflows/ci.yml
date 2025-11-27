@@ -14,6 +14,8 @@ jobs:
   checks:
     name: Lint, Typecheck, Security & Tests
     runs-on: ubuntu-latest
+    outputs:
+      app_token: ${{ steps.create_app_token.outputs.token }}
 
     steps:
       - name: Checkout
@@ -68,6 +70,63 @@ jobs:
           pip install pre-commit
           pre-commit run --all-files
 
+      - name: Create GitHub App installation token (non-PR)
+        id: create_app_token
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          # If App secrets are not provided, emit empty output
+          if [ -z "${APP_ID:-}" ] || [ -z "${APP_PRIVATE_KEY:-}" ]; then
+            echo "No APP_ID/APP_PRIVATE_KEY configured; skipping App token creation"
+            echo "token=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          printf "%s\n" "$APP_PRIVATE_KEY" > /tmp/app.pem
+          chmod 600 /tmp/app.pem
+
+          now=$(date +%s)
+          iat=$((now - 60))
+          exp=$((now + 600))
+
+          header='{"alg":"RS256","typ":"JWT"}'
+          payload=$(printf '{"iat":%d,"exp":%d,"iss":%s}' "$iat" "$exp" "$APP_ID")
+
+          b64url() {
+            openssl base64 -e | tr -d '\n' | tr '+/' '-_' | tr -d '='
+          }
+
+          hdr_b64=$(printf '%s' "$header" | b64url)
+          pay_b64=$(printf '%s' "$payload" | b64url)
+          signing_input="$hdr_b64.$pay_b64"
+          sig=$(printf '%s' "$signing_input" | openssl dgst -sha256 -sign /tmp/app.pem | openssl base64 -A | tr '+/' '-_' | tr -d '=')
+          jwt="$signing_input.$sig"
+
+          install_info=$(curl -s -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/installation")
+          install_id=$(printf '%s' "$install_info" | jq -r '.id')
+
+          if [ "$install_id" = "null" ] || [ -z "$install_id" ]; then
+            echo "Could not get installation id; installation info: $install_info"
+            echo "token=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          token_resp=$(curl -s -X POST -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.github+json" "https://api.github.com/app/installations/$install_id/access_tokens")
+          access_token=$(printf '%s' "$token_resp" | jq -r '.token')
+
+          if [ -z "$access_token" ] || [ "$access_token" = "null" ]; then
+            echo "Failed to create installation token: $token_resp"
+            echo "token=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "token=$access_token" >> "$GITHUB_OUTPUT"
+
   call-release:
     name: Call Release workflow
     needs: checks
@@ -81,6 +140,7 @@ jobs:
       is_pr: ${{ github.event_name == 'pull_request' }}
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
+      token_source: ${{ github.event_name != 'pull_request' && (needs.checks.outputs.app_token != '' && 'app' || 'workflow') || 'none' }}
     secrets:
-      # Do not forward the token for pull_request events (avoid exposing secrets to forks/PRs)
-      RELEASE_GITHUB_TOKEN: "${{ github.event_name != 'pull_request' && secrets.GITHUB_TOKEN || '' }}"
+      # Prefer App installation token created in the checks job (only for non-PR). Fallback to workflow GITHUB_TOKEN for non-PR; empty for PRs.
+      RELEASE_GITHUB_TOKEN: "${{ github.event_name != 'pull_request' && (needs.checks.outputs.app_token != '' && needs.checks.outputs.app_token || secrets.GITHUB_TOKEN) || '' }}"

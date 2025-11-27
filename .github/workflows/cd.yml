@@ -109,8 +109,8 @@ jobs:
             fi
           elif [ "$head_branch" = "develop" ]; then
             if [ -n "$ver" ] && [ "$ver" != "" ]; then
-              echo "Develop branch with semantic version available -> using semver $ver"
-              tags="$repo:$ver"
+              echo "Develop branch with semantic version available -> using semver v$ver"
+              tags="$repo:v$ver"
             else
               echo "Develop branch with no semantic version -> using fallback dev-SHA"
               short="${{ inputs.sha }}"
