@@ -76,17 +76,6 @@ jobs:
         with:
           extra_args: "--all-files"
 
-      - name: Prepare App private key if needed
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          # If the repo stores the private key as base64 (APP_PRIVATE_KEY_B64), decode it into APP_PRIVATE_KEY
-          if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ] && [ -z "${{ secrets.APP_PRIVATE_KEY }}" ]; then
-            printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-            cat /tmp/app.pem >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          fi
-
       - name: Prefer BASE64 private key and set `APP_PRIVATE_KEY`
         if: ${{ github.event_name != 'pull_request' }}
         run: |
@@ -94,7 +83,7 @@ jobs:
           # If APP_PRIVATE_KEY_B64 is provided, decode into APP_PRIVATE_KEY so action can use a PEM string
           if [ -n "${{ secrets.APP_PRIVATE_KEY_B64 }}" ]; then
             printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d > /tmp/app.pem
-            echo "APP_PRIVATE_KEY<<'EOF'" >> $GITHUB_ENV
+            echo "APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
             cat /tmp/app.pem >> $GITHUB_ENV
             echo "EOF" >> $GITHUB_ENV
             echo "Decoded APP_PRIVATE_KEY_B64 to env.APP_PRIVATE_KEY"
