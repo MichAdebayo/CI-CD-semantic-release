@@ -85,8 +85,6 @@ jobs:
           head_branch="${{ inputs.head_branch }}"
           base_ref="${{ inputs.base_ref }}"
 
-          out=()
-
           # If this is a PR (base_ref is set), don't push any images
           if [ -n "$base_ref" ]; then
             echo "Skipping CD: PR detected (base_ref=$base_ref). No images will be pushed for PRs."
@@ -95,39 +93,37 @@ jobs:
             exit 0
           fi
 
-          case "$head_branch" in
-            main)
-              # For main branch: use 'latest' tag and semantic version (if available)
-              out+=("$repo:latest")
-              if [ -n "$ver" ] && [ "$ver" != "" ]; then
-                echo "Adding semantic version tag: $ver"
-                out+=("$repo:$ver")
-              fi
-              ;;
-            develop)
-              # For develop branch: use semantic version (should be prerelease like 1.2.3-dev.1)
-              if [ -n "$ver" ] && [ "$ver" != "" ]; then
-                echo "Using semantic version for develop: $ver"
-                out+=("$repo:$ver")
-                # Also add a 'develop' tag for convenience
-                out+=("$repo:develop")
-              else
-                # Fallback if semantic-release didn't produce a version
-                echo "WARNING: No semantic version provided for develop branch. Using fallback."
-                short="${{ inputs.sha }}"
-                short="${short:0:7}"
-                out+=("$repo:develop-$short")
-              fi
-              ;;
-            *)
-              echo "Skipping CD: unsupported branch '$head_branch' (no tags to prepare)"
-              echo "tags=" >> "$GITHUB_OUTPUT"
-              echo "labels=" >> "$GITHUB_OUTPUT"
-              exit 0
-              ;;
-          esac
+          # Decide tags by branch and semantic version availability:
+          # - main + semver -> push only 'latest'
+          # - develop + semver -> push only the semver tag
+          # - any branch without semver -> push a single fallback tag 'dev-<short-sha>' (7 chars)
+          if [ "$head_branch" = "main" ]; then
+            if [ -n "$ver" ] && [ "$ver" != "" ]; then
+              echo "Main branch with semantic version available -> using 'latest'"
+              tags="$repo:latest"
+            else
+              echo "Main branch with no semantic version -> using fallback dev-SHA"
+              short="${{ inputs.sha }}"
+              short="${short:0:7}"
+              tags="$repo:dev-$short"
+            fi
+          elif [ "$head_branch" = "develop" ]; then
+            if [ -n "$ver" ] && [ "$ver" != "" ]; then
+              echo "Develop branch with semantic version available -> using semver $ver"
+              tags="$repo:$ver"
+            else
+              echo "Develop branch with no semantic version -> using fallback dev-SHA"
+              short="${{ inputs.sha }}"
+              short="${short:0:7}"
+              tags="$repo:dev-$short"
+            fi
+          else
+            echo "Skipping CD: unsupported branch '$head_branch' (no tags to prepare)"
+            echo "tags=" >> "$GITHUB_OUTPUT"
+            echo "labels=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
-          IFS=','; tags="${out[*]}"; unset IFS
           echo "Prepared tags: $tags"
           echo "tags=$tags" >> "$GITHUB_OUTPUT"
           # Forward labels from metadata-action so build step can reuse them
