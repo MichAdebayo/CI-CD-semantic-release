@@ -28,6 +28,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Added a test comment to trigger semantic release
 app.include_router(items_router)
 
 
