@@ -25,6 +25,10 @@ on:
       RELEASE_GITHUB_TOKEN:
         required: true
 
+permissions:
+  contents: write
+  packages: write
+
 
 jobs:
   release:
@@ -114,6 +118,21 @@ jobs:
           echo "Recent tags:"
           git tag --list --sort=-version:refname | head -10
 
+      - name: Validate token forwarding for publish runs
+        run: |
+          # If this is a publish run (not a PR and on main/develop), require token_source to be provided by the caller (CI)
+          if [ "${{ env.BASE_REF }}" = "" ] && ( [ "${{ env.HEAD_BRANCH }}" = "main" ] || [ "${{ env.HEAD_BRANCH }}" = "develop" ] ) && [ "${{ env.IS_PR }}" = "false" ]; then
+            if [ "${{ env.TOKEN_SOURCE }}" = "unknown" ] || [ "${{ env.TOKEN_SOURCE }}" = "" ]; then
+              echo "ERROR: release workflow invoked without token forwarding (TOKEN_SOURCE=${{ env.TOKEN_SOURCE }})."
+              echo "This run cannot safely publish. Ensure the CI workflow calls this workflow via workflow_call and forwards the App installation token as 'RELEASE_GITHUB_TOKEN' and 'token_source'."
+              exit 1
+            else
+              echo "TOKEN_SOURCE=${{ env.TOKEN_SOURCE }} (ok)"
+            fi
+          else
+            echo "Not a publish-run or running in PR context; skipping token_source enforcement"
+          fi
+
       # Token creation and origin configuration are handled in CI and passed in as RELEASE_GITHUB_TOKEN
       # PR dry-run: Just print what version would be created
       - name: Dry-run semantic release — Print tag (PRs only)
@@ -161,6 +180,9 @@ jobs:
           if [ -n "${GITHUB_TOKEN:-}" ]; then
             echo "Configuring origin remote to use authenticated token for pushes"
             git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_INPUT}.git"
+            echo "Remote config after set-url:"
+            git remote -v || true
+            git remote show origin || true
           else
             echo "No GITHUB_TOKEN available to configure origin remote; pushes may fail"
           fi
