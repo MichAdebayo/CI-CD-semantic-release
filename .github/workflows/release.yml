@@ -183,6 +183,17 @@ jobs:
           echo "Checking repo permissions for GH_APP_TOKEN (push/pull/admin):"
           status=$(curl -s -H "Authorization: Bearer ${{ steps.create_app_token_release.outputs.token }}" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ env.REPO_INPUT }}" | jq -r '.permissions')
           echo "$status"
+          push_perm=$(printf '%s' "$status" | jq -r '.push')
+          if [ "$push_perm" != "true" ]; then
+            echo "WARNING: created GH App token does not have 'push' permission on this repo."
+            if [ -z "${RELEASE_GITHUB_TOKEN:-}" ]; then
+              echo "This workflow cannot publish tags without a token with push permission."
+              echo "Please update the GitHub App permissions to include 'Contents: Read & Write' and re-run, or supply a RELEASE_GITHUB_TOKEN PAT with repo:packages rights."
+              exit 1
+            else
+              echo "RELEASE_GITHUB_TOKEN is present; will attempt to use fallback token for publishing."
+            fi
+          fi
 
       - name: Create GitHub App installation token fallback (legacy)
         if: ${{ env.TOKEN_SOURCE == 'unknown' && (env.APP_ID == '' || (env.APP_PRIVATE_KEY == '' && env.APP_PRIVATE_KEY_B64 == '')) }}
@@ -347,3 +358,6 @@ jobs:
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
       # Prefer GH_APP_TOKEN created in this workflow for subsequent CD publish. Fallback to caller-provided RELEASE_GITHUB_TOKEN
       RELEASE_GITHUB_TOKEN: ${{ needs.release.outputs.gh_app_token != '' && needs.release.outputs.gh_app_token || secrets.RELEASE_GITHUB_TOKEN }}
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
