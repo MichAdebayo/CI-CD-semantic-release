@@ -1,13 +1,9 @@
 site_name: Semantic Release CI/CD Docs
 site_url: https://MichAdebayo.github.io/CI-CD-semantic-release/
-theme:
-  name: Dinky
-  palette:
-    primary: indigo
-    accent: indigo
-  font:
-    text: Roboto
-    code: Roboto Mono
+remote_theme: pages-themes/dinky@v0.2.0
+plugins:
+  - jekyll-remote-theme
+
 nav:
   - Home: index.md
   - About: README.md
