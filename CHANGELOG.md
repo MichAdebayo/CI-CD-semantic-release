@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v0.2.2 (2025-11-28)
+
+### Bug Fixes
+
+- **ci**: Uncomment Mypy, Bandit, secrets scan, and test steps in CI workflow
+  ([`13d79ef`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/13d79efde8f931200afb343ef5ca570f47e92e96))
+
+- **docs**: Update README to include project title
+  ([`02cb37e`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/02cb37e63377597c53bdd51cc75b8ec61f910eec))
+
+### Refactoring
+
+- **deploy**: Validate and normalize Render hook URL before triggering deployment
+  ([`87ba088`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/87ba08820234cce4a1f4ad3ae9bd6a20df0dabed))
+
+- **workflows**: Rename RENDER_DEPLOY_HOOK_URL to DEPLOY_URL across workflows
+  ([`85206a9`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/85206a933bd88fc235449dd0f48fe336cec43ab1))
+
+
 ## v0.2.1 (2025-11-28)
 
 ### Bug Fixes
