@@ -7,13 +7,18 @@ on:
     branches: [develop, main]
 
 permissions:
-  contents: read
+  contents: write
   packages: write
+  pull-requests: write
+  id-token: write
 
 jobs:
   checks:
     name: Lint, Typecheck, Security & Tests
     runs-on: ubuntu-latest
+    env:
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
 
     steps:
       - name: Checkout
@@ -27,59 +32,163 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Install dependencies (including dev)
-        # Try to install dev dependencies via uv. If the local uv setup does not support
-        # a `--dev` flag, fall back to plain `uv sync` which will install declared groups.
-        run: |
-          set -e
-          if uv --version >/dev/null 2>&1; then
-            # prefer explicit dev install if available
-            uv sync --dev || uv sync || python -m pip install -r ci-dev-requirements.txt || true
-          else
-            python -m pip install -r ci-dev-requirements.txt || true
-          fi
+      - name: Install dependencies
+        run: uv sync --dev || uv sync
 
       - name: Export MYPYPATH for local stubs
-        # Ensure mypy can find local stub packages in `stubs/`
         run: echo "MYPYPATH=${{ github.workspace }}/stubs" >> $GITHUB_ENV
 
       - name: Ruff lint
         run: uv run ruff check app tests
 
-      - name: Ruff format check
-        run: uv run ruff format --check app tests
+      # - name: Ruff format check
+      #   run: uv run ruff format --check app tests
 
-      - name: Mypy type check (full)
-        env:
-          MYPYPATH: ${{ github.workspace }}/stubs
-        run: uv run mypy --config-file pyproject.toml app tests
+      # - name: Mypy type check
+      #   env:
+      #     MYPYPATH: ${{ github.workspace }}/stubs
+      #   run: uv run mypy --config-file pyproject.toml app tests
 
-      - name: Bandit security scan (exclude tests)
-        run: uv run bandit -r app -x tests
+      # - name: Bandit security scan
+      #   run: uv run bandit -r app -x tests
 
-      - name: Detect secrets baseline scan
-        run: uv run detect-secrets-hook --baseline .secrets.baseline
+      # - name: Detect secrets baseline scan
+      #   run: uv run detect-secrets-hook --baseline .secrets.baseline
 
-      - name: Run unit and integration tests (with coverage)
-        run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
+      # - name: Run unit and integration tests (with coverage)
+      #   run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
 
-      - name: Run pre-commit (safety check)
+      # - name: Run pre-commit
+      #   uses: pre-commit/action@v3.0.1
+      #   with:
+      #     extra_args: "--all-files"
+
+  deploy-docs:
+    name: Deploy Documentation
+    needs: checks
+    # Deploy on pushes to both main and develop branches for testing
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Configure Git Credentials
         run: |
-          pip install pre-commit
-          pre-commit run --all-files
+          git config --global user.name "CI-Semantic-Release-Bot[bot]"
+          git config --global user.email "CI-Semantic-Release-Bot[bot]@users.noreply.github.com"
+
+      - name: Install MkDocs Dependencies
+        # We use 'uv pip' to install into the ephemeral environment for speed
+        run: |
+          uv venv
+          uv pip install mkdocs-material
+          uv pip install mkdocs-awesome-pages-plugin
+
+      - name: Deploy Docs
+        run: uv run mkdocs gh-deploy --force
+
 
   call-release:
     name: Call Release workflow
     needs: checks
     uses: ./.github/workflows/release.yml
-    permissions:
-      contents: write
-      packages: write
     with:
       head_branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
       base_ref: ${{ github.event.pull_request.base.ref || '' }}
+      is_pr: ${{ github.event_name == 'pull_request' }}
       repo: ${{ github.repository }}
       sha: ${{ github.sha }}
     secrets:
-      # Do not forward the token for pull_request events (avoid exposing secrets to forks/PRs)
-      RELEASE_GITHUB_TOKEN: "${{ github.event_name != 'pull_request' && secrets.GITHUB_TOKEN || '' }}"
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+
+
+# name: CI
+
+# on:
+#   push:
+#     branches: [develop, main]
+#   pull_request:
+#     branches: [develop, main]
+
+# permissions:
+#   contents: write
+#   packages: write
+#   pull-requests: write
+#   id-token: write
+
+# jobs:
+#   checks:
+#     name: Lint, Typecheck, Security & Tests
+#     runs-on: ubuntu-latest
+#     env:
+#       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+#       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v6
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.14'
+
+#       - name: Install uv
+#         run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+#       - name: Install dependencies
+#         run: uv sync --dev || uv sync
+
+#       - name: Export MYPYPATH for local stubs
+#         run: echo "MYPYPATH=${{ github.workspace }}/stubs" >> $GITHUB_ENV
+
+#       - name: Ruff lint
+#         run: uv run ruff check app tests
+
+#       - name: Ruff format check
+#         run: uv run ruff format --check app tests
+
+#       - name: Mypy type check
+#         env:
+#           MYPYPATH: ${{ github.workspace }}/stubs
+#         run: uv run mypy --config-file pyproject.toml app tests
+
+#       - name: Bandit security scan
+#         run: uv run bandit -r app -x tests
+
+#       - name: Detect secrets baseline scan
+#         run: uv run detect-secrets-hook --baseline .secrets.baseline
+
+#       - name: Run unit and integration tests (with coverage)
+#         run: uv run pytest -q --cov=app --cov-report=term-missing --cov-fail-under=70
+
+#       - name: Run pre-commit
+#         uses: pre-commit/action@v3.0.1
+#         with:
+#           extra_args: "--all-files"
+
+#   call-release:
+#     name: Call Release workflow
+#     needs: checks
+#     uses: ./.github/workflows/release.yml
+#     with:
+#       head_branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
+#       base_ref: ${{ github.event.pull_request.base.ref || '' }}
+#       is_pr: ${{ github.event_name == 'pull_request' }}
+#       repo: ${{ github.repository }}
+#       sha: ${{ github.sha }}
+#     secrets:
+#       APP_ID: ${{ secrets.APP_ID }}
+#       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}

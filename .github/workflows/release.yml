@@ -9,6 +9,9 @@ on:
       base_ref:
         required: false
         type: string
+      is_pr:
+        required: false
+        type: boolean
       repo:
         required: true
         type: string
@@ -16,26 +19,48 @@ on:
         required: true
         type: string
     secrets:
-      RELEASE_GITHUB_TOKEN:
+      APP_ID:
         required: true
+      APP_PRIVATE_KEY_B64:
+        required: true
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   release:
     outputs:
       version: ${{ steps.compute_version.outputs.version }}
-    # Only run when the CI workflow invoked this workflow call and the repo and branch match
-    if: ${{ github.repository == inputs.repo && (inputs.head_branch == 'main' || inputs.head_branch == 'develop' || inputs.base_ref == 'main' || inputs.base_ref == 'develop') }}
+      head_branch: ${{ inputs.head_branch }}
+      base_ref: ${{ inputs.base_ref }}
+      repo: ${{ inputs.repo }}
+      sha: ${{ inputs.sha }}
+      gh_app_token: ${{ steps.create_app_token.outputs.token }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-
     steps:
+      - name: Decode GitHub App private key
+        id: decode_key
+        run: |
+          decoded_key=$(printf '%s' "${{ secrets.APP_PRIVATE_KEY_B64 }}" | base64 -d)
+          echo "private_key<<EOF" >> $GITHUB_OUTPUT
+          echo "$decoded_key" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub App token
+        id: create_app_token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ steps.decode_key.outputs.private_key }}
+          repositories: ${{ github.event.repository.name }}
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: ${{ inputs.sha }}
+          token: ${{ steps.create_app_token.outputs.token }}
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
@@ -44,93 +69,59 @@ jobs:
           cache-dependency-glob: "uv.lock"
 
       - name: Install dependencies
-        run: |
-          # Install all dependencies including dev so python-semantic-release is available
-          uv sync --dev
+        run: uv sync --dev
 
-      - name: Configure Git for release
+      - name: Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "CI-Semantic-Release-Bot[bot]"
+          git config user.email "CI-Semantic-Release-Bot[bot]@users.noreply.github.com"
 
-      - name: Show invocation inputs
+      - name: Prepare branch for semantic-release
         run: |
-          echo "GITHUB_EVENT_NAME=${{ github.event_name }}"
-          echo "HEAD_BRANCH=${{ inputs.head_branch }}"
-          echo "BASE_REF=${{ inputs.base_ref }}"
-          echo "SHA=${{ inputs.sha }}"
-
-      - name: Prepare branch for PR dry-run
-        if: ${{ inputs.base_ref != '' }}
-        run: |
-          echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Preparing local branch '${{ inputs.head_branch }}' for dry-run"
-          # Fetch all remote branches so we can create a local branch name
-          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
-          # Create or move a local branch to point at the provided SHA, then check it out
-          git branch -f "${{ inputs.head_branch }}" "${{ inputs.sha }}"
-          git checkout "${{ inputs.head_branch }}"
-
-      - name: Dry-run semantic release — Print tag (PRs only)
-        if: ${{ inputs.base_ref != '' }}
-        run: |
-          echo "[release] PR detected (base_ref=${{ inputs.base_ref }}). Running dry-run (print tag)"
-          # If the PR targets develop, run dry-run with the 'dev' prerelease token
-          if [ "${{ inputs.base_ref }}" = "develop" ]; then
-            echo "[release] Target is 'develop' — using prerelease token 'dev' for dry-run"
-            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag --as-prerelease --prerelease-token dev || true
-          else
-            uv run semantic-release version --no-commit --no-tag --no-changelog --no-push --no-vcs-release --skip-build --print-tag || true
+          git fetch --all --tags
+          if [ "$(git branch --show-current)" != "${{ inputs.head_branch }}" ]; then
+            git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}"
           fi
 
-      - name: Checkout branch for publish
-        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ${{ inputs.head_branch }}
-
-      - name: Ensure branch is checked out for version computation
-        if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
+      - name: Dry-run semantic release (PRs only)
+        if: ${{ inputs.is_pr == true || inputs.base_ref != '' }}
         run: |
-          echo "[release] Ensuring branch '${{ inputs.head_branch }}' is checked out for version computation"
-          # Fetch all remote branches to ensure refs are available
-          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*' || true
-          # Force checkout the branch at the provided SHA
-          git checkout -B "${{ inputs.head_branch }}" "${{ inputs.sha }}" || git checkout "${{ inputs.head_branch }}" || true
-          echo "Current branch: $(git branch --show-current)"
-          echo "Recent commits:"
-          git log --oneline -n 5
-          echo "Tags:"
-          git tag --list | tail -10
+          echo "PR detected - running dry-run"
+          uv run semantic-release version --print || echo "Dry-run completed"
 
-      - name: Compute release version
+      - name: Compute and publish release
         id: compute_version
-        if: ${{ inputs.base_ref == '' }}
-        run: |
-          echo "[release] Computing release version (for tagging images)"
-          ver=$(uv run semantic-release version --print)
-          echo "Computed version: $ver"
-          echo "version=$ver" >> "$GITHUB_OUTPUT"
-
-      - name: Python Semantic Release — Publish
         if: ${{ inputs.base_ref == '' && (inputs.head_branch == 'main' || inputs.head_branch == 'develop') }}
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.create_app_token.outputs.token }}
         run: |
-          # Run the semantic release publish command via uv
-          uv run semantic-release publish
+          echo "Publishing release for branch '${{ inputs.head_branch }}'"
+
+          # Configure authenticated remote
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ inputs.repo }}.git"
+
+          # Run semantic-release with explicit token
+          GH_TOKEN="${GH_TOKEN}" uv run semantic-release version --changelog
+          GH_TOKEN="${GH_TOKEN}" uv run semantic-release publish
+
+          # Capture version
+          ver=$(uv run semantic-release version --print || echo "")
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "Published version: $ver"
 
   call-cd:
     name: Call CD workflow
     needs: release
+    if: ${{ needs.release.outputs.version != '' }}
     uses: ./.github/workflows/cd.yml
     with:
-      head_branch: ${{ inputs.head_branch }}
-      base_ref: ${{ inputs.base_ref }}
-      repo: ${{ inputs.repo }}
-      sha: ${{ inputs.sha }}
+      head_branch: ${{ needs.release.outputs.head_branch }}
+      base_ref: ${{ needs.release.outputs.base_ref }}
+      repo: ${{ needs.release.outputs.repo }}
+      sha: ${{ needs.release.outputs.sha }}
       version: ${{ needs.release.outputs.version }}
     secrets:
-      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
-      RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      GH_APP_TOKEN: ${{ needs.release.outputs.gh_app_token }}
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

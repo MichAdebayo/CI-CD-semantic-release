@@ -1,0 +1,18 @@
+site_name: Semantic Release CI/CD Docs
+site_url: https://MichAdebayo.github.io/CI-CD-semantic-release/
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+nav:
+  - Home: index.md
+  - About: brief.md
+  - Tool Survey: tool_survey.md
+  - Tool Comparison: tool_comparison.md
+  - Problems Detected: problems_detected.md
+  - Semantic Release: semantic_release.md
+  - Contributors: contributors_guide.md

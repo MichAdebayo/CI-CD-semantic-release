@@ -1,6 +1,6 @@
 [project]
 name = "training-ci-cd-semantic-release"
-version = "0.1.0"
+version = "0.2.0-dev.8"
 description = "CRUD API with PostgreSQL for managing items"
 requires-python = ">=3.13"
 
@@ -11,6 +11,7 @@ dependencies = [
     "fastapi[standard]>=0.121.0",
     "psycopg2-binary>=2.9.11",
     "pydantic>=2.12.4",
+    "pyyaml>=6.0.3",
     "sqlalchemy>=2.0.44",
     "sqlmodel>=0.0.27",
 ]
@@ -75,24 +76,28 @@ include = ["app"]
 
 
 [tool.semantic_release]
-version_source = "pyproject"
+version_toml = ["pyproject.toml:project.version"]
 tag_format = "v{version}"
 upload_to_pypi = false
-version_variable = "project.version"
+upload_to_vcs_release = true
+build_command = ""
+commit_message = "chore(release): bump version to {version}"
 starting_version = "0.1.0"
 allow_zero_version = true
-
-[tool.semantic_release.branches]
-main = { prerelease = false }
-develop = { prerelease = true, prerelease_token = "dev" }
-"deploy/ci_cd" = { match = "^deploy/ci_cd$", prerelease = true, prerelease_token = "ci_cd" }
-
 
 [tool.semantic_release.changelog]
 filename = "CHANGELOG.md"
 
-[tool.semantic_release.remote]
-name = "origin"
+[tool.semantic_release.branches.main]
+match = "main"
+prerelease = false
 
-[tool.semantic_release.publish]
-provider = "github"
+[tool.semantic_release.branches.develop]
+match = "develop"
+prerelease = true
+prerelease_token = "dev"
+
+[tool.semantic_release.branches."deploy/ci_cd"]
+match = "deploy/ci_cd"
+prerelease = true
+prerelease_token = "ci_cd"
