@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.7 (2025-11-28)
+
+### Features
+
+- **docs**: Add initial documentation structure and content.
+  ([`1dff052`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/1dff052459c5f47d188fe6ea5e65cf9c745d7b5f))
+
+### Refactoring
+
+- **ci**: Uncomment Mypy, Bandit, Detect Secrets, and testing steps in CI workflow
+  ([`7d175e9`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/7d175e91be50445cb1079eb54c30d44a97ca51a3))
+
+
 ## v0.2.0-dev.6 (2025-11-27)
 
 ### Features
