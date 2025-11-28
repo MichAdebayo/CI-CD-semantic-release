@@ -1,19 +1,21 @@
 site_name: Semantic Release CI/CD Docs
+site_url: https://MichAdebayo.github.io/CI-CD-semantic-release/
 theme:
-  name: material
+  name: Dinky
+  palette:
+    primary: indigo
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
 nav:
   - Home: index.md
-  - About: about.md
+  - About: README.md
   - Tool Survey: tool_survey.md
   - Tool Comparison: tool_comparison.md
   - Problems Detected: problems_detected.md
   - CI/CD: ci_cd.md
   - Semantic Release: semantic_release.md
   - GitHub Actions: github_actions.md
-  - MkDocs: mkdocs.md
-  - UV: uv.md
-  - Docker: docker.md
-  - Azure Container Apps: azure_container_apps.md
   - GitHub Apps: github_apps.md
   - Contributors: contributors.md
-  - References: references.md
