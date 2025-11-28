@@ -1,75 +1,61 @@
-1. 🎨 **Catégorie Formatage**
+---
+title: Problems Detected — Quality Audit
+---
 
-- curl -X POST http://localhost:8000/items
+# 🛠️ Problems Detected — Summary & Fix Plan
 
-It is not the correct endpoing as the prefix is rightly appeneded but the endpoint has an extra /, so the endpoint shoduld be `/items/` and not `/items``
+> **Quick summary:** This page lists quality issues found during a quick review (formatting, security, imports, typing, documentation and dead code). It includes prioritization and concrete remediation steps.
 
-- very_long_variable_name_that_exceeds_line_length in main
+## 📊 Snapshot
 
-2. 🔒 **Catégorie Sécurité**
+- High priority (3): secrets in code, DEBUG enabled, typing errors causing runtime failures
+- Medium priority (6): unused imports, incorrect use of Pydantic/SQLModel types
+- Low priority (4): formatting, overly long variable names, dead code
 
-- postgres database lack role assignment
+---
 
-- env.example exposes complete database URL instead of using a placeholder string.
+## ⚠️ Immediate actions (high severity)
 
-- postgres database url points to a different entry point instead of localhost
+!!! danger "Secrets & configuration"
+    - `DEBUG` is enabled in `app/main.py` — disable in production and control via environment variables.
+    - `secret` and `API_KEY` are set in code — move to `.env` or secret store and read via environment variables or `pydantic.BaseSettings`.
 
-- DEBUG_MODE exposed in main.py
+!!! danger "Database"
+    - Postgres URL and roles appear misconfigured; verify `DATABASE_URL` in `.env.example` and make sure CI/production point to the correct host.
 
-- secret and API_KEY defined in main.py and not in .env
+---
 
-3. 📦 **Catégorie Imports** :
+## 🔎 Prioritized issues table
 
-- from typing import Generator, import sys in database.py (unused import)
+| Issue | File / Location | Severity | Suggested fix |
+|---|---|---:|---|
+| Incorrect POST endpoint (`/items` vs `/items/`) | `app/routes/items.py` | 🔴 High | Fix route definitions and tests; choose a consistent trailing-slash policy for endpoints. |
+| Secrets / API_KEY in code | `app/main.py` | 🔴 High | Move secrets to `.env`, update `.env.example`, use `pydantic.BaseSettings` or `python-dotenv`. |
+| DEBUG_MODE enabled | `app/main.py` | 🔴 High | Read from environment and default to False in production. |
+| AttributeError: 'str' object has no attribute 'model_dump' | `app/services/item_service.py` | 🔴 High | Ensure endpoint handlers receive typed models (e.g. `item_data: ItemCreate`) and that model instances are used before calling `model_dump`. Add unit tests. |
+| Unused imports | `app/database.py`, `app/main.py`, `app/routes/items.py` | 🟠 Medium | Run `ruff --select F401` and remove unused imports; run `isort` to keep imports organized. |
+| Typing issues in routes/models | `app/models/item.py`, `app/schemas/item.py` | 🟠 Medium | Add explicit annotations (e.g. `__tablename__: str = "items"`), use consistent type hints and run `mypy`. |
+| Missing docstrings | `app/routes/*` | 🟢 Low | Add docstrings for endpoints (description, parameters, responses). |
+| Dead code (`_old_helper_function`, `_legacy_method`) | `app/routes/items.py`, `app/models/items.py` | 🟢 Low | Remove unused/legacy functions or clearly mark them and add tests if they must remain. |
 
-- import datetime in route/items (unused import)
+---
 
-- from typing import Optional (unused import) in schemas/item
+## ✅ Suggested remediation plan (iterative)
 
-- import json (unused in main)
+1. Remove secrets from source code and secure configuration in CI.
+2. Fix runtime errors (e.g. `model_dump`) by adding types and targeted unit tests.
+3. Run `ruff --fix` and `isort`, then validate types with `mypy`.
+4. Remove dead code and add missing docstrings.
+5. Add `pre-commit` hooks (`ruff`, `isort`, `black`) and CI jobs for linting, typing and tests.
 
-- from typing import Dict, Any (unused in main)
+---
 
-- import sys (unused in main)
+## 🗂️ Quick checklist (tick as you go)
 
-- UNUSED_VAR (unused .env variable)
-
-4. 📦 🏷️ **Types** :
-
-- from typing import List but "list" used in @router.get("/", response_model=list[ItemResponse]) instead of "List". (bad naming)
-
-- Type "Literal['items']" is not assignable to declared type "declared_attr[Unknown]"
-  "Literal['items']" is not assignable to "declared_attr[Unknown]" in model item
-
-    __tablename__ = "items"
-
-solution:
-- add type hint to table name
-    __tablename__: str = "items"
-
-- Route for items POST and item_id endpoint had type hint issues. Needed to specify the data models for the parameters accepted.
-
-AttributeError: 'str' object has no attribute 'model_dump' in items_service
-
-E.g: def create_item(item_data, db: Session)
-
-should be
-
-def create_item(item_data: ItemCreate, db: Session = Depends(get_db)):
-
-This way, item_data is processed as a data model and not just a request string.
-
-5. 📝 **Documentation** :
-
-- docstring missing in all but one of the endpoints
-
-6. **Code mort** : dans route/items
-
-- def _old_helper_function(data):
-    """Cette fonction n'est plus utilisée mais n'a pas été supprimée."""
-    return data.upper()
-
--   in modesl/items
-
-    def _legacy_method(self):
-      pass
+- [ ] Secrets removed from source
+- [ ] `.env.example` updated with placeholders
+- [ ] `DEBUG` controlled via environment
+- [ ] Runtime type issues (e.g. `model_dump`) fixed and covered by tests
+- [ ] Imports cleaned (`ruff --fix`, `isort`)
+- [ ] Docstrings added
+- [ ] Dead code removed
