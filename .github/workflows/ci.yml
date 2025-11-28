@@ -19,6 +19,7 @@ jobs:
     env:
       APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+      DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
 
     steps:
       - name: Checkout
@@ -113,3 +114,4 @@ jobs:
     secrets:
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+      DEPLOY_URL: ${{ secrets.DEPLOY_URL }}

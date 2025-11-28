@@ -23,6 +23,8 @@ on:
         required: true
       APP_PRIVATE_KEY_B64:
         required: true
+      DEPLOY_URL:
+        required: true
 
 permissions:
   contents: write
@@ -125,4 +127,4 @@ jobs:
       GH_APP_TOKEN: ${{ needs.release.outputs.gh_app_token }}
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
-      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
