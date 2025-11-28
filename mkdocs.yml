@@ -10,12 +10,10 @@ theme:
     code: Roboto Mono
 nav:
   - Home: index.md
-  - About: README.md
+  - About: brief.md
   - Tool Survey: tool_survey.md
   - Tool Comparison: tool_comparison.md
   - Problems Detected: problems_detected.md
-  - CI/CD: ci_cd.md
   - Semantic Release: semantic_release.md
-  - GitHub Actions: github_actions.md
   - GitHub Apps: github_apps.md
   - Contributors: contributors.md
