@@ -15,5 +15,4 @@ nav:
   - Tool Comparison: tool_comparison.md
   - Problems Detected: problems_detected.md
   - Semantic Release: semantic_release.md
-  - GitHub Apps: github_apps.md
-  - Contributors: contributors.md
+  - Contributors: contributors_guide.md
