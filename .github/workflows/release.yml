@@ -30,6 +30,7 @@ permissions:
 
 jobs:
   release:
+    if: ${{ inputs.head_branch == 'main' }}
     outputs:
       version: ${{ steps.compute_version.outputs.version }}
       head_branch: ${{ inputs.head_branch }}
@@ -112,7 +113,7 @@ jobs:
   call-cd:
     name: Call CD workflow
     needs: release
-    if: ${{ needs.release.outputs.version != '' }}
+    if: ${{ needs.release.outputs.version != '' && inputs.head_branch == 'main' }}
     uses: ./.github/workflows/cd.yml
     with:
       head_branch: ${{ needs.release.outputs.head_branch }}
