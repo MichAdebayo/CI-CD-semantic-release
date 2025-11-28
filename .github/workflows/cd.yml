@@ -125,23 +125,23 @@ jobs:
           echo "Branch: ${{ inputs.head_branch }}"
           echo "Version: ${{ inputs.version }}"
 
-  # deploy-render:
-  #   name: Deploy to Render
-  #   needs: build-and-push-ghcr
-  #   runs-on: ubuntu-latest
-  #   if: ${{ inputs.head_branch == 'main' }}
-  #   steps:
-  #     - name: Trigger Render Deployment Hook
-  #       env:
-  #         RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-  #       run: |
-  #         echo "Triggering Render deployment for ${{ inputs.head_branch }} branch..."
+  deploy-render:
+    name: Deploy to Render
+    needs: build-and-push-ghcr
+    runs-on: ubuntu-latest
+    if: ${{ inputs.head_branch == 'main' }}
+    steps:
+      - name: Trigger Render Deployment Hook
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          echo "Triggering Render deployment for ${{ inputs.head_branch }} branch..."
 
-  #         # This curl command hits the Render webhook URL. This webhook tells Render:
-  #         # 1. To initiate a deployment for the associated Web Service.
-  #         # 2. Render then checks the **Image URL** you configured in the Render dashboard
-  #         # 3. Render pulls the *latest* version tagged with "latest" from the registry.
-  #         # 4. It replaces the currently running container with the new one.
-  #         curl -X POST -d '{}' "$RENDER_DEPLOY_HOOK_URL"
+          # This curl command hits the Render webhook URL. This webhook tells Render:
+          # 1. To initiate a deployment for the associated Web Service.
+          # 2. Render then checks the **Image URL** you configured in the Render dashboard
+          # 3. Render pulls the *latest* version tagged with "latest" from the registry.
+          # 4. It replaces the currently running container with the new one.
+          curl -X POST -d '{}' "$RENDER_DEPLOY_HOOK_URL"
 
-  #         echo "Render deployment hook successfully triggered."
+          echo "Render deployment hook successfully triggered."
