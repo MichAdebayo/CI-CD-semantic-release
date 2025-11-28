@@ -42,3 +42,6 @@ __pycache__/
 logs/
 
 # .secrets.baseline
+ci.yml
+cs.pem
+cs.pem.b64
