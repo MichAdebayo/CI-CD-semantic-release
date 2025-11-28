@@ -25,7 +25,7 @@ on:
         required: false
       APP_PRIVATE_KEY_B64:
         required: false
-      RENDER_DEPLOY_HOOK_URL:
+      DEPLOY_URL:
         required: true
 
 jobs:
@@ -133,10 +133,10 @@ jobs:
     steps:
       - name: Validate and Normalize Render Hook URL
         env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
         run: |
           # Remove surrounding quotes and CR/LF, trim whitespace
-          url="$(printf '%s' "$RENDER_DEPLOY_HOOK_URL" | sed -E 's/^"(.*)"$/\1/' | tr -d '\r\n' | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')"
+          url="$(printf '%s' "$DEPLOY_URL" | sed -E 's/^"(.*)"$/\1/' | tr -d '\r\n' | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')"
 
           # Basic validation: must start with http(s)://
           if ! echo "$url" | grep -qE '^https?://'; then
@@ -152,9 +152,9 @@ jobs:
 
       - name: Trigger Render Deployment Hook
         env:
-          RENDER_DEPLOY_HOOK_URL_FILE: /tmp/render_hook_url
+          DEPLOY_URL_FILE: /tmp/render_hook_url
         run: |
-          url="$(cat "$RENDER_DEPLOY_HOOK_URL_FILE")"
+          url="$(cat "$DEPLOY_URL_FILE")"
           # Ensure the call fails on non-2xx
           curl --show-error --fail -X POST -d '{}' "$url"
           echo "Render deployment hook successfully triggered."
