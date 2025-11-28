@@ -2,6 +2,37 @@
 
 <!-- version list -->
 
+## v0.2.0-dev.8 (2025-11-28)
+
+### Bug Fixes
+
+- **.gitignore**: Add ci.yml and cs.pem files to ignore list
+  ([`3b1a7c8`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/3b1a7c82839f378d88cbec07e7fb6ec0b1716a71))
+
+### Refactoring
+
+- **ci**: Update secrets in workflows to include RENDER_DEPLOY_HOOK_URL
+  ([`0d31acf`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/0d31acfff66eff1aaf5acb57191c5ca376d180a3))
+
+- **docs**: Simplify theme configuration in MkDocs
+  ([`3a561cf`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/3a561cfbe2e1acb4ca5617a10013f78f769a9551))
+
+- **docs**: Update contributors documentation link in mkdocs.yml
+  ([`302c3ae`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/302c3aeb75e33cf772a9ed8cfe21556eb966c08a))
+
+- **docs**: Update navigation in mkdocs.yml
+  ([`26f9da9`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/26f9da911f87e2ee9506f96147e3c91ca256eaf2))
+
+- **docs**: Update navigation links in MkDocs configuration
+  ([`9c08786`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/9c087861c0135cecfd6593cd80c1889935d2e814))
+
+- **docs**: Update theme configuration in MkDocs
+  ([`f96ca91`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/f96ca91a964f5d4d3a964d1cffdceebc906e589b))
+
+- **env**: Update .env.example and pre-commit configuration for secret management
+  ([`7f2e4e2`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/7f2e4e2ce68084b56db1253c4705666e4dd8581c))
+
+
 ## v0.2.0-dev.7 (2025-11-28)
 
 ### Features
