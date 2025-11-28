@@ -121,8 +121,7 @@ jobs:
       sha: ${{ needs.release.outputs.sha }}
       version: ${{ needs.release.outputs.version }}
     secrets:
-      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
-      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
       GH_APP_TOKEN: ${{ needs.release.outputs.gh_app_token }}
       APP_ID: ${{ secrets.APP_ID }}
       APP_PRIVATE_KEY_B64: ${{ secrets.APP_PRIVATE_KEY_B64 }}
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

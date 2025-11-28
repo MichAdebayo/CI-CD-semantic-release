@@ -19,16 +19,14 @@ on:
         required: false
         type: string
     secrets:
-      ACR_USERNAME:
-        required: false
-      ACR_PASSWORD:
-        required: false
       GH_APP_TOKEN:
         required: false
       APP_ID:
         required: false
       APP_PRIVATE_KEY_B64:
         required: false
+      RENDER_DEPLOY_HOOK_URL:
+        required: true
 
 jobs:
   prepare-tags:
@@ -126,3 +124,24 @@ jobs:
           echo "Tags: ${{ needs.prepare-tags.outputs.tags }}"
           echo "Branch: ${{ inputs.head_branch }}"
           echo "Version: ${{ inputs.version }}"
+
+  # deploy-render:
+  #   name: Deploy to Render
+  #   needs: build-and-push-ghcr
+  #   runs-on: ubuntu-latest
+  #   if: ${{ inputs.head_branch == 'main' }}
+  #   steps:
+  #     - name: Trigger Render Deployment Hook
+  #       env:
+  #         RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+  #       run: |
+  #         echo "Triggering Render deployment for ${{ inputs.head_branch }} branch..."
+
+  #         # This curl command hits the Render webhook URL. This webhook tells Render:
+  #         # 1. To initiate a deployment for the associated Web Service.
+  #         # 2. Render then checks the **Image URL** you configured in the Render dashboard
+  #         # 3. Render pulls the *latest* version tagged with "latest" from the registry.
+  #         # 4. It replaces the currently running container with the new one.
+  #         curl -X POST -d '{}' "$RENDER_DEPLOY_HOOK_URL"
+
+  #         echo "Render deployment hook successfully triggered."
