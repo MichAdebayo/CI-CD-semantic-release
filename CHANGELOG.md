@@ -2,6 +2,19 @@
 
 <!-- version list -->
 
+## v0.2.1 (2025-11-28)
+
+### Bug Fixes
+
+- **cd**: Regenerate hook url for render
+  ([`2402277`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/2402277dc30163082a10cbda40f73f5628ef4962))
+
+### Refactoring
+
+- **workflows**: Update deployment conditions for Render and CI workflows
+  ([`8f78363`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/8f783635bb1243d0c8e99ff77ddb0b6e0660b33e))
+
+
 ## v0.2.0 (2025-11-28)
 
 
