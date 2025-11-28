@@ -129,19 +129,32 @@ jobs:
     name: Deploy to Render
     needs: build-and-push-ghcr
     runs-on: ubuntu-latest
-    if: ${{ inputs.head_branch == 'main' }}
+    if: ${{ inputs.head_branch == 'main' && inputs.version != '' }}
     steps:
-      - name: Trigger Render Deployment Hook
+      - name: Validate and Normalize Render Hook URL
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          echo "Triggering Render deployment for ${{ inputs.head_branch }} branch..."
+          # Remove surrounding quotes and CR/LF, trim whitespace
+          url="$(printf '%s' "$RENDER_DEPLOY_HOOK_URL" | sed -E 's/^"(.*)"$/\1/' | tr -d '\r\n' | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')"
 
-          # This curl command hits the Render webhook URL. This webhook tells Render:
-          # 1. To initiate a deployment for the associated Web Service.
-          # 2. Render then checks the **Image URL** you configured in the Render dashboard
-          # 3. Render pulls the *latest* version tagged with "latest" from the registry.
-          # 4. It replaces the currently running container with the new one.
-          curl -X POST -d '{}' "$RENDER_DEPLOY_HOOK_URL"
+          # Basic validation: must start with http(s)://
+          if ! echo "$url" | grep -qE '^https?://'; then
+            echo "ERROR: Render hook URL is invalid or empty. Check your secret value in repository settings."
+            echo "Masked preview: ${url:0:8}...${url: -8}"
+            exit 1
+          fi
 
+          # Masked preview to avoid leaking secret
+          echo "Render URL begins with: ${url:0:8}..."
+          printf "%s" "$url" > /tmp/render_hook_url
+          chmod 600 /tmp/render_hook_url
+
+      - name: Trigger Render Deployment Hook
+        env:
+          RENDER_DEPLOY_HOOK_URL_FILE: /tmp/render_hook_url
+        run: |
+          url="$(cat "$RENDER_DEPLOY_HOOK_URL_FILE")"
+          # Ensure the call fails on non-2xx
+          curl --show-error --fail -X POST -d '{}' "$url"
           echo "Render deployment hook successfully triggered."
