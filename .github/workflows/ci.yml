@@ -41,8 +41,8 @@ jobs:
       - name: Ruff lint
         run: uv run ruff check app tests
 
-      # - name: Ruff format check
-      #   run: uv run ruff format --check app tests
+      - name: Ruff format check
+        run: uv run ruff format --check app tests
 
       # - name: Mypy type check
       #   env:
