@@ -1,0 +1,2091 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://MichAdebayo.github.io/CI-CD-semantic-release/tool_survey/">
+      
+      
+        <link rel="prev" href="../brief/">
+      
+      
+        <link rel="next" href="../tool_comparison/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Tool Survey - Semantic Release CI/CD Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cicd-technical-watch" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Semantic Release CI/CD Docs" class="md-header__button md-logo" aria-label="Semantic Release CI/CD Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Semantic Release CI/CD Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tool Survey
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Semantic Release CI/CD Docs" class="md-nav__button md-logo" aria-label="Semantic Release CI/CD Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Semantic Release CI/CD Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Survey
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Survey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📑 Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔁 Continuous Integration (CI)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔁 Continuous Integration (CI)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problems-ci-solves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Problems CI Solves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔑 Key Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#popular-ci-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Popular CI Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-deploymentdelivery-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Continuous Deployment/Delivery (CD)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Continuous Deployment/Delivery (CD)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuous-delivery-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Continuous Delivery vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits-and-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Benefits and Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-cicd-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Why CI/CD Matters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Why CI/CD Matters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Impact on Code Quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-development-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Impact on Development Speed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-team-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤝 Impact on Team Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uv-modern-python-package-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧰 UV: Modern Python Package Manager
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧰 UV: Modern Python Package Manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-from-pippoetrypipenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🆚 Differences from pip/poetry/pipenv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✨ Key Advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Working with pyproject.toml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Working with pyproject.toml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 File Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Dependency Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Build Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-with-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ CI/CD with GitHub Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ CI/CD with GitHub Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔌 Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💾 Dependency Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Command Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#semantic-versioning-semver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔢 Semantic Versioning (SemVer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔢 Semantic Versioning (SemVer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📐 Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-increment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📈 When to Increment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✍️ Conventional Commits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✍️ Conventional Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Message Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏷️ Common Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💥 Breaking Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Impact on Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-semantic-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐍 Python Semantic Release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐍 Python Semantic Release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-in-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ Configuration in pyproject.toml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📄 CHANGELOG Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏷️ GitHub Releases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Useful Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-with-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentation with MkDocs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Documentation with MkDocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-mkdocs-generates-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ How MkDocs Generates Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-to-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Deploying to GitHub Pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdocstrings-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔌 mkdocstrings Plugin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../problems_detected/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problems Detected
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../semantic_release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributors_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📑 Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔁 Continuous Integration (CI)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔁 Continuous Integration (CI)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problems-ci-solves" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Problems CI Solves
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔑 Key Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#popular-ci-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Popular CI Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-deploymentdelivery-cd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Continuous Deployment/Delivery (CD)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Continuous Deployment/Delivery (CD)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#continuous-delivery-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Continuous Delivery vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits-and-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Benefits and Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-cicd-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Why CI/CD Matters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Why CI/CD Matters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Impact on Code Quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-development-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Impact on Development Speed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-team-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤝 Impact on Team Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uv-modern-python-package-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧰 UV: Modern Python Package Manager
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧰 UV: Modern Python Package Manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#differences-from-pippoetrypipenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🆚 Differences from pip/poetry/pipenv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✨ Key Advantages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Working with pyproject.toml
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Working with pyproject.toml">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 File Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Dependency Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Build Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-with-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ CI/CD with GitHub Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚙️ CI/CD with GitHub Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔌 Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💾 Dependency Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Command Execution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#semantic-versioning-semver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔢 Semantic Versioning (SemVer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔢 Semantic Versioning (SemVer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📐 Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-increment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📈 When to Increment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✍️ Conventional Commits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✍️ Conventional Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Message Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏷️ Common Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💥 Breaking Changes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impact-on-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Impact on Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-semantic-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐍 Python Semantic Release
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐍 Python Semantic Release">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-in-pyprojecttoml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ Configuration in pyproject.toml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changelog-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📄 CHANGELOG Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏷️ GitHub Releases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Useful Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-with-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentation with MkDocs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Documentation with MkDocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-mkdocs-generates-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ How MkDocs Generates Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-to-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Deploying to GitHub Pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdocstrings-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔌 mkdocstrings Plugin
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cicd-technical-watch">CI/CD Technical Watch 🚀</h1>
+<p>!!! info "Document Overview"
+    This document provides a comprehensive overview of CI/CD practices, tools, and modern Python development workflows.</p>
+<hr />
+<h2 id="table-of-contents">📑 Table of Contents</h2>
+<ul>
+<li><a href="#continuous-integration-ci">Continuous Integration (CI)</a></li>
+<li><a href="#continuous-deploymentdelivery-cd">Continuous Deployment/Delivery (CD)</a></li>
+<li><a href="#why-cicd-matters">Why CI/CD Matters</a></li>
+<li><a href="#uv-modern-python-package-manager">UV: Modern Python Package Manager</a></li>
+<li><a href="#working-with-pyprojecttoml">Working with pyproject.toml</a></li>
+<li><a href="#cicd-with-github-actions">CI/CD with GitHub Actions</a></li>
+<li><a href="#semantic-versioning-semver">Semantic Versioning (SemVer)</a></li>
+<li><a href="#conventional-commits">Conventional Commits</a></li>
+<li><a href="#python-semantic-release">Python Semantic Release</a></li>
+<li><a href="#documentation-with-mkdocs">Documentation with MkDocs</a></li>
+</ul>
+<hr />
+<h2 id="continuous-integration-ci">🔁 Continuous Integration (CI)</h2>
+<p><strong>Continuous Integration (CI)</strong> is an automated process that enables frequent integration of code changes into a shared repository (main branch). With each integration, automated steps such as building and running tests (unit, integration, etc.) are triggered to ensure new changes don't break the application.</p>
+<p>!!! success "Main Goal"
+    Avoid difficult-to-manage "merge day" situations and detect conflicts and regressions early.</p>
+<h3 id="problems-ci-solves">🎯 Problems CI Solves</h3>
+<p>CI addresses several critical development challenges:</p>
+<ul>
+<li>✅ <strong>Reduces merge conflicts</strong> when integrating multiple branches (eliminates "merge day")</li>
+<li>⏱️ <strong>Decreases time and effort</strong> required to integrate changes (fewer manual procedures)</li>
+<li>🐛 <strong>Early bug detection</strong> through automatic test execution</li>
+<li>🖥️ <strong>Mitigates environment inconsistencies</strong> between different developer setups</li>
+</ul>
+<h3 id="key-principles">🔑 Key Principles</h3>
+<p>!!! tip "Core CI Principles"
+    1. <strong>Frequent integrations</strong> into a shared repository (trunk-based development)
+    2. <strong>Build automation</strong> and multi-layer testing (unit, integration, etc.)
+    3. <strong>Automatic verification</strong> at each step to ensure application functionality
+    4. <strong>Fast feedback</strong> to developers for quick conflict/regression fixes</p>
+<h3 id="popular-ci-tools">🛠️ Popular CI Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Jenkins</strong></td>
+<td>Popular management tool serving as both CI server and complete CD hub</td>
+</tr>
+<tr>
+<td><strong>Tekton / OpenShift Pipelines</strong></td>
+<td>Cloud-native CI/CD framework for Kubernetes platforms (especially Red Hat OpenShift)</td>
+</tr>
+<tr>
+<td><strong>GoCD</strong></td>
+<td>CI/CD server focused on pipeline modeling and visualization</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="continuous-deploymentdelivery-cd">📦 Continuous Deployment/Delivery (CD)</h2>
+<p>CD encompasses two related but distinct practices:</p>
+<h3 id="continuous-delivery-vs-continuous-deployment">🔄 Continuous Delivery vs Continuous Deployment</h3>
+<p>!!! info "Two Flavors of CD"</p>
+<pre><code>**Continuous Delivery** 🎯
+
+- Automates the release of validated code (after CI and tests) to a repository or artifact ready for production
+- Makes code "deployable" at any time
+- Production deployment remains manual, managed by operations teams
+
+**Continuous Deployment** 🚀
+
+- Takes automation further: changes that pass all tests are automatically released to production
+- No manual intervention required
+</code></pre>
+<h3 id="benefits-and-risks">⚖️ Benefits and Risks</h3>
+<p>=== "Benefits ✅"</p>
+<pre><code>- 🐛 Reduced bugs and code failures
+- ⚡ Reduced downtime and faster releases
+- 👥 Faster user feedback integration and better satisfaction
+- 🔧 Reduced complexity and improved workflow efficiency
+</code></pre>
+<p>=== "Risks ⚠️"</p>
+<pre><code>- 🚨 Poorly designed automation can deploy incorrect or vulnerable code if testing is insufficient
+- 🔓 Possible exposure of sensitive data if pipelines aren't secured
+- 🔒 Use of unsecured third-party components (vulnerabilities) without rigorous verification
+- 👤 Unauthorized access to code repositories or development tools with weak security controls
+- 💰 Continuous deployment requires significant upfront investment to define and automate reliable tests and controls (shift-left / shift-right)
+</code></pre>
+<hr />
+<h2 id="why-cicd-matters">💡 Why CI/CD Matters</h2>
+<h3 id="impact-on-code-quality">🎨 Impact on Code Quality</h3>
+<p>!!! success "Quality Improvements"
+    Automated tests and frequent checks enable rapid error detection and ensure each change meets quality criteria, reducing regressions and improving code reliability.</p>
+<h3 id="impact-on-development-speed">⚡ Impact on Development Speed</h3>
+<p>!!! tip "Accelerated Delivery"
+    Automation of build, test, and release steps significantly reduces the time between writing code and making it available, accelerating the feature release cycle and user feedback integration.</p>
+<h3 id="impact-on-team-collaboration">🤝 Impact on Team Collaboration</h3>
+<p>!!! info "Enhanced Teamwork"
+    CI/CD fosters a DevOps culture and better collaboration between development and operations teams by:</p>
+<pre><code>- Reducing friction from manual operations
+- Encouraging shared responsibility (including security - DevSecOps)
+- Facilitating environment standardization
+- Ensuring deployment reproducibility
+</code></pre>
+<hr />
+<h2 id="uv-modern-python-package-manager">🧰 UV: Modern Python Package Manager</h2>
+<p><strong>UV</strong> is a modern Python project and dependency manager written in Rust. It aims to replace multiple traditional tools (<code>pip</code>, <code>pip-tools</code>, <code>pipx</code>, <code>poetry</code>, <code>pyenv</code>, <code>twine</code>, <code>virtualenv</code>, etc.) by offering a consistent interface for managing environments, Python versions, tools, and dependencies.</p>
+<p>!!! tip "Key Features"
+    - 🐍 Installs and manages Python versions (<code>uv python install</code>)
+    - 📁 Manages project environments (creates <code>.venv</code> and uses <code>uv sync</code>/<code>uv run</code>)
+    - 📦 Handles dependencies and lockfile (<code>uv.lock</code>) with multi-platform resolution
+    - 🔧 Provides features for scripts, tools, and workspaces (similar to Cargo)</p>
+<h3 id="differences-from-pippoetrypipenv">🆚 Differences from pip/poetry/pipenv</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>UV Advantage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unification</strong></td>
+<td>Replaces multiple tools with a single interface</td>
+</tr>
+<tr>
+<td><strong>Performance</strong></td>
+<td>10-100x faster than pip in many scenarios ⚡</td>
+</tr>
+<tr>
+<td><strong>Project Management</strong></td>
+<td>Centralized with universal <code>uv.lock</code> and features like <code>dependency-groups</code></td>
+</tr>
+<tr>
+<td><strong>Compatibility</strong></td>
+<td>Provides pip-compatible interface (<code>uv pip</code>) for easy migration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-advantages">✨ Key Advantages</h3>
+<p>!!! success "Why Choose UV?"
+    - ⚡ <strong>Speed</strong>: 10-100x faster than <code>pip</code> in certain scenarios
+    - 🎯 <strong>Tool Unification</strong>: Combines multiple responsibilities (environments, tools, Python installations) in one tool
+    - 🔒 <strong>Reproducibility</strong>: <code>uv.lock</code> ensures consistent installations across all platforms
+    - 💾 <strong>Global Cache</strong>: Reduces disk space and downloads with shared cache and pruning (<code>uv cache prune --ci</code>)
+    - 📚 <strong>Workspaces &amp; Scripts</strong>: Strong support for monorepos and scripts with inline metadata
+    - 🔄 <strong>Interoperability</strong>: <code>uv pip</code> interface and export to <code>pylock.toml</code> for compatibility</p>
+<hr />
+<h2 id="working-with-pyprojecttoml">🔧 Working with pyproject.toml</h2>
+<h3 id="file-structure">📋 File Structure</h3>
+<p>UV relies on <code>pyproject.toml</code> to identify the project root and store configuration.</p>
+<p>!!! info "Key Sections"</p>
+<pre><code>**`[project]`** - Basic metadata
+
+- `name`, `version`, `requires-python`
+- `dependencies` (PEP 621)
+- `optional-dependencies`
+
+**`[build-system]`** - Build configuration
+
+- `requires` and `build-backend` (to use `uv_build`)
+
+**`[tool.uv]`** - UV-specific settings
+
+- `default-groups`, `dev-dependencies` (legacy)
+- `workspace` settings
+
+**`uv.lock`** - Lockfile (automatically created, should be version controlled)
+</code></pre>
+<h3 id="dependency-management">📦 Dependency Management</h3>
+<p>Dependencies are organized by purpose:</p>
+<p>=== "Production"
+    <code>toml
+    [project]
+    dependencies = [
+        "requests&gt;=2.28.0",
+        "pydantic&gt;=2.0.0",
+    ]</code></p>
+<p>=== "Optional Features"
+    <code>toml
+    [project.optional-dependencies]
+    plot = ["matplotlib&gt;=3.5.0"]
+    excel = ["openpyxl&gt;=3.0.0"]</code></p>
+<p>=== "Development"
+    <code>toml
+    [dependency-groups]
+    dev = ["pytest&gt;=7.0.0", "black&gt;=23.0.0"]
+    lint = ["ruff&gt;=0.1.0", "mypy&gt;=1.0.0"]
+    test = ["pytest-cov&gt;=4.0.0"]</code></p>
+<p>=== "Alternative Sources"
+    <code>toml
+    [tool.uv.sources]
+    my-package = { git = "https://github.com/user/repo.git" }
+    local-package = { path = "../local-pkg" }</code></p>
+<h3 id="build-backend">🏗️ Build Backend</h3>
+<p>To use UV as a build backend:</p>
+<pre><code class="language-toml">[build-system]
+requires = [&quot;uv_build&gt;=0.9.11,&lt;0.10.0&quot;]
+build-backend = &quot;uv_build&quot;
+</code></pre>
+<p>!!! tip "Build Backend Configuration"
+    The <code>uv_build</code> backend has sensible defaults (e.g., <code>src/</code> for modules) but is configurable via <code>tool.uv.build-backend</code> for module naming, root paths, file inclusion/exclusion, and data directories.</p>
+<hr />
+<h2 id="cicd-with-github-actions">⚙️ CI/CD with GitHub Actions</h2>
+<h3 id="installation">🔌 Installation</h3>
+<p>The recommended method is using the official <code>astral-sh/setup-uv</code> action:</p>
+<pre><code class="language-yaml">- uses: astral-sh/setup-uv@v6
+  with:
+    version: &quot;0.9.11&quot;  # Pin version recommended
+    enable-cache: true  # Optional
+</code></pre>
+<h3 id="dependency-caching">💾 Dependency Caching</h3>
+<p>Two approaches for caching:</p>
+<p>=== "Automatic (Recommended)"
+    <code>yaml
+    - uses: astral-sh/setup-uv@v6
+      with:
+        enable-cache: true</code></p>
+<p>=== "Manual"
+    ```yaml
+    env:
+      UV_CACHE_DIR: ${{ github.workspace }}/.cache/uv</p>
+<pre><code>- name: Restore uv cache
+  uses: actions/cache@v4
+  with:
+    path: ${{ env.UV_CACHE_DIR }}
+    key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+
+- name: Minimize cache
+  run: uv cache prune --ci
+```
+</code></pre>
+<h3 id="command-execution">🚀 Command Execution</h3>
+<p>Typical pipeline workflow:</p>
+<pre><code class="language-yaml"># Install UV and Python
+- uses: astral-sh/setup-uv@v6
+- run: uv python install 3.13
+
+# Install project and dependencies (including dev)
+- run: uv sync --locked --all-extras --dev
+
+# Run tests
+- run: uv run pytest tests
+
+# Build package
+- run: uv build
+
+# Publish to PyPI (on tag)
+- run: uv publish
+</code></pre>
+<p>!!! warning "Additional Considerations"
+    - For <code>uv pip</code> (pip interface), use <code>UV_SYSTEM_PYTHON=1</code> or <code>--system</code> flag for system environment installation
+    - For private repositories, configure a PAT and authenticate with <code>gh auth login</code> and <code>gh auth setup-git</code>
+    - For PyPI publishing, use <code>uv build</code> then <code>uv publish</code> in a GitHub Action after a <code>v*</code> tag</p>
+<hr />
+<h2 id="semantic-versioning-semver">🔢 Semantic Versioning (SemVer)</h2>
+<p><strong>SemVer</strong> is a convention that gives clear meaning to version numbers, allowing users and tools to understand the impact of a release.</p>
+<h3 id="format">📐 Format</h3>
+<pre><code>MAJOR.MINOR.PATCH[-prerelease][+build]
+</code></pre>
+<p><strong>Example</strong>: <code>1.2.3-alpha.1+build.123</code></p>
+<h3 id="when-to-increment">📈 When to Increment</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>When to Increment</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 <strong>MAJOR</strong></td>
+<td>Breaking changes - API/contract incompatibility</td>
+<td><code>1.0.0</code> → <code>2.0.0</code></td>
+</tr>
+<tr>
+<td>🟡 <strong>MINOR</strong></td>
+<td>New features (backward compatible)</td>
+<td><code>1.2.3</code> → <code>1.3.0</code></td>
+</tr>
+<tr>
+<td>🟢 <strong>PATCH</strong></td>
+<td>Bug fixes (backward compatible)</td>
+<td><code>1.2.3</code> → <code>1.2.4</code></td>
+</tr>
+</tbody>
+</table>
+<p>!!! example "Examples"
+    - API-breaking commit → bump <strong>MAJOR</strong>
+    - Pre-release versions help testing before stable release
+    - Keep <code>project.version</code> updated (or use automatic tools like PSR)</p>
+<hr />
+<h2 id="conventional-commits">✍️ Conventional Commits</h2>
+<p><strong>Conventional Commits</strong> is a specification that standardizes commit message format to make history readable and exploitable by tools (automatic changelog generation, SemVer bump determination, etc.).</p>
+<h3 id="message-format">📝 Message Format</h3>
+<pre><code>&lt;type&gt;(&lt;optional scope&gt;): &lt;description&gt;
+
+[optional body]
+
+[optional footer]
+</code></pre>
+<h3 id="common-types">🏷️ Common Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+<th>Version Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feat</code></td>
+<td>New feature</td>
+<td>MINOR ⬆️</td>
+</tr>
+<tr>
+<td><code>fix</code></td>
+<td>Bug fix</td>
+<td>PATCH ⬆️</td>
+</tr>
+<tr>
+<td><code>docs</code></td>
+<td>Documentation only</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Code style/formatting</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>refactor</code></td>
+<td>Code refactoring</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>perf</code></td>
+<td>Performance improvement</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Adding tests</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>chore</code></td>
+<td>Maintenance tasks</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>ci</code></td>
+<td>CI configuration</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>Build system changes</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="breaking-changes">💥 Breaking Changes</h3>
+<p>To indicate breaking changes:</p>
+<p>=== "Footer Method"
+    ```
+    feat(api): add new authentication method</p>
+<pre><code>BREAKING CHANGE: Previous auth tokens are no longer valid.
+Users must regenerate their tokens.
+```
+</code></pre>
+<p>=== "Exclamation Mark"
+    ```
+    feat(api)!: change authentication format</p>
+<pre><code>Token structure changed from x.y to a.b.c format.
+```
+</code></pre>
+<h3 id="impact-on-versioning">📊 Impact on Versioning</h3>
+<p>!!! info "Automatic Version Bumps"
+    Tools like <code>python-semantic-release</code> automatically translate commit types:</p>
+<pre><code>- `fix` → **PATCH** bump
+- `feat` → **MINOR** bump
+- `BREAKING CHANGE` or `!` → **MAJOR** bump
+</code></pre>
+<h3 id="examples">💡 Examples</h3>
+<pre><code class="language-text">feat(api): add filters to product listing
+
+fix(auth): correct token handling on refresh
+
+perf(db): reduce query time for aggregate requests
+
+feat!: change auth token format
+
+BREAKING CHANGE: token structure changed from `x.y` to `a.b.c`.
+</code></pre>
+<hr />
+<h2 id="python-semantic-release">🐍 Python Semantic Release</h2>
+<p><strong>Python Semantic Release (PSR)</strong> automates version determination from commit messages (SemVer + Conventional Commits), updates project version, generates/updates CHANGELOG, tags the repository, and can publish artifacts and create VCS releases.</p>
+<h3 id="configuration-in-pyprojecttoml">⚙️ Configuration in pyproject.toml</h3>
+<pre><code class="language-toml">[tool.semantic_release]
+version_toml = [&quot;pyproject.toml:project.version&quot;]
+commit_parser = &quot;conventional&quot;
+vcs_release = true
+
+[tool.semantic_release.commit_parser_options]
+minor_tags = [&quot;feat&quot;]
+patch_tags = [&quot;fix&quot;, &quot;perf&quot;]
+parse_squash_commits = true
+ignore_merge_commits = true
+
+build_command = &quot;python -m build --sdist --wheel .&quot;
+</code></pre>
+<p>!!! info "Key Configuration Options"
+    - <strong><code>version_toml</code></strong>: Location to update during version bump
+    - <strong><code>commit_parser</code></strong>: Message parser (<code>conventional</code> by default)
+    - <strong><code>commit_parser_options</code></strong>: Adjust tags for <code>minor</code>/<code>patch</code> and handle squash/merge
+    - <strong><code>build_command</code></strong>: Command to build artifacts before publishing</p>
+<h3 id="changelog-generation">📄 CHANGELOG Generation</h3>
+<pre><code class="language-toml">[tool.semantic_release.changelog]
+changelog_file = &quot;CHANGELOG.md&quot;
+output_format = &quot;md&quot;
+exclude_commit_patterns = [
+    &quot;^chore(?:\\([^)]*?\\))?: .+&quot;,
+    &quot;^ci(?:\\([^)]*?\\))?: .+&quot;,
+]
+</code></pre>
+<h3 id="github-releases">🏷️ GitHub Releases</h3>
+<p>PSR can create tags and releases on VCS platforms using an environment token:</p>
+<pre><code class="language-bash"># Set in GitHub Actions
+GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</code></pre>
+<h3 id="useful-commands">🔧 Useful Commands</h3>
+<p>=== "Generate Config"
+    <code>bash
+    semantic-release generate-config --pyproject &gt;&gt; pyproject.toml</code></p>
+<p>=== "Dry Run"
+    ```bash
+    # See what would happen without changes
+    semantic-release -v --noop version</p>
+<pre><code># Local evaluation without commit/tag
+semantic-release -vv version --no-commit --no-tag
+```
+</code></pre>
+<p>=== "CI Execution"
+    <code>bash
+    semantic-release version --push --vcs-release</code></p>
+<h3 id="best-practices">✅ Best Practices</h3>
+<p>!!! tip "Recommended Practices"
+    - ✅ Enforce Conventional Commits via hooks (<code>commit-msg</code>) and/or CI linter (<code>commitlint</code>)
+    - ✅ Test locally and in CI with <code>--noop</code> mode to avoid unwanted releases
+    - ✅ Protect release branches and use limited-scope tokens for automation
+    - ✅ Verify <code>parse_squash_commits</code> if using squash merges</p>
+<hr />
+<h2 id="documentation-with-mkdocs">📚 Documentation with MkDocs</h2>
+<h3 id="how-mkdocs-generates-documentation">🏗️ How MkDocs Generates Documentation</h3>
+<p>MkDocs takes Markdown files (default in <code>docs/</code> folder) and a <code>mkdocs.yml</code> configuration file to generate static HTML documentation.</p>
+<p>=== "Development"
+    <code>bash
+    mkdocs serve</code>
+    Launches a dev server with auto-reload on file changes</p>
+<p>=== "Production"
+    <code>bash
+    mkdocs build</code>
+    Generates static HTML in <code>site/</code> directory</p>
+<p>!!! info "Generation Process"
+    1. Reads Markdown files and <code>mkdocs.yml</code> configuration
+    2. Converts each page to static HTML
+    3. Applies theme (e.g., Material)
+    4. Copies resources (CSS/JS/images)
+    5. Generates search index and sitemap</p>
+<h3 id="deploying-to-github-pages">🚀 Deploying to GitHub Pages</h3>
+<p>=== "Quick Method"
+    <code>bash
+    mkdocs gh-deploy</code>
+    Builds and publishes automatically to <code>gh-pages</code> branch</p>
+<p>=== "Manual Method"
+    <code>bash
+    mkdocs build
+    # Copy site/ contents to gh-pages branch</code></p>
+<p>=== "GitHub Actions (Recommended)"
+    <code>yaml
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./site</code></p>
+<p>!!! warning "Important Configuration"
+    Set <code>site_url</code> in <code>mkdocs.yml</code> for correct link generation, especially when using themes/plugins like Material for MkDocs.</p>
+<h3 id="mkdocstrings-plugin">🔌 mkdocstrings Plugin</h3>
+<p><strong>mkdocstrings</strong> automatically generates API documentation from code docstrings.</p>
+<p>!!! success "Key Features"
+    - 📝 Auto-generates API docs from docstrings
+    - 🌐 Multi-language support via handlers (Python, JavaScript, etc.)
+    - 🎨 Natural integration with Material theme
+    - 🔄 Documentation stays in sync with code</p>
+<p><strong>Usage Example:</strong></p>
+<pre><code class="language-markdown">## API Reference
+
+::: mypackage.module.MyClass
+    options:
+      show_source: true
+      members_order: source
+</code></pre>
+<p>This extracts signatures, docstrings, and members to produce structured, navigable documentation automatically.</p>
+<hr />
+<p>!!! success "Summary"
+    This guide covers modern CI/CD practices, from continuous integration fundamentals to automated documentation deployment. By combining tools like UV, GitHub Actions, Semantic Release, and MkDocs, you can create a robust, automated development pipeline that improves code quality, accelerates delivery, and enhances team collaboration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

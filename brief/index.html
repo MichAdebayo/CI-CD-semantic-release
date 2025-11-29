@@ -1,0 +1,5601 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://MichAdebayo.github.io/CI-CD-semantic-release/brief/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../tool_survey/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>About - Semantic Release CI/CD Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#brief-cicd-professionnel-de-la-veille-au-deploiement" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Semantic Release CI/CD Docs" class="md-header__button md-logo" aria-label="Semantic Release CI/CD Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Semantic Release CI/CD Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              About
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Semantic Release CI/CD Docs" class="md-nav__button md-logo" aria-label="Semantic Release CI/CD Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Semantic Release CI/CD Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectifs-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectifs globaux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parcours-dapprentissage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🗺️ Parcours d'apprentissage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🗺️ Parcours d&#39;apprentissage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estimation-du-temps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Estimation du temps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-cible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Architecture cible
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Architecture cible">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-0-veille-technologique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Phase 0 : Veille Technologique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Phase 0 : Veille Technologique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missions-de-veille" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Missions de veille
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Missions de veille">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mission-1-comprendre-cicd-1h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 1 : Comprendre CI/CD (1h)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-2-maitriser-uv-1h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 2 : Maîtriser uv (1h)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-3-comprendre-semantic-release-30min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 3 : Comprendre Semantic Release (30min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-4-comparatif-doutils-1-2h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 4 : Comparatif d'outils (1-2h)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mission 4 : Comparatif d&#39;outils (1-2h)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linters-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Linters Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatters-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Formatters Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-checkers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Type Checkers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frameworks-de-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Frameworks de Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-scanners" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔐 Security Scanners
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tableau-comparatif-attendu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Tableau comparatif attendu
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-5-mkdocs-github-pages-bonus-30min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 5 : MkDocs &amp; GitHub Pages (bonus, 30min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-decouverte-du-projet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Phase 1 : Découverte du Projet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Phase 1 : Découverte du Projet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-installation-avec-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Installation avec uv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-tester-lapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Tester l'API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-explorer-le-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Explorer le code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-identifier-les-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Identifier les problèmes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-strategie-de-branches-conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌿 Phase 2 : Stratégie de Branches &amp; Conventional Commits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌿 Phase 2 : Stratégie de Branches &amp; Conventional Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprendre-gitflow-simplifie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Comprendre GitFlow simplifié
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-creer-les-branches-principales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Créer les branches principales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-configurer-la-protection-de-branches-sur-github-attention-a-ne-pas-oublier-de-creer-un-giuthub-app-pour-valider-les-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Configurer la protection de branches sur GitHub (Attention à ne pas oublier de créer un Giuthub APP pour valider les pull requests)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Configurer la protection de branches sur GitHub (Attention à ne pas oublier de créer un Giuthub APP pour valider les pull requests)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protection-de-main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protection de main
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protection-de-develop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protection de develop
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-workflow-de-developpement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Workflow de développement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Conventional Commits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-exercice-pratique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Exercice pratique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-ci-pipeline-tests-quality-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Phase 3 : CI Pipeline - Tests, Quality &amp; Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Phase 3 : CI Pipeline - Tests, Quality &amp; Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-du-ci-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Architecture du CI Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-comprendre-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Comprendre GitHub Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-creer-le-workflow-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Créer le workflow CI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Créer le workflow CI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-1-lint-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 1 : Lint &amp; Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-2-type-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 2 : Type Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-3-security-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 3 : Security Scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-4-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 4 : Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-configurer-les-outils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Configurer les outils
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Configurer les outils">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-ruff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Ruff
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-mypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Mypy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-pytest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Pytest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-corriger-les-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Corriger les problèmes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-optimiser-le-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Optimiser le CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-pre-commit-hooks-gagnez-du-temps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛡️ Phase 4 : Pre-commit Hooks - Gagnez du Temps !
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛡️ Phase 4 : Pre-commit Hooks - Gagnez du Temps !">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-concept-avantapres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Le Concept - Avant/Après
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Le Concept - Avant/Après">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sans-pre-commit-approche-traditionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Sans pre-commit (approche traditionnelle)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avec-pre-commit-approche-optimisee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Avec pre-commit (approche optimisée)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ressources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Ressources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hooks-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks de base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruff-linting-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ruff (linting + formatting)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mypy-type-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mypy (type checking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optionnel-detect-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (Optionnel) Detect Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-installation-des-hooks-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Installation des hooks Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-corriger-progressivement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Corriger progressivement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-ajouter-pre-commit-a-la-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ajouter pre-commit à la CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 4
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-build-push-docker-image-vers-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐳 Phase 5 : Build &amp; Push Docker Image vers GHCR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐳 Phase 5 : Build &amp; Push Docker Image vers GHCR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprendre-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Comprendre GHCR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-creer-le-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Créer le Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-tester-localement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Tester localement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-creer-le-workflow-de-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Créer le workflow de build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-verifier-sur-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Vérifier sur GHCR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-utiliser-limage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Utiliser l'image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 5
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-semantic-release-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Phase 6 : Semantic Release Automatique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Phase 6 : Semantic Release Automatique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-existante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Configuration existante
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-tester-localement-dry-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Tester localement (dry-run)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-creer-des-commits-pour-tester" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Créer des commits pour tester
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-creer-le-workflow-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Créer le workflow de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-workflow-complet-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Workflow complet de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-exercice-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Exercice complet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 6
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-documentation-mkdocs-bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Phase 7 : Documentation MkDocs (Bonus)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Phase 7 : Documentation MkDocs (Bonus)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-configuration-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Configuration MkDocs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-creer-la-structure-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Créer la structure docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-documentation-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Documentation automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-ameliorer-les-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Améliorer les docstrings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-workflow-de-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Workflow de déploiement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-activer-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Activer GitHub Pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 7
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-deploiement-continu-sur-azure-bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ☁️ Phase 8 : Déploiement Continu sur Azure (Bonus)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="☁️ Phase 8 : Déploiement Continu sur Azure (Bonus)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Architecture Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-prerequis-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Prérequis Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-creer-les-ressources-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Créer les ressources Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-configurer-les-secrets-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Configurer les secrets GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#87-tester-le-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.7 Tester le déploiement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 8
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criteres-de-reussite-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎓 Critères de Réussite Globaux
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎓 Critères de Réussite Globaux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#niveau-fondamental-phases-0-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌱 Niveau Fondamental (Phases 0-3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-intermediaire-phases-4-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌿 Niveau Intermédiaire (Phases 4-6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-avance-phase-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌳 Niveau Avancé (Phase 7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-expert-phase-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Niveau Expert (Phase 8)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-globales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Ressources Globales
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Ressources Globales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liens-essentiels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Liens essentiels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#videos-recommandees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎥 Vidéos recommandées
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conseils-pour-reussir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Conseils pour Réussir
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Conseils pour Réussir">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-faire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ À Faire
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-eviter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ À Éviter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#badge-de-completion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏆 Badge de Complétion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool_survey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Survey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tool_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Comparison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../problems_detected/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problems Detected
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../semantic_release/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Release
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributors_guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Introduction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectifs-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectifs globaux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parcours-dapprentissage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🗺️ Parcours d'apprentissage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🗺️ Parcours d&#39;apprentissage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estimation-du-temps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Estimation du temps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-cible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Architecture cible
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Architecture cible">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-0-veille-technologique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Phase 0 : Veille Technologique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Phase 0 : Veille Technologique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missions-de-veille" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Missions de veille
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Missions de veille">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mission-1-comprendre-cicd-1h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 1 : Comprendre CI/CD (1h)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-2-maitriser-uv-1h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 2 : Maîtriser uv (1h)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-3-comprendre-semantic-release-30min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 3 : Comprendre Semantic Release (30min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-4-comparatif-doutils-1-2h" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 4 : Comparatif d'outils (1-2h)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mission 4 : Comparatif d&#39;outils (1-2h)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linters-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Linters Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatters-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Formatters Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-checkers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Type Checkers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frameworks-de-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Frameworks de Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-scanners" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔐 Security Scanners
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tableau-comparatif-attendu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Tableau comparatif attendu
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mission-5-mkdocs-github-pages-bonus-30min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mission 5 : MkDocs &amp; GitHub Pages (bonus, 30min)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-decouverte-du-projet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Phase 1 : Découverte du Projet
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔍 Phase 1 : Découverte du Projet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-installation-avec-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Installation avec uv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-tester-lapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Tester l'API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-explorer-le-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Explorer le code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-identifier-les-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Identifier les problèmes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-strategie-de-branches-conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌿 Phase 2 : Stratégie de Branches &amp; Conventional Commits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌿 Phase 2 : Stratégie de Branches &amp; Conventional Commits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprendre-gitflow-simplifie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Comprendre GitFlow simplifié
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-creer-les-branches-principales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Créer les branches principales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-configurer-la-protection-de-branches-sur-github-attention-a-ne-pas-oublier-de-creer-un-giuthub-app-pour-valider-les-pull-requests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Configurer la protection de branches sur GitHub (Attention à ne pas oublier de créer un Giuthub APP pour valider les pull requests)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Configurer la protection de branches sur GitHub (Attention à ne pas oublier de créer un Giuthub APP pour valider les pull requests)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#protection-de-main" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protection de main
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protection-de-develop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protection de develop
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-workflow-de-developpement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Workflow de développement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-conventional-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Conventional Commits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-exercice-pratique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Exercice pratique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-ci-pipeline-tests-quality-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Phase 3 : CI Pipeline - Tests, Quality &amp; Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Phase 3 : CI Pipeline - Tests, Quality &amp; Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-du-ci-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Architecture du CI Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-comprendre-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Comprendre GitHub Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-creer-le-workflow-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Créer le workflow CI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Créer le workflow CI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-1-lint-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 1 : Lint &amp; Format
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-2-type-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 2 : Type Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-3-security-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 3 : Security Scan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-4-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Job 4 : Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-configurer-les-outils" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Configurer les outils
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 Configurer les outils">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-ruff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Ruff
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-mypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Mypy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pyprojecttoml-pytest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pyproject.toml - Pytest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-corriger-les-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Corriger les problèmes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-optimiser-le-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Optimiser le CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-pre-commit-hooks-gagnez-du-temps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛡️ Phase 4 : Pre-commit Hooks - Gagnez du Temps !
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛡️ Phase 4 : Pre-commit Hooks - Gagnez du Temps !">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-concept-avantapres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Le Concept - Avant/Après
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Le Concept - Avant/Après">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sans-pre-commit-approche-traditionnelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Sans pre-commit (approche traditionnelle)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avec-pre-commit-approche-optimisee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Avec pre-commit (approche optimisée)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ressources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Ressources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hooks-de-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooks de base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ruff-linting-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ruff (linting + formatting)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mypy-type-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mypy (type checking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optionnel-detect-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (Optionnel) Detect Secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-installation-des-hooks-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Installation des hooks Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-corriger-progressivement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Corriger progressivement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-ajouter-pre-commit-a-la-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Ajouter pre-commit à la CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 4
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-build-push-docker-image-vers-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🐳 Phase 5 : Build &amp; Push Docker Image vers GHCR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🐳 Phase 5 : Build &amp; Push Docker Image vers GHCR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprendre-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Comprendre GHCR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-creer-le-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Créer le Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-tester-localement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Tester localement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-creer-le-workflow-de-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Créer le workflow de build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-verifier-sur-ghcr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Vérifier sur GHCR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-utiliser-limage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Utiliser l'image
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 5
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-6-semantic-release-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 Phase 6 : Semantic Release Automatique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Phase 6 : Semantic Release Automatique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-existante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Configuration existante
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-tester-localement-dry-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Tester localement (dry-run)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-creer-des-commits-pour-tester" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Créer des commits pour tester
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-creer-le-workflow-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Créer le workflow de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-workflow-complet-de-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Workflow complet de release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-exercice-complet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Exercice complet
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#questions-de-reflexion_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❓ Questions de réflexion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 6
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-7-documentation-mkdocs-bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Phase 7 : Documentation MkDocs (Bonus)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Phase 7 : Documentation MkDocs (Bonus)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-configuration-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Configuration MkDocs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-creer-la-structure-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Créer la structure docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-documentation-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Documentation automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-ameliorer-les-docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Améliorer les docstrings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-workflow-de-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 Workflow de déploiement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-activer-github-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 Activer GitHub Pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 7
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-8-deploiement-continu-sur-azure-bonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ☁️ Phase 8 : Déploiement Continu sur Azure (Bonus)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="☁️ Phase 8 : Déploiement Continu sur Azure (Bonus)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objectif
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Architecture Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Étapes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Étapes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-prerequis-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Prérequis Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-creer-les-ressources-azure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Créer les ressources Azure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-configurer-les-secrets-github" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Configurer les secrets GitHub
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#87-tester-le-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.7 Tester le déploiement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-phase-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Validation Phase 8
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criteres-de-reussite-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎓 Critères de Réussite Globaux
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎓 Critères de Réussite Globaux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#niveau-fondamental-phases-0-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌱 Niveau Fondamental (Phases 0-3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-intermediaire-phases-4-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌿 Niveau Intermédiaire (Phases 4-6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-avance-phase-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌳 Niveau Avancé (Phase 7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#niveau-expert-phase-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Niveau Expert (Phase 8)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-globales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Ressources Globales
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Ressources Globales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liens-essentiels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Liens essentiels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#videos-recommandees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎥 Vidéos recommandées
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conseils-pour-reussir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Conseils pour Réussir
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Conseils pour Réussir">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-faire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ À Faire
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-eviter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ À Éviter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#badge-de-completion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏆 Badge de Complétion
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="brief-cicd-professionnel-de-la-veille-au-deploiement">🚀 Brief CI/CD Professionnel - De la Veille au Déploiement</h1>
+<p><img alt="CI/CD" src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&amp;logo=github-actions&amp;logoColor=white" />
+<img alt="Python" src="https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&amp;logo=python&amp;logoColor=white" />
+<img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-0.121+-009688?style=for-the-badge&amp;logo=fastapi&amp;logoColor=white" />
+<img alt="Azure" src="https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&amp;logo=microsoft-azure&amp;logoColor=white" /></p>
+<hr />
+<h2 id="introduction">📖 Introduction</h2>
+<p>Vous allez mettre en place une <strong>pipeline CI/CD professionnelle complète</strong> pour une application FastAPI, depuis la compréhension des concepts jusqu'au déploiement automatisé sur Azure.</p>
+<blockquote>
+<p>⚠️ <strong>Approche pédagogique</strong> : Ce brief commence par une phase de <strong>veille technologique</strong>. Vous devez comprendre les concepts avant de les appliquer !</p>
+</blockquote>
+<hr />
+<h2 id="objectifs-globaux">🎯 Objectifs globaux</h2>
+<p>À la fin de ce projet, vous serez capable de :</p>
+<ul>
+<li>[ ] 🔍 Comprendre et expliquer les concepts de CI/CD</li>
+<li>[ ] 🛠️ Comparer et choisir les bons outils (linters, formatters, scanners)</li>
+<li>[ ] 🌿 Mettre en place une stratégie de branches professionnelle</li>
+<li>[ ] 🤖 Créer des workflows GitHub Actions complets</li>
+<li>[ ] 🛡️ Utiliser pre-commit hooks pour optimiser le développement</li>
+<li>[ ] 🐳 Containeriser et publier une application sur GHCR</li>
+<li>[ ] 📦 Automatiser le versionnage sémantique avec uv</li>
+<li>[ ] ☁️ Déployer automatiquement sur Azure</li>
+</ul>
+<hr />
+<h2 id="parcours-dapprentissage">🗺️ Parcours d'apprentissage</h2>
+<div align="center">
+  <img src="images/pipeline_phases.png" alt="Pipeline Phases" width="600"/>
+</div>
+
+<p><strong>8 phases progressives</strong> du débutant à l'expert en CI/CD :</p>
+<h3 id="estimation-du-temps">📊 Estimation du temps</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Titre</th>
+<th>Durée</th>
+<th>Difficulté</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📚 <strong>Phase 0</strong></td>
+<td>Veille technologique</td>
+<td>3-4h</td>
+<td>⭐ Facile</td>
+</tr>
+<tr>
+<td>🔍 <strong>Phase 1</strong></td>
+<td>Découverte du projet</td>
+<td>1h</td>
+<td>⭐ Facile</td>
+</tr>
+<tr>
+<td>🌿 <strong>Phase 2</strong></td>
+<td>Stratégie Git &amp; Branches</td>
+<td>2h</td>
+<td>⭐⭐ Moyen</td>
+</tr>
+<tr>
+<td>🧪 <strong>Phase 3</strong></td>
+<td>CI - Tests &amp; Quality</td>
+<td>4-5h</td>
+<td>⭐⭐⭐ Difficile</td>
+</tr>
+<tr>
+<td>🛡️ <strong>Phase 4</strong></td>
+<td>Pre-commit Hooks</td>
+<td>2h</td>
+<td>⭐⭐ Moyen</td>
+</tr>
+<tr>
+<td>🐳 <strong>Phase 5</strong></td>
+<td>Build &amp; Push Docker</td>
+<td>2h</td>
+<td>⭐⭐ Moyen</td>
+</tr>
+<tr>
+<td>📦 <strong>Phase 6</strong></td>
+<td>Semantic Release</td>
+<td>3h</td>
+<td>⭐⭐⭐ Difficile</td>
+</tr>
+<tr>
+<td>📚 <strong>Phase 7</strong></td>
+<td>Documentation (bonus)</td>
+<td>2h</td>
+<td>⭐⭐ Moyen</td>
+</tr>
+<tr>
+<td>☁️ <strong>Phase 8</strong></td>
+<td>CD Azure (bonus)</td>
+<td>4-6h</td>
+<td>⭐⭐⭐⭐ Expert</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total</strong> : 23-31 heures (15-20h sans les bonus)</p>
+<hr />
+<h2 id="architecture-cible">🏗️ Architecture cible</h2>
+<div align="center">
+  <img src="images/ci-cd-flow-desktop.png" alt="CI/CD Flow" width="700"/>
+</div>
+
+<h3 id="pipeline-complete">Pipeline complète</h3>
+<div align="center">
+  <img src="images/architecture_cicd.png" alt="Architecture CI/CD" width="650"/>
+</div>
+
+<p><strong>Vue d'ensemble</strong> : Du code source au déploiement automatique en passant par tous les contrôles qualité.</p>
+<hr />
+<h2 id="phase-0-veille-technologique">📚 Phase 0 : Veille Technologique</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐_Facile-brightgreen" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-3--4h-blue" /></p>
+<h3 id="objectif">🎯 Objectif</h3>
+<p><strong>Comprendre les concepts</strong> avant de les appliquer. Cette phase est <strong>cruciale</strong> pour réussir les phases suivantes.</p>
+<h3 id="missions-de-veille">📝 Missions de veille</h3>
+<h4 id="mission-1-comprendre-cicd-1h">Mission 1 : Comprendre CI/CD (1h)</h4>
+<p><strong>Ressources obligatoires</strong> :
+- 📖 <a href="https://www.redhat.com/fr/topics/devops/what-is-ci-cd">Red Hat - Qu'est-ce que la CI/CD ?</a>
+- 🎥 <a href="https://www.youtube.com/watch?v=R8_veQiYBjI">GitHub Actions Tutorial</a> (30min)</p>
+<p><strong>Questions à documenter</strong> :</p>
+<ol>
+<li><strong>Qu'est-ce que la CI (Continuous Integration) ?</strong></li>
+<li>Quels problèmes résout-elle ?</li>
+<li>Quels sont les principes clés ?</li>
+<li>
+<p>Donnez 3 exemples d'outils de CI</p>
+</li>
+<li>
+<p><strong>Qu'est-ce que le CD (Continuous Deployment/Delivery) ?</strong></p>
+</li>
+<li>Différence entre Continuous Delivery et Continuous Deployment ?</li>
+<li>
+<p>Quels sont les risques et bénéfices ?</p>
+</li>
+<li>
+<p><strong>Pourquoi CI/CD est important ?</strong></p>
+</li>
+<li>Impact sur la qualité du code</li>
+<li>Impact sur la vitesse de développement</li>
+<li>Impact sur la collaboration en équipe</li>
+</ol>
+<p><strong>Livrable</strong> : Document <code>VEILLE_CICD.md</code> avec vos réponses</p>
+<hr />
+<h4 id="mission-2-maitriser-uv-1h">Mission 2 : Maîtriser uv (1h)</h4>
+<p><strong>Ressources obligatoires</strong> :
+- 📖 <a href="https://docs.astral.sh/uv/">Documentation uv</a>
+- 📖 <a href="https://docs.astral.sh/uv/guides/integration/github/">uv - GitHub Integration</a>
+- 📖 <a href="https://docs.astral.sh/uv/concepts/build-backend/#modules">uv - Build Backend</a>
+- 🎥 <a href="https://www.youtube.com/watch?v=mFyE9xgeKcA&amp;t=1040s">uv Tutorial</a></p>
+<p><strong>Questions à documenter</strong> :</p>
+<ol>
+<li><strong>Qu'est-ce que uv ?</strong></li>
+<li>En quoi est-ce différent de pip/poetry/pipenv ?</li>
+<li>
+<p>Quels sont les avantages ?</p>
+</li>
+<li>
+<p><strong>Comment uv fonctionne avec pyproject.toml ?</strong></p>
+</li>
+<li>Structure du fichier</li>
+<li>Gestion des dépendances (séparé par sections)</li>
+<li>
+<p>Build backend</p>
+</li>
+<li>
+<p><strong>Comment utiliser uv dans GitHub Actions ?</strong></p>
+</li>
+<li>Installation</li>
+<li>Cache des dépendances</li>
+<li>Exécution de commandes</li>
+</ol>
+<p><strong>Livrable</strong> : Section dans <code>VEILLE_CICD.md</code></p>
+<hr />
+<h4 id="mission-3-comprendre-semantic-release-30min">Mission 3 : Comprendre Semantic Release (30min)</h4>
+<p><strong>Ressources obligatoires</strong> :
+- 📖 <a href="https://www.conventionalcommits.org/fr/v1.0.0/">Conventional Commits</a>
+- 📖 <a href="https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13">Conventional Commits - Gist</a>
+- 📖 <a href="https://python-semantic-release.readthedocs.io/">Python Semantic Release</a></p>
+<p><strong>Questions à documenter</strong> :</p>
+<ol>
+<li><strong>Qu'est-ce que le versionnage sémantique (SemVer) ?</strong></li>
+<li>Format MAJOR.MINOR.PATCH</li>
+<li>
+<p>Quand bumper chaque niveau ?</p>
+</li>
+<li>
+<p><strong>Qu'est-ce que Conventional Commits ?</strong></p>
+</li>
+<li>Format des messages</li>
+<li>Types de commits (feat, fix, etc.)</li>
+<li>
+<p>Impact sur le versionnage</p>
+</li>
+<li>
+<p><strong>Comment python-semantic-release fonctionne ?</strong></p>
+</li>
+<li>Configuration dans pyproject.toml</li>
+<li>Génération du CHANGELOG</li>
+<li>Création des releases GitHub</li>
+</ol>
+<p><strong>Livrable</strong> : Section dans <code>VEILLE_CICD.md</code></p>
+<hr />
+<h4 id="mission-4-comparatif-doutils-1-2h">Mission 4 : Comparatif d'outils (1-2h)</h4>
+<p><strong>Objectif</strong> : Comparer les outils disponibles pour chaque catégorie et <strong>justifier vos choix</strong>.</p>
+<h5 id="linters-python">🎨 Linters Python</h5>
+<p>Comparez :
+- <strong>Ruff</strong> (moderne, rapide)
+- <strong>Flake8</strong> (classique)
+- <strong>Pylint</strong> (complet mais lent)</p>
+<p><strong>Critères</strong> : Vitesse, règles, facilité d'utilisation, communauté</p>
+<h5 id="formatters-python">🎨 Formatters Python</h5>
+<p>Comparez :
+- <strong>Ruff format</strong> (rapide, compatible Black)
+- <strong>Black</strong> (opinionated)
+- <strong>autopep8</strong> (plus permissif)</p>
+<p><strong>Critères</strong> : Vitesse, customisation, adoption</p>
+<h5 id="type-checkers">🔒 Type Checkers</h5>
+<p>Comparez :
+- <strong>Mypy</strong> (référence)
+- <strong>Pyright</strong> (rapide, utilisé par VS Code)
+- <strong>Pyre</strong> (Facebook)</p>
+<p><strong>Critères</strong> : Précision, vitesse, intégration IDE</p>
+<h5 id="frameworks-de-tests">🧪 Frameworks de Tests</h5>
+<p>Comparez :
+- <strong>pytest</strong> (flexible, plugins)
+- <strong>unittest</strong> (standard library)</p>
+<p><strong>Critères</strong> : Facilité, plugins, assertions</p>
+<h5 id="security-scanners">🔐 Security Scanners</h5>
+<p>Comparez :
+- <strong>Bandit</strong> (static analysis)
+- <strong>Safety</strong> (dependencies vulnerabilities)
+- <strong>Snyk</strong> (commercial mais puissant)
+- <strong>Trivy</strong> (container scanning)</p>
+<p><strong>Critères</strong> : Types de vulnérabilités détectées, false positives, coût</p>
+<h5 id="tableau-comparatif-attendu">📋 Tableau comparatif attendu</h5>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Catégorie</th>
+<th>Avantages</th>
+<th>Inconvénients</th>
+<th>Note /10</th>
+<th>Choix ?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ruff</td>
+<td>Linter</td>
+<td>Ultra rapide, tout-en-un</td>
+<td>Moins de règles que Pylint</td>
+<td>9/10</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Livrable</strong> : Document <code>COMPARATIF_OUTILS.md</code> avec tableaux et justifications</p>
+<hr />
+<h4 id="mission-5-mkdocs-github-pages-bonus-30min">Mission 5 : MkDocs &amp; GitHub Pages (bonus, 30min)</h4>
+<p><strong>Ressources</strong> :
+- 📖 <a href="https://www.mkdocs.org/">MkDocs</a>
+- 📖 <a href="https://squidfunk.github.io/mkdocs-material/">MkDocs Material</a>
+- 📖 <a href="https://pages.github.com/">GitHub Pages</a></p>
+<p><strong>Questions</strong> :
+- Comment MkDocs génère de la documentation ?
+- Comment déployer sur GitHub Pages ?
+- Qu'est-ce que mkdocstrings ?</p>
+<p><strong>Livrable</strong> : Section dans <code>VEILLE_CICD.md</code></p>
+<hr />
+<h3 id="validation-phase-0">✅ Validation Phase 0</h3>
+<ul>
+<li>[ ] <code>VEILLE_CICD.md</code> complet avec toutes les réponses</li>
+<li>[ ] <code>COMPARATIF_OUTILS.md</code> avec justifications de choix</li>
+<li>[ ] Compréhension claire de CI/CD, uv, semantic release</li>
+<li>[ ] Choix d'outils justifiés pour votre projet</li>
+</ul>
+<hr />
+<h2 id="phase-1-decouverte-du-projet">🔍 Phase 1 : Découverte du Projet</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐_Facile-brightgreen" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-1h-blue" /></p>
+<h3 id="objectif_1">🎯 Objectif</h3>
+<p>Explorer le projet existant, le faire fonctionner, et <strong>identifier les problèmes de qualité</strong>.</p>
+<h3 id="etapes">📝 Étapes</h3>
+<h4 id="11-installation-avec-uv">1.1 Installation avec uv</h4>
+<pre><code class="language-bash"># Cloner le projet
+git clone &lt;votre-repo&gt;
+cd items-ci-cd
+
+# Installer uv (si pas déjà fait)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Synchroniser les dépendances
+uv sync
+
+# Lancer l'application
+uv run fastapi dev app/main.py
+</code></pre>
+<h4 id="12-tester-lapi">1.2 Tester l'API</h4>
+<pre><code class="language-bash"># Health check
+curl http://localhost:8000/health
+
+# Documentation interactive
+open http://localhost:8000/docs
+
+# Créer un item
+curl -X POST http://localhost:8000/items \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;nom&quot;: &quot;Laptop&quot;, &quot;prix&quot;: 999.99}'
+
+# Lister les items
+curl http://localhost:8000/items
+</code></pre>
+<p>✅ <strong>Checkpoint</strong> : L'API fonctionne-t-elle ?</p>
+<h4 id="13-explorer-le-code">1.3 Explorer le code</h4>
+<p>Examinez la structure :</p>
+<pre><code>app/
+├── main.py         # Point d'entrée
+├── database.py     # Config DB
+├── models/         # Modèles SQLModel
+├── routes/         # Endpoints API
+├── schemas/        # Schémas Pydantic
+└── services/       # Logique métier
+</code></pre>
+<h4 id="14-identifier-les-problemes">1.4 Identifier les problèmes</h4>
+<p><strong>Mission</strong> : Créez un document <code>PROBLEMES_DETECTES.md</code> listant <strong>tous</strong> les problèmes de qualité que vous trouvez.</p>
+<p>Catégories à vérifier :
+- 🎨 <strong>Formatage</strong> : Espaces, lignes trop longues, indentation
+- 🔒 <strong>Sécurité</strong> : Secrets en dur, mots de passe, clés API
+- 📦 <strong>Imports</strong> : Inutilisés, mal ordonnés, dupliqués
+- 🏷️ <strong>Types</strong> : Fonctions non typées, any implicites
+- 📝 <strong>Documentation</strong> : Docstrings manquantes ou incomplètes
+- ♻️ <strong>Code mort</strong> : Variables inutilisées, fonctions obsolètes, code commenté</p>
+<p><strong>Outils à utiliser</strong> :</p>
+<pre><code class="language-bash"># Linting
+uv run ruff check .
+
+# Type checking
+uv run mypy app/
+
+# Tests (si existants)
+uv run pytest
+</code></pre>
+<h3 id="questions-de-reflexion">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Le code fonctionne, mais</strong> :</li>
+<li>Est-il maintenable ?</li>
+<li>Est-il sécurisé ?</li>
+<li>
+<p>Est-il bien documenté ?</p>
+</li>
+<li>
+<p><strong>Comment détecter ces problèmes automatiquement ?</strong></p>
+</li>
+<li>Quels outils utiliser ?</li>
+<li>
+<p>À quel moment les exécuter ?</p>
+</li>
+<li>
+<p><strong>Comment empêcher ces problèmes à l'avenir ?</strong></p>
+</li>
+</ol>
+<h3 id="validation-phase-1">✅ Validation Phase 1</h3>
+<ul>
+<li>[ ] L'application fonctionne localement</li>
+<li>[ ] Vous avez testé tous les endpoints</li>
+<li>[ ] <code>PROBLEMES_DETECTES.md</code> contient au moins 20 problèmes identifiés</li>
+<li>[ ] Vous comprenez la structure du projet</li>
+</ul>
+<hr />
+<h2 id="phase-2-strategie-de-branches-conventional-commits">🌿 Phase 2 : Stratégie de Branches &amp; Conventional Commits</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐_Moyen-yellow" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-2h-blue" /></p>
+<h3 id="objectif_2">🎯 Objectif</h3>
+<p>Mettre en place une <strong>stratégie de branches professionnelle</strong> avec protection et règles strictes.</p>
+<h3 id="comprendre-gitflow-simplifie">📖 Comprendre GitFlow simplifié</h3>
+<div align="center">
+  <img src="images/gitflow_strategy.png" alt="GitFlow Strategy" width="600"/>
+</div>
+
+<p><strong>Le flux de travail</strong> :
+- <strong>Develop</strong> : Branche d'intégration continue
+- <strong>Feature branches</strong> : Une branche par fonctionnalité
+- <strong>Main</strong> : Branche de production (releases seulement)</p>
+<h3 id="etapes_1">📝 Étapes</h3>
+<h4 id="21-creer-les-branches-principales">2.1 Créer les branches principales</h4>
+<pre><code class="language-bash"># Vous êtes sur main (ou master)
+git checkout -b develop
+git push -u origin develop
+
+# Retourner sur main
+git checkout main
+</code></pre>
+<h4 id="22-configurer-la-protection-de-branches-sur-github-attention-a-ne-pas-oublier-de-creer-un-giuthub-app-pour-valider-les-pull-requests">2.2 Configurer la protection de branches sur GitHub (Attention à ne pas oublier de créer un Giuthub APP pour valider les pull requests)</h4>
+<p><strong>Sur GitHub</strong> : Settings → Branches → Branch protection rules</p>
+<h5 id="protection-de-main">Protection de <code>main</code></h5>
+<p>Créez une règle pour <code>main</code> :</p>
+<ul>
+<li>[ ] ✅ <strong>Require pull request before merging</strong></li>
+<li>Require approvals: 1 (mettre le formateur comme approver sur le repo)</li>
+<li>[ ] ✅ <strong>Require status checks to pass before merging</strong></li>
+<li>Cochez : CI, Lint, Tests (vous les ajouterez plus tard)</li>
+<li>[ ] ✅ <strong>Require conversation resolution before merging</strong></li>
+<li>[ ] ✅ <strong>Do not allow bypassing the above settings</strong></li>
+<li>[ ] ✅ <strong>Restrict who can push to matching branches</strong> (optionnel)</li>
+</ul>
+<h5 id="protection-de-develop">Protection de <code>develop</code></h5>
+<p>Créez une règle pour <code>develop</code> :</p>
+<ul>
+<li>[ ] ✅ <strong>Require pull request before merging</strong></li>
+<li>[ ] ✅ <strong>Require status checks to pass before merging</strong></li>
+<li>[ ] ⚠️ Moins stricte que <code>main</code> (pas besoin d'approval)</li>
+</ul>
+<p><strong>Résultat</strong> : Impossible de push directement sur <code>main</code> ou <code>develop</code> !</p>
+<h4 id="23-workflow-de-developpement">2.3 Workflow de développement</h4>
+<div align="center">
+  <img src="images/gitflow_strategy.png" alt="GitFlow Workflow" width="550"/>
+</div>
+
+<p><strong>Flux de travail quotidien</strong> :
+1. Créer une branche depuis <code>develop</code>
+2. Développer + commits conventionnels
+3. Push + ouvrir une PR vers <code>develop</code>
+4. CI s'exécute automatiquement
+5. Merge si CI passe
+6. Quand prêt : PR <code>develop</code> → <code>main</code> → Release automatique !</p>
+<p><strong>Règles à respecter</strong> :</p>
+<ol>
+<li><strong>Jamais</strong> de commit direct sur <code>main</code> ou <code>develop</code></li>
+<li><strong>Toujours</strong> créer une feature branch : <code>feature/nom-de-la-feature</code></li>
+<li><strong>Toujours</strong> utiliser des Conventional Commits</li>
+<li><strong>Toujours</strong> créer une PR (Pull Request)</li>
+<li><strong>Toujours</strong> attendre que la CI passe</li>
+</ol>
+<h4 id="24-conventional-commits">2.4 Conventional Commits</h4>
+<p>Format obligatoire :</p>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
+
+[corps optionnel]
+
+[footer optionnel]
+</code></pre>
+<p><strong>Types autorisés</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Exemple</th>
+<th>Version Bump</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>feat</code></td>
+<td>Nouvelle fonctionnalité</td>
+<td><code>feat(items): add pagination</code></td>
+<td>MINOR (0.1.0 → 0.2.0)</td>
+</tr>
+<tr>
+<td><code>fix</code></td>
+<td>Correction de bug</td>
+<td><code>fix(api): handle null values</code></td>
+<td>PATCH (0.1.0 → 0.1.1)</td>
+</tr>
+<tr>
+<td><code>docs</code></td>
+<td>Documentation uniquement</td>
+<td><code>docs: update README</code></td>
+<td>Aucun</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Formatage, whitespace</td>
+<td><code>style: format with ruff</code></td>
+<td>Aucun</td>
+</tr>
+<tr>
+<td><code>refactor</code></td>
+<td>Refactoring</td>
+<td><code>refactor: extract service layer</code></td>
+<td>Aucun</td>
+</tr>
+<tr>
+<td><code>perf</code></td>
+<td>Amélioration performance</td>
+<td><code>perf: optimize db queries</code></td>
+<td>PATCH</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Ajout de tests</td>
+<td><code>test: add items tests</code></td>
+<td>Aucun</td>
+</tr>
+<tr>
+<td><code>chore</code></td>
+<td>Maintenance, config</td>
+<td><code>chore: update dependencies</code></td>
+<td>Aucun</td>
+</tr>
+<tr>
+<td><code>ci</code></td>
+<td>CI/CD changes</td>
+<td><code>ci: add GitHub Actions</code></td>
+<td>Aucun</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Breaking Changes</strong> (MAJOR bump : 1.0.0 → 2.0.0) :</p>
+<pre><code class="language-bash"># Option 1 : avec !
+git commit -m &quot;feat!: redesign API structure&quot;
+
+# Option 2 : avec BREAKING CHANGE footer
+git commit -m &quot;feat: redesign API
+
+BREAKING CHANGE: endpoints /api/v1/* are removed&quot;
+</code></pre>
+<p><strong>Ressources</strong> :
+- 📖 <a href="https://www.conventionalcommits.org/fr/v1.0.0/">Conventional Commits</a>
+- 📖 <a href="https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13">Conventional Commits - Cheatsheet</a></p>
+<h4 id="25-exercice-pratique">2.5 Exercice pratique</h4>
+<p><strong>Mission</strong> : Créez votre première feature branch avec un commit conventionnel.</p>
+<pre><code class="language-bash"># Depuis develop
+git checkout develop
+git pull origin develop
+
+# Créer une feature branch
+git checkout -b feature/fix-formatting
+
+# Fixer QUELQUES problèmes de formatage (pas tous !)
+# Par exemple, dans app/main.py, supprimez les imports inutilisés
+
+# Commit avec format conventionnel
+git commit -m &quot;style: remove unused imports in main.py&quot;
+
+# Push
+git push -u origin feature/fix-formatting
+
+# Sur GitHub : Créer une PR vers develop
+</code></pre>
+<h3 id="questions-de-reflexion_1">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Pourquoi protéger les branches ?</strong></li>
+<li>
+<p>Que se passerait-il sans protection ?</p>
+</li>
+<li>
+<p><strong>Pourquoi Conventional Commits ?</strong></p>
+</li>
+<li>Avantages pour l'équipe</li>
+<li>
+<p>Avantages pour le versionnage automatique</p>
+</li>
+<li>
+<p><strong>Différence entre develop et main ?</strong></p>
+</li>
+<li>Quand merger dans develop ?</li>
+<li>Quand merger dans main ?</li>
+</ol>
+<h3 id="validation-phase-2">✅ Validation Phase 2</h3>
+<ul>
+<li>[ ] Branches <code>main</code> et <code>develop</code> créées</li>
+<li>[ ] Protection de branches configurée sur GitHub</li>
+<li>[ ] Au moins 1 PR créée avec Conventional Commit</li>
+<li>[ ] Vous comprenez le workflow GitFlow</li>
+</ul>
+<hr />
+<h2 id="phase-3-ci-pipeline-tests-quality-security">🧪 Phase 3 : CI Pipeline - Tests, Quality &amp; Security</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐⭐_Difficile-orange" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-4--5h-blue" /></p>
+<h3 id="objectif_3">🎯 Objectif</h3>
+<p>Créer un <strong>pipeline CI complet</strong> qui vérifie automatiquement la qualité, les tests, et la sécurité du code.</p>
+<h3 id="architecture-du-ci-pipeline">📊 Architecture du CI Pipeline</h3>
+<p><strong>4 jobs parallèles</strong> pour une vérification complète :</p>
+<pre><code>┌─────────────────────────────────────────────────┐
+│          PUSH / PULL REQUEST                    │
+└───────────────┬─────────────────────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    │           │           │           │
+    ▼           ▼           ▼           ▼
+┌────────┐ ┌─────────┐ ┌─────────┐ ┌────────┐
+│  LINT  │ │  TYPE   │ │ SECURITY│ │ TESTS  │
+│        │ │  CHECK  │ │         │ │        │
+├────────┤ ├─────────┤ ├─────────┤ ├────────┤
+│ • Ruff │ │ • Mypy  │ │ • Bandit│ │ • Setup│
+│ check  │ │         │ │ • Safety│ │   DB   │
+│ • Ruff │ │         │ │         │ │ • Pytest│
+│ format │ │         │ │         │ │ • Cover│
+└────┬───┘ └────┬────┘ └────┬────┘ └───┬────┘
+     │          │           │          │
+     └──────────┴───────────┴──────────┘
+                │
+                ▼
+         ┌──────────────┐
+         │  ALL PASS?   │
+         └──────┬───────┘
+                │
+        ┌───────┴────────┐
+        │                │
+        ▼                ▼
+    ✅ SUCCESS      ❌ FAILED
+</code></pre>
+<p><strong>Tous les jobs doivent passer</strong> pour que la CI soit verte !</p>
+<h3 id="etapes_2">📝 Étapes</h3>
+<h4 id="31-comprendre-github-actions">3.1 Comprendre GitHub Actions</h4>
+<p><strong>Structure d'un workflow</strong> :</p>
+<pre><code class="language-yaml">name: Nom du workflow
+on: [événements qui déclenchent]
+jobs:
+  nom-du-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Étape 1
+        run: commande
+</code></pre>
+<p><strong>Ressources</strong> :
+- 📖 <a href="https://docs.github.com/en/actions/quickstart">GitHub Actions - Quickstart</a>
+- 📖 <a href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions">GitHub Actions - Workflow syntax</a>
+- 📖 <a href="https://docs.astral.sh/uv/guides/integration/github/">uv - GitHub Integration</a></p>
+<h4 id="32-creer-le-workflow-ci">3.2 Créer le workflow CI</h4>
+<p>Créez <code>.github/workflows/ci.yml</code> :</p>
+<p><strong>Mission</strong> : Créez un workflow avec les jobs suivants :</p>
+<h5 id="job-1-lint-format">Job 1 : Lint &amp; Format</h5>
+<pre><code class="language-yaml">lint:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+
+    # TODO: Installer uv
+    # Indice : https://docs.astral.sh/uv/guides/integration/github/
+
+    # TODO: Installer les dépendances
+    # uv sync
+
+    # TODO: Exécuter ruff check
+    # uv run ruff check .
+
+    # TODO: Vérifier le formatage
+    # uv run ruff format --check .
+</code></pre>
+<h5 id="job-2-type-check">Job 2 : Type Check</h5>
+<pre><code class="language-yaml">typecheck:
+  runs-on: ubuntu-latest
+  steps:
+    # TODO: Checkout, install uv, sync deps
+
+    # TODO: Exécuter mypy
+    # uv run mypy app/
+</code></pre>
+<h5 id="job-3-security-scan">Job 3 : Security Scan</h5>
+<pre><code class="language-yaml">security:
+  runs-on: ubuntu-latest
+  steps:
+    # TODO: Checkout, install uv, sync deps
+
+    # TODO: Bandit (static analysis)
+    # uv run bandit -r app/
+
+    # TODO: Safety (check dependencies vulnerabilities)
+    # uv run safety check
+</code></pre>
+<h5 id="job-4-tests">Job 4 : Tests</h5>
+<pre><code class="language-yaml">tests:
+  runs-on: ubuntu-latest
+
+  # TODO: Ajouter un service PostgreSQL
+  # Indice : https://docs.github.com/en/actions/using-containerized-services
+  services:
+    postgres:
+      image: postgres:15
+      env:
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: test_db
+      options: &gt;-
+        --health-cmd pg_isready
+        --health-interval 10s
+        --health-timeout 5s
+        --health-retries 5
+      ports:
+        - 5432:5432
+
+  steps:
+    # TODO: Checkout, install uv, sync deps
+
+    # TODO: Run tests with coverage
+    # uv run pytest --cov=app --cov-report=term --cov-report=xml
+
+    # TODO: Upload coverage to Codecov (optionnel)
+</code></pre>
+<p><strong>📋 Template de départ</strong> :</p>
+<pre><code class="language-yaml">name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    # TODO: À compléter
+
+  typecheck:
+    # TODO: À compléter
+
+  security:
+    # TODO: À compléter
+
+  tests:
+    # TODO: À compléter
+</code></pre>
+<h4 id="33-configurer-les-outils">3.3 Configurer les outils</h4>
+<h5 id="pyprojecttoml-ruff">pyproject.toml - Ruff</h5>
+<pre><code class="language-toml">[tool.ruff]
+line-length = 88
+target-version = &quot;py313&quot;
+
+[tool.ruff.lint]
+select = [
+    &quot;E&quot;,  # pycodestyle errors
+    &quot;W&quot;,  # pycodestyle warnings
+    &quot;F&quot;,  # pyflakes
+    &quot;I&quot;,  # isort
+    &quot;B&quot;,  # flake8-bugbear
+    &quot;C4&quot;, # flake8-comprehensions
+    &quot;UP&quot;, # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = &quot;double&quot;
+indent-style = &quot;space&quot;
+</code></pre>
+<h5 id="pyprojecttoml-mypy">pyproject.toml - Mypy</h5>
+<pre><code class="language-toml">[tool.mypy]
+python_version = &quot;3.13&quot;
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+plugins = [&quot;sqlalchemy.ext.mypy.plugin&quot;]
+</code></pre>
+<h5 id="pyprojecttoml-pytest">pyproject.toml - Pytest</h5>
+<pre><code class="language-toml">[tool.pytest.ini_options]
+testpaths = [&quot;tests&quot;]
+python_files = &quot;test_*.py&quot;
+python_functions = &quot;test_*&quot;
+addopts = &quot;--strict-markers --cov=app --cov-report=term-missing&quot;
+</code></pre>
+<h4 id="34-corriger-les-problemes">3.4 Corriger les problèmes</h4>
+<p>Maintenant que la CI est en place, elle va <strong>détecter tous les problèmes</strong> !</p>
+<p><strong>Mission</strong> : Créez des PR pour corriger les problèmes par catégorie.</p>
+<p><strong>Workflow recommandé</strong> :</p>
+<pre><code class="language-bash"># 1. Créer une branche pour les imports inutilisés
+git checkout develop
+git checkout -b fix/remove-unused-imports
+
+# 2. Corriger (avec l'aide de ruff --fix)
+uv run ruff check --fix .
+
+# 3. Commit conventionnel
+git add .
+git commit -m &quot;style: remove unused imports&quot;
+
+# 4. Push et créer PR
+git push -u origin fix/remove-unused-imports
+</code></pre>
+<p>Répétez pour chaque catégorie :
+- <code>fix/remove-unused-imports</code>
+- <code>fix/add-type-annotations</code>
+- <code>fix/remove-secrets</code> ⚠️ (Important !)
+- <code>fix/format-code</code>
+- <code>fix/remove-dead-code</code></p>
+<h4 id="35-optimiser-le-ci">3.5 Optimiser le CI</h4>
+<p><strong>Cache des dépendances</strong> :</p>
+<pre><code class="language-yaml">- name: Set up uv
+  uses: astral-sh/setup-uv@v4
+  with:
+    enable-cache: true
+    cache-dependency-glob: &quot;uv.lock&quot;
+</code></pre>
+<p><strong>Parallel jobs</strong> : Les jobs s'exécutent déjà en parallèle par défaut !</p>
+<p><strong>Matrix builds</strong> (optionnel - plusieurs versions Python) :</p>
+<pre><code class="language-yaml">strategy:
+  matrix:
+    python-version: [&quot;3.12&quot;, &quot;3.13&quot;]
+</code></pre>
+<h3 id="questions-de-reflexion_2">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Pourquoi plusieurs jobs séparés ?</strong></li>
+<li>Avantages du parallélisme</li>
+<li>
+<p>Facilité de déboggage</p>
+</li>
+<li>
+<p><strong>Que faire si la CI échoue ?</strong></p>
+</li>
+<li>Comment lire les logs ?</li>
+<li>
+<p>Comment reproduire localement ?</p>
+</li>
+<li>
+<p><strong>Faut-il tout corriger d'un coup ?</strong></p>
+</li>
+<li>Avantages des petites PR</li>
+<li>Facilité de review</li>
+</ol>
+<h3 id="validation-phase-3">✅ Validation Phase 3</h3>
+<ul>
+<li>[ ] Workflow <code>.github/workflows/ci.yml</code> créé</li>
+<li>[ ] Tous les jobs (lint, typecheck, security, tests) fonctionnent</li>
+<li>[ ] La CI s'exécute automatiquement sur chaque push/PR</li>
+<li>[ ] Au moins 50% des problèmes détectés sont corrigés</li>
+<li>[ ] Les tests passent</li>
+<li>[ ] Configuration ruff, mypy, pytest dans <code>pyproject.toml</code></li>
+</ul>
+<hr />
+<h2 id="phase-4-pre-commit-hooks-gagnez-du-temps">🛡️ Phase 4 : Pre-commit Hooks - Gagnez du Temps !</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐_Moyen-yellow" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-2h-blue" /></p>
+<h3 id="objectif_4">🎯 Objectif</h3>
+<p>Bloquer les problèmes <strong>AVANT</strong> qu'ils n'arrivent dans la CI. <strong>C'est le game changer !</strong></p>
+<h3 id="le-concept-avantapres">💡 Le Concept - Avant/Après</h3>
+<h4 id="sans-pre-commit-approche-traditionnelle">❌ Sans pre-commit (approche traditionnelle)</h4>
+<pre><code>👨‍💻 Développeur
+    │
+    ├─ 1. git commit (code avec erreurs)
+    ├─ 2. git push
+    │
+    ▼
+🤖 CI Pipeline (3-5 minutes)
+    │
+    ├─ ❌ ÉCHEC ! (erreurs détectées)
+    │
+    ▼
+👨‍💻 Développeur
+    │
+    ├─ 3. Corriger localement
+    ├─ 4. git commit + push
+    │
+    ▼
+🤖 CI Pipeline (3-5 minutes)
+    │
+    └─ ✅ SUCCESS
+
+⏱️ TOTAL : 6-10 minutes perdues
+</code></pre>
+<h4 id="avec-pre-commit-approche-optimisee">✅ Avec pre-commit (approche optimisée)</h4>
+<pre><code>👨‍💻 Développeur
+    │
+    ├─ 1. git commit (code avec erreurs)
+    │
+    ▼
+🛡️ Pre-commit (5 secondes)
+    │
+    ├─ ❌ BLOQUÉ ! (erreurs détectées)
+    │
+    ▼
+👨‍💻 Développeur
+    │
+    ├─ 2. Corriger immédiatement
+    ├─ 3. git commit (corrigé)
+    │
+    ▼
+🛡️ Pre-commit (5 secondes)
+    │
+    ├─ ✅ OK
+    ├─ 4. git push
+    │
+    ▼
+🤖 CI Pipeline
+    │
+    └─ ✅ SUCCESS (premier coup !)
+
+⏱️ TOTAL : 30 secondes + CI
+</code></pre>
+<p><strong>🚀 Gain de temps : 90% !</strong>
+<strong>💡 Bonus : Moins de cycles CI = coût réduit + environnement</strong></p>
+<h3 id="ressources">📝 Ressources</h3>
+<ul>
+<li>📖 <a href="https://pre-commit.com/">Pre-commit.com</a></li>
+<li>🎥 <a href="https://www.youtube.com/watch?v=xhg1dJHLqSM">Pre-commit Tutorial</a></li>
+</ul>
+<h3 id="etapes_3">📝 Étapes</h3>
+<h4 id="41-installation">4.1 Installation</h4>
+<pre><code class="language-bash"># Installer pre-commit
+uv pip install pre-commit
+
+# Vérifier
+pre-commit --version
+</code></pre>
+<h4 id="42-configuration">4.2 Configuration</h4>
+<p>créer le fichier <code>.pre-commit-config.yaml</code> :</p>
+<pre><code class="language-bash">touch .pre-commit-config.yaml
+</code></pre>
+<p><strong>Mission</strong> : Complétez le fichier <code>.pre-commit-config.yaml</code> avec les hooks suivants.</p>
+<h5 id="hooks-de-base">Hooks de base</h5>
+<pre><code class="language-yaml">repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: detect-private-key
+      - id: check-merge-conflict
+</code></pre>
+<h5 id="ruff-linting-formatting">Ruff (linting + formatting)</h5>
+<pre><code class="language-yaml">  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+</code></pre>
+<h5 id="mypy-type-checking">Mypy (type checking)</h5>
+<pre><code class="language-yaml">  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - sqlmodel
+          - fastapi
+          - types-psycopg2
+</code></pre>
+<h5 id="optionnel-detect-secrets">(Optionnel) Detect Secrets</h5>
+<pre><code class="language-yaml">  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+</code></pre>
+<p>Pour initialiser la baseline :</p>
+<pre><code class="language-bash">uv run detect-secrets scan &gt; .secrets.baseline
+</code></pre>
+<h4 id="43-installation-des-hooks-git">4.3 Installation des hooks Git</h4>
+<pre><code class="language-bash"># Installer les hooks dans .git/hooks/
+pre-commit install
+
+# Tester sur tous les fichiers
+pre-commit run --all-files
+</code></pre>
+<p><strong>Attendez-vous à beaucoup d'erreurs !</strong> 😅</p>
+<h4 id="44-corriger-progressivement">4.4 Corriger progressivement</h4>
+<p>Pre-commit va auto-fixer certains problèmes :
+- Trailing whitespace
+- End of file
+- Formatage (ruff-format)
+- Imports (ruff avec --fix)</p>
+<p>D'autres nécessitent une correction manuelle :
+- Type annotations
+- Secrets détectés</p>
+<p><strong>Workflow</strong> :</p>
+<pre><code class="language-bash"># Tentative de commit
+git add app/main.py
+git commit -m &quot;fix: remove secrets&quot;
+
+# Pre-commit s'exécute...
+# ❌ Certains hooks échouent
+# ✅ Certains auto-fixent
+
+# Si auto-fixé, re-add et re-commit
+git add app/main.py
+git commit -m &quot;fix: remove secrets&quot;
+
+# Cette fois ça devrait passer !
+</code></pre>
+<h4 id="45-ajouter-pre-commit-a-la-ci">4.5 Ajouter pre-commit à la CI</h4>
+<p><strong>Pourquoi ?</strong> Éviter que quelqu'un bypass les hooks avec <code>--no-verify</code>.</p>
+<p>Ajoutez un job dans <code>.github/workflows/ci.yml</code> :</p>
+<pre><code class="language-yaml">pre-commit:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+    - uses: pre-commit/action@v3.0.0
+</code></pre>
+<h3 id="questions-de-reflexion_3">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Différence entre pre-commit et CI ?</strong></li>
+<li>Quand chacun s'exécute ?</li>
+<li>
+<p>Pourquoi avoir les deux ?</p>
+</li>
+<li>
+<p><strong>Peut-on bypass pre-commit ?</strong></p>
+</li>
+<li><code>git commit --no-verify</code></li>
+<li>Est-ce une bonne idée ?</li>
+<li>
+<p>Comment l'empêcher ?</p>
+</li>
+<li>
+<p><strong>Pre-commit ralentit-il le développement ?</strong></p>
+</li>
+<li>Temps d'exécution (5-10 secondes)</li>
+<li>Vs temps perdu à attendre la CI</li>
+</ol>
+<h3 id="validation-phase-4">✅ Validation Phase 4</h3>
+<ul>
+<li>[ ] <code>.pre-commit-config.yaml</code> complet et fonctionnel</li>
+<li>[ ] <code>pre-commit install</code> exécuté</li>
+<li>[ ] Tous les hooks passent sur <code>pre-commit run --all-files</code></li>
+<li>[ ] Vous avez testé un commit → bloqué → corrigé → passé</li>
+<li>[ ] Pre-commit ajouté à la CI</li>
+<li>[ ] La majorité des problèmes de qualité sont corrigés</li>
+</ul>
+<hr />
+<h2 id="phase-5-build-push-docker-image-vers-ghcr">🐳 Phase 5 : Build &amp; Push Docker Image vers GHCR</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐_Moyen-yellow" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-2h-blue" /></p>
+<h3 id="objectif_5">🎯 Objectif</h3>
+<p>Containeriser l'application et publier l'image Docker sur <strong>GitHub Container Registry (GHCR)</strong>.</p>
+<h3 id="comprendre-ghcr">📖 Comprendre GHCR</h3>
+<p>GitHub Container Registry (ghcr.io) :
+- Gratuit pour les repos publics
+- Intégré à GitHub
+- Support multi-arch
+- Authentification via <code>GITHUB_TOKEN</code></p>
+<h3 id="etapes_4">📝 Étapes</h3>
+<h4 id="51-creer-le-dockerfile">5.1 Créer le Dockerfile</h4>
+<p>Vérifiez/améliorez le <code>Dockerfile</code> existant :</p>
+<pre><code class="language-dockerfile">FROM python:3.13-slim
+
+WORKDIR /app
+
+RUN apt-get update &amp;&amp; apt-get install -y \
+    gcc \
+    postgresql-client \
+    curl \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+ENV UV_SYSTEM_PYTHON=1
+
+COPY pyproject.toml .
+RUN uv pip install -e .
+
+COPY . .
+
+EXPOSE 8000
+
+CMD [&quot;fastapi&quot;, &quot;run&quot;, &quot;app/main.py&quot;, &quot;--port&quot;, &quot;8000&quot;]
+</code></pre>
+<p><strong>Optimisations</strong> :
+- Multi-stage build → image plus petite
+- uv pour des installations rapides
+- Cache des layers Docker</p>
+<h4 id="52-tester-localement">5.2 Tester localement</h4>
+<pre><code class="language-bash"># Build
+docker build -t items-api:local .
+
+# Run
+docker run -p 8000:8000 items-api:local
+
+# Test
+curl http://localhost:8000/health
+</code></pre>
+<h4 id="53-creer-le-workflow-de-build">5.3 Créer le workflow de build</h4>
+<p>Créez <code>.github/workflows/build.yml</code> :</p>
+<pre><code class="language-yaml">name: Build &amp; Push Docker Image
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses:
+
+      - name: Log in to GitHub Container Registry
+        uses:
+
+      - name: Extract metadata
+        id: meta
+        uses:
+
+      - name: Build and push Docker image
+        uses:
+
+</code></pre>
+<p><strong>Ce workflow</strong> :
+- Build l'image Docker
+- Tag automatiquement (branch, SHA, version)
+- Push vers GHCR
+- Utilise le cache GitHub Actions pour accélérer</p>
+<h4 id="54-verifier-sur-ghcr">5.4 Vérifier sur GHCR</h4>
+<p>Après le workflow :</p>
+<ol>
+<li>Allez sur GitHub → Packages (profil)</li>
+<li>Vous devriez voir <code>items-ci-cd</code> (ou votre nom de repo)</li>
+<li>L'image est tagguée avec la branche et le SHA</li>
+</ol>
+<p>URL de l'image : <code>ghcr.io/&lt;votre-username&gt;/items-ci-cd:main</code></p>
+<h4 id="55-utiliser-limage">5.5 Utiliser l'image</h4>
+<pre><code class="language-bash"># Pull depuis GHCR
+docker pull ghcr.io/&lt;votre-username&gt;/items-ci-cd:main
+
+# Run
+docker run -p 8000:8000 ghcr.io/&lt;votre-username&gt;/items-ci-cd:main
+</code></pre>
+<h3 id="questions-de-reflexion_4">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Pourquoi containeriser ?</strong></li>
+<li>Avantages Docker</li>
+<li>
+<p>"Works on my machine" problem</p>
+</li>
+<li>
+<p><strong>Multi-stage build : pourquoi ?</strong></p>
+</li>
+<li>Taille de l'image</li>
+<li>
+<p>Sécurité</p>
+</li>
+<li>
+<p><strong>Tagging strategy</strong> :</p>
+</li>
+<li>Pourquoi plusieurs tags ?</li>
+<li><code>latest</code> vs <code>semver</code> vs <code>sha</code></li>
+</ol>
+<h3 id="validation-phase-5">✅ Validation Phase 5</h3>
+<ul>
+<li>[ ] <code>Dockerfile</code> optimisé créé</li>
+<li>[ ] Image build et run localement</li>
+<li>[ ] Workflow <code>.github/workflows/build.yml</code> créé</li>
+<li>[ ] Image pushée sur GHCR</li>
+<li>[ ] Image pullable et fonctionnelle depuis GHCR</li>
+</ul>
+<hr />
+<h2 id="phase-6-semantic-release-automatique">📦 Phase 6 : Semantic Release Automatique</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐⭐_Difficile-orange" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-3h-blue" /></p>
+<h3 id="objectif_6">🎯 Objectif</h3>
+<p>Automatiser complètement le versionnage et la création de releases grâce à <strong>python-semantic-release</strong> et <strong>uv</strong>.</p>
+<h3 id="configuration-existante">📖 Configuration existante</h3>
+<p>Le projet est déjà configuré dans <code>pyproject.toml</code> :</p>
+<pre><code class="language-toml">[tool.semantic_release]
+
+
+[tool.semantic_release.branches.main]
+
+
+[tool.semantic_release.branches.develop]
+
+
+[tool.semantic_release.changelog]
+
+
+[tool.semantic_release.commit_parser_options]
+
+
+[tool.semantic_release.remote]
+
+[tool.semantic_release.publish]
+
+</code></pre>
+<p><strong>Examinez cette configuration</strong> et répondez :</p>
+<ol>
+<li>Quels commits déclenchent un bump de version ?</li>
+<li>Différence entre <code>main</code> et <code>develop</code> ?</li>
+<li>Que contient le CHANGELOG ?</li>
+</ol>
+<h3 id="etapes_5">📝 Étapes</h3>
+<h4 id="61-tester-localement-dry-run">6.1 Tester localement (dry-run)</h4>
+<pre><code class="language-bash"># Voir quelle version serait créée (sans rien modifier)
+uv run semantic-release version --dry-run
+
+# Voir le changelog qui serait généré
+uv run semantic-release changelog --dry-run
+</code></pre>
+<p>Si aucune version n'est détectée, c'est normal ! Il faut des commits <code>feat</code> ou <code>fix</code>.</p>
+<h4 id="62-creer-des-commits-pour-tester">6.2 Créer des commits pour tester</h4>
+<pre><code class="language-bash">git checkout develop
+git checkout -b feature/test-release
+
+# Faites un petit changement
+echo &quot;# Test&quot; &gt;&gt; README.md
+
+git add README.md
+git commit -m &quot;feat: add test section to README&quot;
+
+# Push et créer une PR vers develop
+git push -u origin feature/test-release
+</code></pre>
+<p>Mergez la PR dans <code>develop</code>.</p>
+<h4 id="63-creer-le-workflow-de-release">6.3 Créer le workflow de release</h4>
+<p>Créez <code>.github/workflows/release.yml</code> :</p>
+<pre><code class="language-yaml">name: Semantic Release
+
+on:
+  workflow_run:
+    workflows: [&quot;CI&quot;]
+    types:
+      - completed
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: write
+  packages: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    # Ne s'exécute que si la CI a réussi
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Set up uv
+        uses:
+
+      - name: Install dependencies
+        run:
+
+      - name: Python Semantic Release
+        id: release
+        uses:
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to GHCR (if new release)
+        if:steps.release.outputs.released == 'true'
+        run:
+</code></pre>
+<p><strong>Ce workflow</strong> :
+- Attend que la CI passe (<code>workflow_run</code>)
+- Analyse les commits depuis la dernière version
+- Détermine la nouvelle version (MAJOR, MINOR, PATCH)
+- Crée un commit de bump + tag Git
+- Génère le CHANGELOG.md
+- Crée une GitHub Release</p>
+<h4 id="64-workflow-complet-de-release">6.4 Workflow complet de release</h4>
+<p><strong>Flux automatique de la feature à la production</strong> :</p>
+<pre><code>📝 DÉVELOPPEMENT (branche develop)
+    │
+    ├─ feat: nouvelle fonctionnalité
+    ├─ fix: correction de bug
+    ├─ feat: autre feature
+    │
+    ▼
+❓ Prêt pour production ?
+    │
+    ├─ Non → Continue sur develop
+    │
+    ├─ Oui ↓
+    │
+    ▼
+📬 PR develop → main
+    │
+    ├─ Code Review
+    ├─ ✅ CI passe
+    │
+    ▼
+🔀 Merge dans main
+    │
+    ▼
+🤖 CI s'exécute sur main
+    │
+    ▼
+🏷️ Semantic Release s'active
+    │
+    ├─ 1. Analyse les commits depuis dernière version
+    ├─ 2. Détermine le type de bump (MAJOR/MINOR/PATCH)
+    │   • feat → MINOR (0.1.0 → 0.2.0)
+    │   • fix → PATCH (0.1.0 → 0.1.1)
+    │   • BREAKING CHANGE → MAJOR (0.1.0 → 1.0.0)
+    │
+    ├─ 3. Bump version dans pyproject.toml
+    ├─ 4. Crée tag Git (ex: v0.2.0)
+    ├─ 5. Génère CHANGELOG.md
+    ├─ 6. Crée GitHub Release
+    │
+    ▼
+🐳 Build Workflow (trigger par le tag)
+    │
+    ├─ Build image Docker
+    ├─ Tag image avec version (v0.2.0)
+    ├─ Push vers GHCR
+    │
+    ▼
+🚀 CD Workflow (trigger par la release)
+    │
+    ├─ Deploy sur Azure Container Apps
+    ├─ Health Check
+    │
+    ▼
+✅ EN PRODUCTION !
+</code></pre>
+<p><strong>Tout est automatique</strong> après le merge dans <code>main</code> !</p>
+<h4 id="65-exercice-complet">6.5 Exercice complet</h4>
+<p><strong>Mission</strong> : Créez votre première release !</p>
+<ol>
+<li>
+<p>Créez plusieurs features sur <code>develop</code> :
+   <code>bash
+   feat(items): add pagination
+   feat(api): add filtering
+   fix(database): connection pool issue</code></p>
+</li>
+<li>
+<p>Créez une PR <code>develop</code> → <code>main</code></p>
+</li>
+<li>
+<p>Mergez après CI pass</p>
+</li>
+<li>
+<p>Observez :</p>
+</li>
+<li>Semantic release analyse les commits</li>
+<li>Nouvelle version calculée (ex: <code>v0.1.0</code>)</li>
+<li>Tag créé</li>
+<li>CHANGELOG généré</li>
+<li>
+<p>GitHub Release créée</p>
+</li>
+<li>
+<p>Vérifiez :
+   <code>bash
+   git fetch --tags
+   git tag  # Liste les tags</code></p>
+</li>
+</ol>
+<h3 id="questions-de-reflexion_5">❓ Questions de réflexion</h3>
+<ol>
+<li><strong>Pourquoi automatic versioning ?</strong></li>
+<li>Vs versioning manuel</li>
+<li>
+<p>Erreurs humaines</p>
+</li>
+<li>
+<p><strong>Conventional Commits : critique ?</strong></p>
+</li>
+<li>Avantages</li>
+<li>Inconvénients</li>
+<li>
+<p>Discipline nécessaire</p>
+</li>
+<li>
+<p><strong>CHANGELOG automatique</strong> :</p>
+</li>
+<li>Qui le lit ?</li>
+<li>Utilité pour les utilisateurs</li>
+</ol>
+<h3 id="validation-phase-6">✅ Validation Phase 6</h3>
+<ul>
+<li>[ ] Configuration <code>[tool.semantic_release]</code> comprise</li>
+<li>[ ] Workflow <code>.github/workflows/release.yml</code> créé</li>
+<li>[ ] Workflow <code>.github/workflows/sync-develop.yml</code> créé</li>
+<li>[ ] Au moins 1 release créée automatiquement</li>
+<li>[ ] Tag Git et GitHub Release visibles</li>
+<li>[ ] CHANGELOG.md généré</li>
+<li>[ ] <code>develop</code> synchronisé avec <code>main</code></li>
+</ul>
+<hr />
+<h2 id="phase-7-documentation-mkdocs-bonus">📚 Phase 7 : Documentation MkDocs (Bonus)</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐_Moyen-yellow" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-2h-blue" />
+<img alt="Status" src="https://img.shields.io/badge/Status-Bonus-orange" /></p>
+<blockquote>
+<p>Cette phase est <strong>optionnelle</strong> mais fortement recommandée pour un projet professionnel.</p>
+</blockquote>
+<h3 id="objectif_7">🎯 Objectif</h3>
+<p>Générer une documentation élégante à partir de vos docstrings et la déployer sur GitHub Pages.</p>
+<h3 id="etapes_6">📝 Étapes</h3>
+<h4 id="71-configuration-mkdocs">7.1 Configuration MkDocs</h4>
+<p>Le projet a déjà les dépendances MkDocs. Créez <code>mkdocs.yml</code> :</p>
+<pre><code class="language-yaml">site_name: Items API Documentation
+site_description: API REST pour la gestion d'articles
+site_author: Votre Nom
+site_url: https://votre-username.github.io/items-ci-cd
+
+repo_name: votre-username/items-ci-cd
+repo_url: https://github.com/votre-username/items-ci-cd
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search:
+      lang: fr
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            docstring_style: google
+
+nav:
+  - Accueil: index.md
+  - Démarrage: getting-started.md
+  - API:
+      - Services: api/services.md
+      - Modèles: api/models.md
+      - Routes: api/routes.md
+  - CI/CD: cicd.md
+  - Changelog: changelog.md
+</code></pre>
+<h4 id="72-creer-la-structure-docs">7.2 Créer la structure docs</h4>
+<pre><code class="language-bash">mkdir -p docs/api
+touch docs/index.md
+touch docs/getting-started.md
+touch docs/api/services.md
+touch docs/api/models.md
+touch docs/api/routes.md
+touch docs/cicd.md
+</code></pre>
+<h4 id="73-documentation-automatique">7.3 Documentation automatique</h4>
+<p><strong>docs/api/services.md</strong> :</p>
+<pre><code class="language-markdown"># Services
+
+Documentation automatique des services métier.
+
+## ItemService
+
+::: app.services.item_service.ItemService
+    options:
+      show_source: true
+      heading_level: 3
+</code></pre>
+<p>MkDocstrings va extraire automatiquement toutes les docstrings !</p>
+<h4 id="74-ameliorer-les-docstrings">7.4 Améliorer les docstrings</h4>
+<p>Pour que la doc soit belle, améliorez vos docstrings (format Google) :</p>
+<pre><code class="language-python">def get_all(db: Session, skip: int = 0, limit: int = 100) -&gt; list[Item]:
+    &quot;&quot;&quot;Récupère une liste paginée d'articles.
+
+    Args:
+        db: Session de base de données active
+        skip: Nombre d'articles à sauter (pagination)
+        limit: Nombre maximum d'articles à retourner
+
+    Returns:
+        Liste d'objets Item
+
+    Examples:
+        &gt;&gt;&gt; items = ItemService.get_all(db, skip=0, limit=10)
+        &gt;&gt;&gt; len(items)
+        10
+
+    Raises:
+        DatabaseError: Si la connexion à la DB échoue
+    &quot;&quot;&quot;
+    # ...
+</code></pre>
+<h4 id="75-workflow-de-deploiement">7.5 Workflow de déploiement</h4>
+<p>Créez <code>.github/workflows/docs.yml</code> :</p>
+<pre><code class="language-yaml">name: Deploy Documentation
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Copy CHANGELOG to docs
+        run: cp CHANGELOG.md docs/changelog.md
+
+      - name: Build and deploy
+        run: uv run mkdocs gh-deploy --force
+</code></pre>
+<h4 id="76-activer-github-pages">7.6 Activer GitHub Pages</h4>
+<ol>
+<li>GitHub → Settings → Pages</li>
+<li>Source : <strong>Deploy from a branch</strong></li>
+<li>Branch : <code>gh-pages</code> / <code>/ (root)</code></li>
+<li>Save</li>
+</ol>
+<p>Après le workflow, votre doc sera sur : <code>https://votre-username.github.io/items-ci-cd</code></p>
+<h3 id="validation-phase-7">✅ Validation Phase 7</h3>
+<ul>
+<li>[ ] <code>mkdocs.yml</code> configuré</li>
+<li>[ ] Structure <code>docs/</code> créée</li>
+<li>[ ] Docstrings au format Google</li>
+<li>[ ] Documentation buildable localement (<code>mkdocs serve</code>)</li>
+<li>[ ] Workflow de déploiement créé</li>
+<li>[ ] Documentation accessible sur GitHub Pages</li>
+</ul>
+<hr />
+<h2 id="phase-8-deploiement-continu-sur-azure-bonus">☁️ Phase 8 : Déploiement Continu sur Azure (Bonus)</h2>
+<p><img alt="Difficulté" src="https://img.shields.io/badge/Difficulté-⭐⭐⭐⭐_Expert-red" />
+<img alt="Durée" src="https://img.shields.io/badge/Durée-4--6h-blue" />
+<img alt="Status" src="https://img.shields.io/badge/Status-Bonus-orange" /></p>
+<blockquote>
+<p>Cette phase est <strong>optionnelle</strong> et nécessite un compte Azure (gratuit pour commencer).</p>
+</blockquote>
+<h3 id="objectif_8">🎯 Objectif</h3>
+<p>Déployer automatiquement l'application sur <strong>Azure Container Apps</strong> avec une base <strong>Azure Cosmos DB for PostgreSQL</strong> après chaque release.</p>
+<h3 id="architecture-azure">📖 Architecture Azure</h3>
+<div align="center">
+  <img src="images/architecture_azure.png" alt="Architecture Azure" width="600"/>
+</div>
+
+<p><strong>Infrastructure complète</strong> :
+- <strong>Container Apps</strong> : Hébergement de l'application
+- <strong>Cosmos DB PostgreSQL</strong> : Base de données managée
+- <strong>Application Insights</strong> : Monitoring et télémétrie
+- <strong>App Gateway / Load Balancer</strong> : Distribution du trafic
+- <strong>Service Principal</strong> : Authentification sécurisée</p>
+<h3 id="etapes_7">📝 Étapes</h3>
+<h4 id="81-prerequis-azure">8.1 Prérequis Azure</h4>
+<ol>
+<li><strong>Compte Azure</strong> : <a href="https://azure.microsoft.com/fr-fr/free/">Créer un compte gratuit</a></li>
+<li><strong>Azure CLI</strong> : <a href="https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli">Installer</a></li>
+</ol>
+<pre><code class="language-bash"># Login
+az login
+
+# Vérifier
+az account show
+</code></pre>
+<h4 id="82-creer-les-ressources-azure">8.2 Créer les ressources Azure</h4>
+<p>créer une BDD Cosmos DB for PostgreSQL via le portail Azure.
+créer un container app via le portail Azure.
+  |-&gt; configurer les secrets dans GitHub
+  |-&gt; configurer les variables d'environnement</p>
+<p><strong>Notez</strong> :
+- Le FQDN de l'application (URL publique)
+- La connection string de la DB</p>
+<h4 id="83-configurer-les-secrets-github">8.3 Configurer les secrets GitHub</h4>
+<p>Settings → Secrets and variables → Actions :</p>
+<p>Créez <code>.github/workflows/cd-azure.yml</code> :</p>
+<pre><code class="language-yaml">name: CD - Deploy to Azure
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:  # Manuel
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get release version
+        id: version
+        run:
+
+      - name: Deploy to Azure Container Apps
+        run:
+
+
+      - name: Health Check
+        run:
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo &quot;🔄 Rolling back to previous version...&quot;
+          # TODO: Implement rollback logic
+          # az containerapp revision activate --revision &lt;previous-revision&gt;
+</code></pre>
+<h4 id="87-tester-le-deploiement">8.7 Tester le déploiement</h4>
+<ol>
+<li>Créez une nouvelle release (Phase 6)</li>
+<li>Le workflow CD se déclenche automatiquement</li>
+<li>Observez les logs dans GitHub Actions</li>
+<li>Vérifiez le health check</li>
+<li>Testez l'application sur l'URL Azure</li>
+</ol>
+<h3 id="validation-phase-8">✅ Validation Phase 8</h3>
+<ul>
+<li>[ ] Ressources Azure créées (Container App, CosmosDB)</li>
+<li>[ ] Service Principal configuré</li>
+<li>[ ] Secrets GitHub configurés</li>
+<li>[ ] Workflow <code>.github/workflows/cd-azure.yml</code> créé</li>
+<li>[ ] Déploiement automatique fonctionnel</li>
+<li>[ ] Health check passe</li>
+<li>[ ] Application accessible sur Azure</li>
+<li>[ ] Monitoring configuré</li>
+</ul>
+<hr />
+<h2 id="criteres-de-reussite-globaux">🎓 Critères de Réussite Globaux</h2>
+<h3 id="niveau-fondamental-phases-0-3">🌱 Niveau Fondamental (Phases 0-3)</h3>
+<ul>
+<li>[ ] Veille technologique complète et documentée</li>
+<li>[ ] Comparatif d'outils justifié</li>
+<li>[ ] Stratégie Git avec branches protégées</li>
+<li>[ ] CI complète (lint, type, security, tests)</li>
+<li>[ ] Conventional commits maîtrisés</li>
+</ul>
+<h3 id="niveau-intermediaire-phases-4-6">🌿 Niveau Intermédiaire (Phases 4-6)</h3>
+<ul>
+<li>[ ] Tous les critères niveau fondamental</li>
+<li>[ ] Pre-commit hooks fonctionnels</li>
+<li>[ ] Image Docker buildée et pushée sur GHCR</li>
+<li>[ ] Semantic release automatique</li>
+<li>[ ] Au moins 2 releases créées</li>
+<li>[ ] Code nettoyé et de qualité</li>
+</ul>
+<h3 id="niveau-avance-phase-7">🌳 Niveau Avancé (Phase 7)</h3>
+<ul>
+<li>[ ] Tous les critères niveau intermédiaire</li>
+<li>[ ] Documentation MkDocs générée</li>
+<li>[ ] Documentation déployée sur GitHub Pages</li>
+<li>[ ] Docstrings complètes</li>
+</ul>
+<h3 id="niveau-expert-phase-8">🚀 Niveau Expert (Phase 8)</h3>
+<ul>
+<li>[ ] Tous les critères niveau avancé</li>
+<li>[ ] Déploiement automatique sur Azure</li>
+<li>[ ] Base de données Cosmos DB configurée</li>
+<li>[ ] Monitoring Application Insights</li>
+<li>[ ] Health checks automatiques</li>
+</ul>
+<hr />
+<h2 id="ressources-globales">📚 Ressources Globales</h2>
+<h3 id="liens-essentiels">🔗 Liens essentiels</h3>
+<table>
+<thead>
+<tr>
+<th>Catégorie</th>
+<th>Ressource</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>Red Hat - CI/CD</td>
+<td>https://www.redhat.com/fr/topics/devops/what-is-ci-cd</td>
+</tr>
+<tr>
+<td><strong>uv</strong></td>
+<td>Documentation</td>
+<td>https://docs.astral.sh/uv/</td>
+</tr>
+<tr>
+<td><strong>uv</strong></td>
+<td>GitHub Integration</td>
+<td>https://docs.astral.sh/uv/guides/integration/github/</td>
+</tr>
+<tr>
+<td><strong>GitHub Actions</strong></td>
+<td>Documentation</td>
+<td>https://docs.github.com/en/actions</td>
+</tr>
+<tr>
+<td><strong>Conventional Commits</strong></td>
+<td>Spec</td>
+<td>https://www.conventionalcommits.org/fr/v1.0.0/</td>
+</tr>
+<tr>
+<td><strong>Conventional Commits</strong></td>
+<td>Cheatsheet</td>
+<td>https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13</td>
+</tr>
+<tr>
+<td><strong>Semantic Release</strong></td>
+<td>Python</td>
+<td>https://python-semantic-release.readthedocs.io/</td>
+</tr>
+<tr>
+<td><strong>Pre-commit</strong></td>
+<td>Documentation</td>
+<td>https://pre-commit.com/</td>
+</tr>
+<tr>
+<td><strong>MkDocs</strong></td>
+<td>Material</td>
+<td>https://squidfunk.github.io/mkdocs-material/</td>
+</tr>
+<tr>
+<td><strong>Azure</strong></td>
+<td>Container Apps</td>
+<td>https://learn.microsoft.com/azure/container-apps/</td>
+</tr>
+</tbody>
+</table>
+<h3 id="videos-recommandees">🎥 Vidéos recommandées</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=R8_veQiYBjI">GitHub Actions Tutorial</a> - 30min</li>
+<li><a href="https://www.youtube.com/watch?v=mFyE9xgeKcA">uv - The Future of Python Packaging</a> - 17min</li>
+<li><a href="https://www.youtube.com/watch?v=xhg1dJHLqSM">Pre-commit Hooks</a> - 10min</li>
+</ul>
+<hr />
+<h2 id="conseils-pour-reussir">🎯 Conseils pour Réussir</h2>
+<h3 id="a-faire">✅ À Faire</h3>
+<ol>
+<li><strong>Commencez par la veille</strong> - Ne sautez pas cette phase !</li>
+<li><strong>Testez localement d'abord</strong> - Avant de pusher</li>
+<li><strong>Lisez les logs</strong> - Les erreurs contiennent souvent la solution</li>
+<li><strong>Documentez vos choix</strong> - Pourquoi cet outil vs un autre ?</li>
+<li><strong>Commits conventionnels dès le début</strong> - Prenez l'habitude</li>
+<li><strong>Pre-commit dès que possible</strong> - Gagne du temps énorme</li>
+<li><strong>Petites PR</strong> - Plus faciles à reviewer</li>
+</ol>
+<h3 id="a-eviter">❌ À Éviter</h3>
+<ol>
+<li><strong>Ne pas bypass pre-commit</strong> - Même en urgence</li>
+<li><strong>Ne pas commit de secrets</strong> - detect-secrets est là pour ça</li>
+<li><strong>Ne pas push directement sur main/develop</strong> - Toujours via PR</li>
+<li><strong>Ne pas ignorer la CI</strong> - Si elle échoue, il y a une raison</li>
+<li><strong>Ne pas sauter la phase de veille</strong> - Vous serez perdu après</li>
+</ol>
+<hr />
+<h2 id="badge-de-completion">🏆 Badge de Complétion</h2>
+<p>Une fois terminé, ajoutez ces badges à votre README (sans oublier de mettre votre repo dans les liens) :</p>
+<pre><code class="language-markdown">![CI](https://github.com/votre-user/items-ci-cd/workflows/CI/badge.svg)
+![Build](https://github.com/votre-user/items-ci-cd/workflows/Build%20&amp;%20Push%20Docker%20Image/badge.svg)
+![Release](https://github.com/votre-user/items-ci-cd/workflows/Semantic%20Release/badge.svg)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+![Azure](https://img.shields.io/badge/Azure-Deployed-0078D4?logo=microsoft-azure)
+</code></pre>
+<hr />
+<div align="center">
+
+**🚀 Bon courage dans votre apprentissage de la CI/CD professionnelle ! 🚀**
+
+*Un grand pouvoir implique de grandes responsabilités - utilisez wisely !*
+
+![Footer](https://img.shields.io/badge/Made_with-❤️_uv_and_FastAPI-E92063?style=for-the-badge)
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
