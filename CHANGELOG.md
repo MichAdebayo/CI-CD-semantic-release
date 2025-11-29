@@ -2,6 +2,25 @@
 
 <!-- version list -->
 
+## v0.2.3 (2025-11-29)
+
+### Bug Fixes
+
+- **docs**: Correct tagline formatting in README for consistency
+  ([`8879750`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/887975069846a16d63e7c81cb684740559bad93d))
+
+- **docs**: Wrap image tag in paragraph tags for proper formatting in README
+  ([`b0cea85`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/b0cea859c60582edffbee6864afc753a80496c92))
+
+- **env**: Update environment variable placeholders in .env.example for clarity
+  ([`9dc327e`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/9dc327e8c357706e20b36a1d310e45aa6922f2e3))
+
+### Refactoring
+
+- **docs**: Update README to enhance secret management guidance
+  ([`2d0bf80`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/2d0bf801d2f0cd7c30adb78e1ebdcbc4b3d97087))
+
+
 ## v0.2.2 (2025-11-28)
 
 ### Bug Fixes
