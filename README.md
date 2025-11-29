@@ -19,10 +19,6 @@
   <strong>A production-ready FastAPI CRUD application with automated CI/CD pipelines</strong>
 </p>
 
-<p align="center">
-  A hands-on reference for implementing robust CI/CD workflows using semantic-release, GitHub Actions, Docker, and modern Python best practices.
-</p>
-
 ---
 
 ## 📋 Table of Contents
