@@ -2,6 +2,22 @@
 
 <!-- version list -->
 
+## v0.2.4 (2025-11-29)
+
+### Bug Fixes
+
+- **docs**: Wrap tables in div tags for improved alignment and presentation in README
+  ([`af416b9`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/af416b921baf59381ab7194bd3a2e5436f6130ef))
+
+### Refactoring
+
+- **docs**: Enhance README structure and content for clarity and presentation
+  ([`bd45787`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/bd45787b1565629db7e5fefe849b7f2dc7fdb970))
+
+- **docs**: Remove redundant description in README for clarity
+  ([`dd91523`](https://github.com/MichAdebayo/CI-CD-semantic-release/commit/dd91523f2a2b012668b80353691f4f559534ae5b))
+
+
 ## v0.2.3 (2025-11-29)
 
 ### Bug Fixes
