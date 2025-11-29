@@ -63,6 +63,8 @@ This repository showcases a **minimal, production-like FastAPI application** wit
 
 ## 🎯 Key Features
 
+<div align="center">
+
 <table>
 <tr>
 <td width="50%">
@@ -102,6 +104,8 @@ This repository showcases a **minimal, production-like FastAPI application** wit
 </td>
 </tr>
 </table>
+
+</div>
 
 ---
 
@@ -195,11 +199,15 @@ cp .env.example .env
 
 ### 🌍 Environment Variables
 
+<div align="center">
+
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `DATABASE_URL` | PostgreSQL connection string | ✅ Production |
 | `DEBUG_MODE` | Enable FastAPI debug mode | ❌ Optional |
 | `GITHUB_TOKEN` | Token for semantic-release | ✅ CI/CD |
+
+</div>
 
 ### 🔒 CI/CD Secrets
 
@@ -270,6 +278,8 @@ docker run -p 8000:8000 \
 
 ### 📌 Endpoints Overview
 
+<div align="center">
+
 <table>
 <tr>
 <th>Method</th>
@@ -312,6 +322,8 @@ docker run -p 8000:8000 \
 <td>Delete item</td>
 </tr>
 </table>
+
+</div>
 
 ### 💡 Example Requests
 
@@ -396,6 +408,8 @@ The test suite includes:
 
 ### 🏗️ Workflow Architecture
 
+<div align="center">
+
 ```mermaid
 graph LR
     A[Push/PR] --> B[CI Workflow]
@@ -410,8 +424,11 @@ graph LR
     J --> K[Security Scan]
     K --> L[Deploy to Render]
 ```
+</div>
 
 ### 📋 Workflow Details
+
+<div align="center">
 
 <table>
 <tr>
@@ -454,13 +471,19 @@ graph LR
 </tr>
 </table>
 
+</div>
+
 ### 🌿 Branch Strategy
+
+<div align="center">
 
 | Branch | Purpose | Release Type |
 |--------|---------|--------------|
 | `main` | 🚀 Production | Stable releases + Deploy |
 | `develop` | 🧪 Development | Prereleases |
 | `deploy/ci_cd` | 🔧 CI/CD Testing | CI/CD prereleases |
+
+</div>
 
 ### 🔐 Security & Authentication
 
