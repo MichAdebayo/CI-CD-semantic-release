@@ -6,13 +6,11 @@
  ![Docker](https://img.shields.io/badge/docker-enabled-blue?logo=docker)
  ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-<img align="center" width="1000" height="800" alt="Image" src="https://github.com/user-attachments/assets/563061c5-9421-4f9c-97eb-1fe1d591d905" />
-
  Short tagline: A small FastAPI-based CRUD application and a hands-on CI/CD reference using semantic-release, GitHub Actions, Docker, and best-practice tooling.
 
+<img align="center" width="900" height="700" alt="Image" src="https://github.com/user-attachments/assets/563061c5-9421-4f9c-97eb-1fe1d591d905" />
+
  ---
-
-
 
  ## Table of Contents
  - Overview
