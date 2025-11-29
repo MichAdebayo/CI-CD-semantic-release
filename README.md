@@ -19,6 +19,7 @@
   <strong>A production-ready FastAPI CRUD application with automated CI/CD pipelines</strong>
 </p>
 
+
 ---
 
 ## 📋 Table of Contents
@@ -59,8 +60,6 @@ This repository showcases a **minimal, production-like FastAPI application** wit
 
 ## 🎯 Key Features
 
-<div align="center">
-
 <table>
 <tr>
 <td width="50%">
@@ -100,8 +99,6 @@ This repository showcases a **minimal, production-like FastAPI application** wit
 </td>
 </tr>
 </table>
-
-</div>
 
 ---
 
@@ -195,15 +192,11 @@ cp .env.example .env
 
 ### 🌍 Environment Variables
 
-<div align="center">
-
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `DATABASE_URL` | PostgreSQL connection string | ✅ Production |
 | `DEBUG_MODE` | Enable FastAPI debug mode | ❌ Optional |
 | `GITHUB_TOKEN` | Token for semantic-release | ✅ CI/CD |
-
-</div>
 
 ### 🔒 CI/CD Secrets
 
@@ -274,8 +267,6 @@ docker run -p 8000:8000 \
 
 ### 📌 Endpoints Overview
 
-<div align="center">
-
 <table>
 <tr>
 <th>Method</th>
@@ -318,8 +309,6 @@ docker run -p 8000:8000 \
 <td>Delete item</td>
 </tr>
 </table>
-
-</div>
 
 ### 💡 Example Requests
 
@@ -424,8 +413,6 @@ graph LR
 
 ### 📋 Workflow Details
 
-<div align="center">
-
 <table>
 <tr>
 <th>Workflow</th>
@@ -467,11 +454,9 @@ graph LR
 </tr>
 </table>
 
-</div>
 
 ### 🌿 Branch Strategy
 
-<div align="center">
 
 | Branch | Purpose | Release Type |
 |--------|---------|--------------|
@@ -479,7 +464,6 @@ graph LR
 | `develop` | 🧪 Development | Prereleases |
 | `deploy/ci_cd` | 🔧 CI/CD Testing | CI/CD prereleases |
 
-</div>
 
 ### 🔐 Security & Authentication
 
